@@ -28,15 +28,22 @@ This project is a Visual Studio 2022 C++ project set up for windows.
 
 This projects uses OpenFrameworks version 0.12.0
 
-1 : Download the code and install it according to the instructions given on the OpenFramworks website, https://openframeworks.cc/
+1 : Download the code and install it according to the instructions given on the OpenFramworks website,
+    https://openframeworks.cc/
+
 2 : Download the files within this repository to a desired directory location.
+
 3 : Go to the installation directory of the OpenFramworks and one should see the directories apps and libs as given by this repository.
-3 : Copy all the files witin the downloaded copy of this repository into this directory. Beware the overwriting of some the original OpenFrameworks files and adding
+
+4 : Copy all the files witin the downloaded copy of this repository into this directory. Beware the overwriting of some the original OpenFrameworks files and adding
     new files will occur, but should not cause any problems with OpenFrameworks examples etc as the modified files are of additive code that does not alter the functionality
     of existing code.
-4 : Open visual studio and ope the project sln file that is within the apps/myApps/Virtual_Worlds directory.
-5 : Make any neccessary changes to the project to be able to compile the code.
-6 : A compiled executable and example data are available in the directory apps/myApps/Virtual_Worlds/Build.Virtual_Worlds/x64/Release
+    
+5 : Open visual studio and ope the project sln file that is within the apps/myApps/Virtual_Worlds directory.
+
+6 : Make any neccessary changes to the project to be able to compile the code.
+
+7 : A compiled executable and example data are available in the directory apps/myApps/Virtual_Worlds/Build.Virtual_Worlds/x64/Release
 
 Note : this installation is not tested as yet, but should work.
 
