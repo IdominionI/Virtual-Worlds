@@ -35,9 +35,10 @@ This projects uses OpenFrameworks version 0.12.0
 
 3 : Go to the installation directory of the OpenFramworks and one should see the directories apps and libs as given by this repository.
 
-4 : Copy all the files witin the downloaded copy of this repository into this directory. Beware the overwriting of some the original OpenFrameworks files and adding
-    new files will occur, but should not cause any problems with OpenFrameworks examples etc as the modified files are of additive code that does not alter the functionality
-    of existing code.
+4 : Copy all the files witin the downloaded copy of this repository into the created OpenFrameworks project directory. 
+    Beware the overwriting of some the original OpenFrameworks files and adding
+    new files will occur, but should not cause any problems with OpenFrameworks examples etc as the modified files are 
+    of additive code that does not alter the functionality of existing code.
     
 5 : Open visual studio and ope the project sln file that is within the apps/myApps/Virtual_Worlds directory.
 
