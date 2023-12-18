@@ -20,6 +20,9 @@ inline node_id_type current_active_editor = INVALID_ID;
 //inline scene_graph_class master_graph;
 
 
+
+
+
 class scene_node_editor_class : public node_editor_basis_class {
 public:
     bool         display_on = true;
