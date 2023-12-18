@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui_demo.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui_draw.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui_tables.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="source\FrameWork\VW_framework\3D\vw_camera_base.cpp" />
+    <ClCompile Include="source\FrameWork\VW_framework\3D\vw_camera.cpp" />
+    <ClCompile Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_parameters_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Kernal\voxel_function_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generation_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generator_widget.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\tinyFileDialog\tinyfiledialogs.c" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generator_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Render\voxel_hcp_render.cpp" />
+    <ClCompile Include="source\VW\Editor\Main_Window\Widgets\scene_node_editor_widget.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_group.h" />
+    <ClCompile Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_group.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_node.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\ImNodes\Kernal\graph.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shaders_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shader_variables_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_automata_node.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_automata_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_automata_rules_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Automata\voxel_automata_functions.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Automata\automata_bye_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Menus\hcp_voxel_menu_functions.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generation_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\cart_to_hcp_voxel_node.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_internal.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\vw_scene.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_cameras.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_entities_manager.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_lights.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\main_window.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\imgui_widgets.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\log_widget.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Panels\parameter_panel.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Panels\log_panel.h" />
+    <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\imgui_custom.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Types\vw_type_definitions.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\App\global.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\GL\opengl_defines.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\GL\vw_shader_constructor.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Geometry\vw_point_cloud.h" />
+    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_gui.h" />
+    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_node_editor.h" />
+    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_render.h" />
+    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_template.h" />
+    <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\menus.h" />
+    <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\ImGui_utils.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imconfig.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imgui.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imgui_internal.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imstb_rectpack.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imstb_textedit.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imstb_truetype.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl2.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\3D\vw_camera_base.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\3D\vw_camera.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_object_categories.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Geometry\vw_mesh_geometry_primitives.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Geometry\vw_mesh_geometry.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Object\vw_object_base.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Widgets\parameter_widget_base.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\voxel_hcp_object.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\voxel_data_storage.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\parameters.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\DataTypes\dt_voxel_generator.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_components.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_parameters.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_format.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_manager.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Kernal\FWfile_tools.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\DataTypes\dt_voxel_automata.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Scene\voxel_hcp_scene_objects.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_parameters_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Kernal\voxel_function_import_export.h" />
+    <ClInclude Include="source\VW\Editor\Shader\shader_import_export.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Kernal\FWstring_tools.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Kernal\id_key_manager.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generation_widget.h" />
+    <ClInclude Include="source\VW\Editor\Tools\dialogs.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Compute\compute_shader.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Compute\import_compute_expression_code.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generator_widget.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\tinyFileDialog\tinyfiledialogs.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generator_widget.h" />
+    <ClInclude Include="source\VW\Editor\Interface\IconsFontAwesome.h" />
+    <ClInclude Include="source\VW\Editor\Interface\imgui_custom_definitions.h" />
+    <ClInclude Include="source\VW\Editor\Interface\theme.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Compute\voxel_compute_generation.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Render\voxel_hcp_render.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Panels\node_editor_panel.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\scene_node_editor_widget.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Node_editor\node_editor_basis.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Node_editor\node_editor_category_manager.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Node_editor\node_editor_definitions.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\graph.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_editor.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_functions.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_parameters.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\pins.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\links.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_editor_parameters.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_link.h" />
+    <ClInclude Include="source\VW\Editor\Node_Editor\node_editor_functions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_node_definitions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_node.h" />
+    <ClInclude Include="source\VW\Editor\Node_Editor\node_editor_import_export.h" />
+    <ClInclude Include="source\VW\Editor\Node_Editor\node_editor_extras.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shader_variables_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shaders_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generator_variables_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_automata_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_automata_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_automata_rules_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\voxel_automata_functions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\automata_byte_import_export.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Menus\hcp_voxel_menu_functions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Functions\voxel_basic_functions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Functions\vw_voxel_exports.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Marching\voxel_hcp_marching_data.h" />
+    <ClInclude Include="source\VW\Editor\Import_Export\vw_import_export_parameters.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_parameters_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generation_basis_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generation_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\cart_to_hcp_voxel_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\DataTypes\dt_cart_to_voxel_generator.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_internal.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.h" />
+  </ItemGroup>
+</Project>

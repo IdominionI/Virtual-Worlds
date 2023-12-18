@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(WindowsTargetPlatformVersion)'==''">
+    <LatestTargetPlatformVersion>$([Microsoft.Build.Utilities.ToolLocationHelper]::GetLatestSDKTargetPlatformVersion('Windows', '10.0'))</LatestTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)' == ''">10.0</WindowsTargetPlatformVersion>
+    <TargetPlatformVersion>$(WindowsTargetPlatformVersion)</TargetPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7FD42DF7-442E-479A-BA76-D0022F99702A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Virtual_Worlds</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Build\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Intermediate\Obj\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Build\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\Intermediate\Obj\$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)\Build\%(RelativeDir)\$(Configuration)\</ObjectFileName>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Libs\assimp;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
+    </Link>
+    <PostBuildEvent />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);source;$(ProjectDir)Source\FrameWork;$(ProjectDir)Source\FrameWork\Kernels;$(ProjectDir)Source\FrameWork\Kernels\imgui-docking;$(ProjectDir)Source\FrameWork\Universal_FW</AdditionalIncludeDirectories>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ObjectFileName>$(IntDir)\Build\%(RelativeDir)\$(Configuration)\</ObjectFileName>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <AdditionalDependencies>assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Libs\assimp;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
+    </Link>
+    <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>for /d %%f in ("$(OF_ROOT)\libs\*") do (if exist "%%f\lib\vs\$(Platform_Actual)\*.dll" (robocopy "%%f\lib\vs\$(Platform_Actual)" "$(SolutionDir)Build\$(ProjectName)\$(Platform)\$(Configuration)" "*.dll" /njs /njh /np /fp /bytes ))
+if errorlevel 1 exit 0 else exit %errorlevel%</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_internal.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Automata\automata_bye_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Automata\voxel_automata_functions.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Menus\hcp_voxel_menu_functions.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generation_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_automata_rules_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_automata_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\cart_to_hcp_voxel_node.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_automata_node.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui_demo.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui_draw.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui_tables.cpp" />
+    <ClCompile Include="source\FrameWork\Kernels\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\ImNodes\Kernal\graph.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_group.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_group.h" />
+    <ClCompile Include="source\FrameWork\Universal_FW\tinyFileDialog\tinyfiledialogs.c" />
+    <ClCompile Include="source\FrameWork\VW_framework\3D\vw_camera.cpp" />
+    <ClCompile Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\FrameWork\VW_framework\3D\vw_camera_base.cpp" />
+    <ClCompile Include="source\VW\Editor\Main_Window\Widgets\scene_node_editor_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generator_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generation_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generator_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_parameters_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shaders_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shader_variables_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Kernal\voxel_function_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_node.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Render\voxel_hcp_render.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="icon.rc">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/D_DEBUG %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_internal.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.h" />
+    <ClInclude Include="source\VW\Editor\Import_Export\vw_import_export_parameters.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\automata_byte_import_export.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\voxel_automata_functions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Menus\hcp_voxel_menu_functions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generation_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_automata_rules_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_automata_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_parameters_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generation_basis_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Functions\voxel_basic_functions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Functions\vw_voxel_exports.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Marching\voxel_hcp_marching_data.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\cart_to_hcp_voxel_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_automata_node.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl2.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imconfig.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imgui.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imgui_internal.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imstb_rectpack.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imstb_textedit.h" />
+    <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imstb_truetype.h" />
+    <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\ImGui_utils.h" />
+    <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\menus.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\graph.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\links.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_editor.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_editor_parameters.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_functions.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_parameters.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\pins.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_link.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Kernal\FWfile_tools.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Kernal\id_key_manager.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Kernal\FWstring_tools.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\tinyFileDialog\tinyfiledialogs.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\3D\vw_camera.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Compute\compute_shader.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Compute\import_compute_expression_code.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Geometry\vw_mesh_geometry.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Geometry\vw_mesh_geometry_primitives.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Node_editor\node_editor_basis.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Node_editor\node_editor_category_manager.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Node_editor\node_editor_definitions.h" />
+    <ClInclude Include="source\VW\Editor\Node_Editor\node_editor_extras.h" />
+    <ClInclude Include="source\VW\Editor\Node_Editor\node_editor_functions.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Object\vw_object_base.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_object_categories.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_components.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_format.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_manager.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_parameters.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Widgets\parameter_widget_base.h" />
+    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_gui.h" />
+    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_node_editor.h" />
+    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_render.h" />
+    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_template.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Geometry\vw_point_cloud.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\GL\opengl_defines.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\GL\vw_shader_constructor.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Types\vw_type_definitions.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\App\global.h" />
+    <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\imgui_custom.h" />
+    <ClInclude Include="source\VW\Editor\Interface\IconsFontAwesome.h" />
+    <ClInclude Include="source\VW\Editor\Interface\imgui_custom_definitions.h" />
+    <ClInclude Include="source\VW\Editor\Interface\theme.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\main_window.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Panels\log_panel.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Panels\node_editor_panel.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Panels\parameter_panel.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\imgui_widgets.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\log_widget.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\vw_scene.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_cameras.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_entities_manager.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_lights.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\3D\vw_camera_base.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\scene_node_editor_widget.h" />
+    <ClInclude Include="source\VW\Editor\Node_Editor\node_editor_import_export.h" />
+    <ClInclude Include="source\VW\Editor\Shader\shader_import_export.h" />
+    <ClInclude Include="source\VW\Editor\Tools\dialogs.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Compute\voxel_compute_generation.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generator_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generation_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generator_variables_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generator_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_parameters_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shaders_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shader_variables_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Kernal\voxel_function_import_export.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_node_definitions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\DataTypes\dt_cart_to_voxel_generator.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\DataTypes\dt_voxel_automata.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\DataTypes\dt_voxel_generator.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\parameters.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\voxel_data_storage.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\voxel_hcp_object.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Scene\voxel_hcp_scene_objects.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Render\voxel_hcp_render.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="icon.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
