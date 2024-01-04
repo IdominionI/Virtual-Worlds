@@ -3,9 +3,9 @@
 //#include <VW_framework/Scene/scene_entities_manager.h>
 #include <VW_framework/Scene/vw_scene.h>
 
-#include "log_panel.h"
+#include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
 
-#include "../Widgets/imgui_widgets.h"
+#include "log_panel.h"
 
 #include "../Widgets/scene_node_editor_widget.h"
 

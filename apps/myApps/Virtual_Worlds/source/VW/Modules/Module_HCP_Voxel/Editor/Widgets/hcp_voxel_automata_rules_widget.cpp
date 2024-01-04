@@ -2,7 +2,7 @@
 
 #include <imgui-docking/imgui.h>
 #include <VW_framework/Types/vw_type_definitions.h>
-#include <VW/Editor/Main_Window/Widgets/imgui_widgets.h>
+#include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
 
 bool hcp_automata_rules_widget_class::rules_manager(std::vector<voxel_hcp_automata_byte_rule_struct_type>& automata_rules) {
 	bool  value_changed = false;

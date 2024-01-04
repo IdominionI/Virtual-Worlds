@@ -3,7 +3,7 @@
 #include "ofMain.h"
 
 #include "../Interface/theme.h"
-#include "../Interface/IconsFontAwesome.h"
+#include <Universal_FW/Interface/IconsFontAwesome.h>
 
 #include <VW_framework/App/global.h> // Must be placed here above all other includes
 
@@ -16,10 +16,10 @@
 
 #include "Panels/node_editor_panel.h"
 
+#include "Panels/animation_timeline_panel.h"
+
 #include <VW_framework/Scene/vw_scene.h>
 // !!!!!!!!!!!!!! testing !!!!!!!!!!!!!!!!!!!!
-// Final test
-
 #include <FrameWork/VW_framework/Geometry/vw_point_cloud.h>
 
 #include <FrameWork/VW_framework/Geometry/vw_mesh_geometry.h>
@@ -28,9 +28,6 @@
 #include <FrameWork/VW_framework/GL/vw_shader_Constructor.h>
 
 #include <VW_framework/Shader/shader.h>
-
-//#include <Universal_FW/im-neo-sequencer/imgui_neo_sequencer.h>
-
 // ++++++++++++++++++++++++++++++++++
 
 #include <VW/Modules/Module_HCP_Voxel/Object/voxel_hcp_object.h>
@@ -214,53 +211,15 @@ public:
 
         parameter_panel.show();
         node_editor_panel.show();
-
-        // **** Timeline test ****
-/*
-        if (ImGui::BeginNeoSequencer("Sequencer", &currentFrame, &startFrame, &endFrame, { 0, 0 },
-            ImGuiNeoSequencerFlags_EnableSelection |
-            ImGuiNeoSequencerFlags_Selection_EnableDragging |
-            ImGuiNeoSequencerFlags_Selection_EnableDeletion))
-        {
-            if (ImGui::BeginNeoGroup("Transform", &transformOpen))
-            {
-
-                if (ImGui::BeginNeoTimelineEx("Position"))
-                {
-                    for (auto&& v : keys)
-                    {
-                        ImGui::NeoKeyframe(&v);
-                        // Per keyframe code here
-                    }
-
-
-                    if (doDelete)
-                    {
-                        uint32_t count = ImGui::GetNeoKeyframeSelectionSize();
-
-                        ImGui::FrameIndexType* toRemove = new ImGui::FrameIndexType[count];
-
-                        ImGui::GetNeoKeyframeSelection(toRemove);
-
-                        //Delete keyframes from your structure
-                    }
-                    ImGui::EndNeoTimeLine();
-                }
-                ImGui::EndNeoGroup();
-            }
-
-            ImGui::EndNeoSequencer();
-        }
-*/
-        // *****************
+        animation_timeline_panel.show();
 
         //parameter_panel.show(selected_node);
 
         // Following uncommented when investigating ImGui widget examples
-        //ImGui::Begin;
-        //bool show_demo_window = true;
-        //ImGui::ShowDemoWindow(&show_demo_window);
-        //ImGui::End;
+        ImGui::Begin;
+        bool show_demo_window = true;
+        ImGui::ShowDemoWindow(&show_demo_window);
+        ImGui::End;
         // ----------------------------------
         // !!!!!!! TESTING !!!!!!!!!!!!!!!!
         if (!shaders_loaded) return;
@@ -875,16 +834,9 @@ private:
     scene_entities_manager_class *scene_manager = NULL;
 
     // UI components
-    log_panel_class       *log_panel;
-    parameter_panel_class  parameter_panel;
+    log_panel_class               *log_panel;
+    parameter_panel_class          parameter_panel;
+    node_editor_panel_class        node_editor_panel;
+    animation_timeline_panel_class animation_timeline_panel;
 
-    node_editor_panel_class node_editor_panel;
-
-    // Timeline vars
-    //int32_t currentFrame = 0;
-    //int32_t startFrame = -10;
-    //int32_t endFrame = 64;
-    //bool transformOpen = true;
-    //std::vector<ImGui::FrameIndexType> keys = { 0, 10, 24 };
-    //bool doDelete = true;
 };

@@ -2,9 +2,9 @@
 
 #include <FrameWork/Kernels/imgui-docking/imgui.h>
 
-#include <VW/Editor/Interface/IconsFontAwesome.h>
+#include <Universal_FW/Interface/IconsFontAwesome.h>
 
-#include <VW/Editor/Main_Window/Widgets/imgui_widgets.h>
+#include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
 #include <VW/Editor/Tools/dialogs.h>
 #include <VW/Editor/Main_Window/Panels/log_panel.h>
 

@@ -3,7 +3,7 @@
 #include <imgui-docking/imgui.h>
 
 #include <VW_framework/Types/vw_type_definitions.h>
-#include <VW/Editor/Main_Window/Widgets/imgui_widgets.h>
+#include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
 
 #include "../../Object/DataTypes/dt_voxel_generator.h"
 

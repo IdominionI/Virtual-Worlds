@@ -110,6 +110,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
   <ItemGroup>
     <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_internal.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Timeline\timeline_interval.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Automata\automata_bye_import_export.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Automata\voxel_automata_functions.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Menus\hcp_voxel_menu_functions.cpp" />
@@ -145,6 +146,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Kernal\voxel_function_import_export.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_node.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Render\voxel_hcp_render.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Timeline\timeline.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
@@ -160,7 +162,11 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
   <ItemGroup>
     <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_internal.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_interval.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_parameters.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_tracks.h" />
     <ClInclude Include="source\VW\Editor\Import_Export\vw_import_export_parameters.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Panels\animation_timeline_panel.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\automata_byte_import_export.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\voxel_automata_functions.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Menus\hcp_voxel_menu_functions.h" />
@@ -228,14 +234,14 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\FrameWork\VW_framework\Types\vw_type_definitions.h" />
     <ClInclude Include="source\FrameWork\VW_framework\App\global.h" />
     <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\imgui_custom.h" />
-    <ClInclude Include="source\VW\Editor\Interface\IconsFontAwesome.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\IconsFontAwesome.h" />
     <ClInclude Include="source\VW\Editor\Interface\imgui_custom_definitions.h" />
     <ClInclude Include="source\VW\Editor\Interface\theme.h" />
     <ClInclude Include="source\VW\Editor\Main_Window\main_window.h" />
     <ClInclude Include="source\VW\Editor\Main_Window\Panels\log_panel.h" />
     <ClInclude Include="source\VW\Editor\Main_Window\Panels\node_editor_panel.h" />
     <ClInclude Include="source\VW\Editor\Main_Window\Panels\parameter_panel.h" />
-    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\imgui_widgets.h" />
+    <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\imgui_widgets.h" />
     <ClInclude Include="source\VW\Editor\Main_Window\Widgets\log_widget.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Scene\vw_scene.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_cameras.h" />
@@ -265,6 +271,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Object\voxel_hcp_object.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Scene\voxel_hcp_scene_objects.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Render\voxel_hcp_render.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>

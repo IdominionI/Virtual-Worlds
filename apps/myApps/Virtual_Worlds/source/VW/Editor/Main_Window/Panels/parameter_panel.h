@@ -1,11 +1,12 @@
 #pragma once
 
-#include <Kernels/imgui-docking/imgui.h>
-
-#include "../Widgets/imgui_widgets.h"
-#include "../Widgets/parameters_widget.h"
+#include <FrameWork/Kernels/imgui-docking/imgui.h>
+#include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
 
 #include <VW_framework/Scene/scene_entities_manager.h>
+
+#include "../Widgets/parameters_widget.h"
+
 /*
 							PARAMETER PANEL
 
