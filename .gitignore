@@ -65,3 +65,7 @@ apps/myApps/Virtual_Worlds/source/FrameWork/Universal_FW/im-neo-sequencer/imgui_
 apps/myApps/Virtual_Worlds/source/FrameWork/Universal_FW/im-neo-sequencer/imgui_neo_internal.h
 apps/myApps/Virtual_Worlds/source/FrameWork/Universal_FW/im-neo-sequencer/imgui_neo_sequencer.cpp
 apps/myApps/Virtual_Worlds/source/FrameWork/Universal_FW/im-neo-sequencer/imgui_neo_sequencer.h
+apps/myApps/Virtual_Worlds/source/FrameWork/Universal_FW/im-neo-sequencer/imgui_neo_internal.cpp
+apps/myApps/Virtual_Worlds/source/FrameWork/Universal_FW/im-neo-sequencer/imgui_neo_internal.h
+apps/myApps/Virtual_Worlds/source/FrameWork/Universal_FW/im-neo-sequencer/imgui_neo_sequencer.cpp
+apps/myApps/Virtual_Worlds/source/FrameWork/Universal_FW/im-neo-sequencer/imgui_neo_sequencer.h
