@@ -164,5 +164,8 @@
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_interval.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_parameters.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_tracks.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Animation\animation.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\hcp_voxel_animation.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\hcp_voxel_automata_animation.h" />
   </ItemGroup>
 </Project>

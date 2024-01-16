@@ -12,6 +12,9 @@
 #include "../Object/voxel_hcp_object.h"
 #include "../Editor/Widgets/hcp_voxel_automata_widget.h"
 
+
+#include "../Animation/hcp_voxel_automata_animation.h" // +++++++++++
+
 class hcp_voxel_automata_node_class : public node_basis_class {
 public:
 
@@ -23,18 +26,19 @@ public:
 
     std::vector<voxel_hcp_automata_byte_rule_struct_type> voxel_hcp_automata_byte_rules;
 
+    // ++++++++++++++++++++++
+    hcp_voxel_automata_animation_object_class *hcp_animation_object = nullptr;
+    voxel_hcp_object_class                    *get_voxel_hcp_object_to_execute();
+    unsigned int                               timeline_interval_track_id = UINT_MAX;
+    // future added tracks id variables go here
+    // ++++++++++++++++++++++
+
     // node_basis_class functions
     bool define_node(ImVec2 click_pos, node_id_type entity_id_);
     bool define_import_node(ImVec2 click_pos, node_id_type entity_id_, void* node_misc_data = NULL);
 
     void delete_node_entity() {
-        //delete node_hcp_object;
-        //globalc::set_current_selected_data_context_id(INVALID_ID);
-        //globalc::set_current_selected_entity_id(INVALID_ID);
-        //globalc::set_current_selected_entity_category_type_id(INVALID_ID);
-        //globalc::set_current_selected_entity_type_id(INVALID_ID);
-
-        //globalc::set_current_selected_node(nullptr);
+        delete_hcp_automata_timeline_link();
     }
 
     bool define_inputs(pins_class& pins) {// This probably will not be needed but kept just in case
@@ -73,6 +77,10 @@ public:
         return true;
     }
 
+    // +++++++++++++++++++
+    bool create_hcp_automata_timeline_link();
+    void delete_hcp_automata_timeline_link();
+    // +++++++++++++++++++
 
     void editor_menu_options();
 

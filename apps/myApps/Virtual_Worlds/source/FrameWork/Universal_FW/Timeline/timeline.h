@@ -32,14 +32,5 @@ public:
 private :
 	bool timeline_integer_slider_widget(const char* label, ImGuiDataType data_type, void* p_data, const void* p_min, const void* p_max, const char* format, ImGuiSliderFlags flags);
 
-	bool animation_play         = false;
-	bool animation_paused       = false;
-	bool animation_reverse_play = false;
-	bool animation_stopped      = false;
-	bool animation_repeat		= false;
-	bool animation_record		= false;
-
-    float current_frame_scroll = 0.5f;
 
 };
-

@@ -10,25 +10,25 @@
 */
 
 struct voxel_generator_parameter_variable_struct_type {
-	std::string variable_name    = "float_var";
-	float   value                = 0.0f;
-	float   variable_step        = 1.0f;
-	bool    active_variable      = false;
+	std::string variable_name = "float_var";
+	float   value = 0.0f;
+	float   variable_step = 1.0f;
+	bool    active_variable = false;
 	bool    active_variable_step = false;
 };
 
 struct voxel_generator_parameter_int_variable_struct_type {
-	std::string variable_name    = "int_var";
-	int     value                = 0;
-	int     variable_step        = 0;
-	bool    active_variable      = false;
+	std::string variable_name = "int_var";
+	int     value = 0;
+	int     variable_step = 0;
+	bool    active_variable = false;
 	bool    active_variable_step = false;
 };
 
 struct voxel_generator_parameter_bool_variable_struct_type {
 	std::string variable_name = "bool_var";
-	bool    value             = false;
-	bool    active_variable   = false;
+	bool    value = false;
+	bool    active_variable = false;
 };
 
 struct voxel_generator_function_variable_struct_type {
@@ -43,7 +43,7 @@ struct voxel_generator_function_variable_struct_type {
 
 struct voxel_generator_display_struct_type {
 	bool  display_as_points = false;
-	float voxel_scale       = 1000.0;
+	float voxel_scale = 1000.0;
 	float min_scale_value = 1.0, max_scale_value = 1000.0;
 };
 
@@ -51,15 +51,15 @@ struct voxel_generator_parameters_struct_type {
 	voxel_generator_display_struct_type generator_display_data;
 
 	std::string  expression_file_pathname = "";
-	std::string  expression_file_name     = "...";
+	std::string  expression_file_name = "...";
 
 	float	 x_start = -1.0f, x_end = 1.0f;
 	float	 y_start = -1.0f, y_end = 1.0f;
 	float	 z_start = -1.0f, z_end = 1.0f;
-	float	 resolution_step      = 1.0f;
+	float	 resolution_step = 1.0f;
 	float	 generation_threshold = 0.1f;
 	float    e_time = 0.0f;// , c_time = 0.0f;
-	int    frame  = 0;
+	int    frame = 0;
 	//float    frame  = 0.0f;
 
 	int   invocation = 256;// this value may need to be changed to a maximum value
@@ -71,6 +71,21 @@ struct voxel_generator_parameters_struct_type {
 	std::vector<voxel_generator_parameter_int_variable_struct_type>  int_variables;
 	std::vector<voxel_generator_parameter_bool_variable_struct_type> bool_variables;
 
+	void update_variables_value_increment(int frame_increment) {
+		for (voxel_generator_parameter_variable_struct_type variable : variables) {
+			if (variable.active_variable && variable.active_variable_step) {
+					variable.value += variable.variable_step * float(frame_increment);
+			}
+		}
+
+		for (voxel_generator_parameter_int_variable_struct_type int_variable : int_variables) {
+			if (int_variable.active_variable && int_variable.active_variable_step) {
+				int_variable.value += int_variable.variable_step * frame_increment;
+			}
+		}
+	}
+
+	// float type variables functions
 
 	int get_variable_index(std::string variable_name) {
 		int i = -1;
@@ -98,12 +113,16 @@ struct voxel_generator_parameters_struct_type {
 	}
 
 	float get_variable_value(std::string variable_name) {
-		for (voxel_generator_parameter_variable_struct_type variable: variables) {
+		for (voxel_generator_parameter_variable_struct_type variable : variables) {
 			if (variable.variable_name == variable_name) {
 				return variable.value;
 			}
 		}
 		return NAN;
 	}
+
+
+
+	// same functions as above needed for integer variables
 
 };

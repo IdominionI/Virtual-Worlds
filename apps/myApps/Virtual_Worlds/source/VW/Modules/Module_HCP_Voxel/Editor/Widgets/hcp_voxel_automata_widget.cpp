@@ -123,7 +123,6 @@ void voxel_hcp_automata_widget_class::save_automata_rules() {
 		return;
 	}
 	else
-		//printf("save_generation_parameters != NULL %s \n", file_pathname);
 		printf("save_automata_rules != NULL  \n");
 
 	import_export_byte_automata_rules.byte_automata_rules = *voxel_hcp_automata_byte_rules;
@@ -145,7 +144,6 @@ void voxel_hcp_automata_widget_class::load_automata_rules() {
 		return;
 	}
 	else
-		//printf("save_generation_parameters != NULL %s \n", file_pathname);
 		printf("load_automata_rules != NULL  \n");
 
 	import_export_byte_automata_rules.import_hcp_automata_byte_rules(*voxel_hcp_automata_byte_rules, file_pathname);
@@ -209,7 +207,7 @@ bool voxel_hcp_automata_widget_class::setup_play() {
 }
 
 void voxel_hcp_automata_widget_class::next_step_voxel_automata_no_thread() {
-//printf("INFO", "next_step_voxel_automata 00");
+//printf("INFO next_step_voxel_automata 00");
 /*
 	if (current_selected_entity_id < 0) {
 		if (log_panel != NULL) log_panel->application_log.AddLog("ERROR", "next_step_voxel_automata_no_thread():: No voxel hcp object specified to execute");
@@ -219,6 +217,7 @@ void voxel_hcp_automata_widget_class::next_step_voxel_automata_no_thread() {
 
 	if (!voxel_hcp_object_to_execute) {
 		if (log_panel != NULL) log_panel->application_log.AddLog("ERROR", "next_step_voxel_automata_no_thread():: No voxel hcp object specified to execute");
+//printf("ERROR", "next_step_voxel_automata_no_thread():: No voxel hcp object specified to execute\n");
 		return;
 	}
 
@@ -234,12 +233,12 @@ void voxel_hcp_automata_widget_class::next_step_voxel_automata_no_thread() {
 	voxel_automata_hcp_functions.voxel_hcp_object_to_execute = voxel_hcp_object_to_execute;
 	voxel_automata_hcp_functions.cloud                       = voxel_hcp_object_to_execute;
 	voxel_automata_hcp_functions.voxel_hcp_automata_rules    = *voxel_hcp_automata_byte_rules;
-//printf("next_step_voxel_automata 02 : ");
+//printf("next_step_voxel_automata 02 : \n");
 
 	// following is to update the progress bar
 	int max_step_value = voxel_automata_hcp_functions.get_max_voxel_automata_step_value();
 
-//printf("next_step_voxel_automata 03 : %i ",max_step_value);
+//printf("next_step_voxel_automata 03 : %i \n",max_step_value);
 
 	number_automata_steps = max_step_value;
 

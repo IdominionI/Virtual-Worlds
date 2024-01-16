@@ -17,9 +17,7 @@ bool timeline_int_interval_class::timeline_int_interval_track(float widget_width
 
     ImGui::ItemSize({ widget_width,2.0 });// Offers some padding at the top : delete if found to cause problems or not needed
 
-    bool value_changed = false;
-
-    ImVec2 sc_pos = ImGui::GetCursorScreenPos();
+    sc_pos = ImGui::GetCursorScreenPos();
 
     //Draw label
     ImGui::Text(label.c_str());
@@ -28,17 +26,51 @@ bool timeline_int_interval_class::timeline_int_interval_track(float widget_width
     // Draw frame
     ImGui::RenderFrame({ sc_pos.x+68 ,sc_pos.y - 10.0f }, { sc_pos.x + widget_width + 68.0f, sc_pos.y + 23.0f }, IM_COL32(25, 25, 25, 255), true, g.Style.FrameRounding);
 
-    int   no_frames = timeline_data.zoom_end_frame - timeline_data.zoom_start_frame;
-    
+   
+    no_frames = timeline_data.number_displayed_frames();
 
-    float frames_per_pixel = float(no_frames) / widget_width;
-    float pixels_per_frame = 1.0f / frames_per_pixel;
+    frames_per_pixel = float(no_frames) / widget_width;
+    pixels_per_frame = 1.0f / frames_per_pixel;
+
+    // for future multiple intervals per track capability
+    // modify current perform_interval_behavior and have within it
+    // float min_button_pos = interval.interval_min_frame;
+    // float max_button_pos = interval.interval_max_frame;
+    // and other assignments as neccessary
+    //for (timeline_interval_data_struct interval: intervals) {
+    //    bool value_changed = perform_interval_behavior(window, widget_width, timeline_data, interval);
+    //}
+
+    bool value_changed = perform_interval_behavior(window, widget_width, timeline_data);
+
+    // +++++++++++++++++
+    if (value_changed) {
+        if (animation_object && animation_object->intervals.size() > 0) {
+            animation_object->intervals[0].frame_interval.first  = timeline_interval_min_frame;
+            animation_object->intervals[0].frame_interval.second = timeline_interval_max_frame;
+        }
+    }
+    // +++++++++++++++++
+
+ //   IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | (temp_input_allowed ? ImGuiItemStatusFlags_Inputable : 0));
+    return value_changed;
+}
+
+// This function is only valid for the case of a single action interval for one track
+// Goal is to have the ability to have multiple intervals per track which brings in multiple
+// issues of preventing overlap and editing of splitting/merging and adding new intervals via
+// menu or hotkeys etc. Future feature that is not required at this time.
+bool timeline_int_interval_class::perform_interval_behavior(ImGuiWindow* window,
+								                            float widget_width,
+								                            int_timeline_parameter_data_struct_type timeline_data){
+    bool value_changed = false;
+
     float min_button_pos = 0.0f;
     float max_button_pos = 0.0f;
 //std::cout << "animation_timeline_panel_class:: after screen pos : " << sc_pos.x << ":" << sc_pos.y << ":" << window->Pos.y << std::endl;
 
     // Perform interval minimum widget behaviour
-    if (timeline_interval_min_frame >= timeline_data.zoom_start_frame && timeline_interval_min_frame <= timeline_data.zoom_end_frame) {
+    if (timeline_data.inside_timeline_range(timeline_interval_min_frame)) {
         float min_frame_percentage = float(timeline_interval_min_frame - timeline_data.zoom_start_frame) / float(no_frames);
         min_button_pos = min_frame_percentage * widget_width + 68;
 
@@ -77,6 +109,8 @@ bool timeline_int_interval_class::timeline_int_interval_track(float widget_width
                         }
                     }
                 }
+
+                timeline_interval_min_frame = current_min_frame;
 //std::cout << "animation_timeline_panel_class::new_SliderScalar : Min 111 " << current_min_frame << ":" << current_min_button_pos << ":" << ":" << std::endl;
             }
             else {
@@ -92,9 +126,9 @@ bool timeline_int_interval_class::timeline_int_interval_track(float widget_width
         }
     }
 
-    //if(timeline_data.inside_timeline_display_range(timeline_interval_min_frame)) ImGui::SameLine();// Need this to have buttons on the same Y cursor location
+    if(!timeline_data.inside_timeline_display_range(timeline_interval_min_frame)) ImGui::SameLine();// Need this to have buttons on the same Y cursor location
     // Perform interval maximum widget behaviour
-    if (timeline_interval_max_frame >= timeline_data.zoom_start_frame && timeline_interval_max_frame <= timeline_data.zoom_end_frame) {
+    if (timeline_data.inside_timeline_range(timeline_interval_max_frame)) {
         if(timeline_data.inside_timeline_display_range(timeline_interval_min_frame)) ImGui::SameLine();// Need this to have buttons on the same Y cursor location
         float max_frame_percentage = float(timeline_interval_max_frame - timeline_data.zoom_start_frame) / float(no_frames);
         max_button_pos = max_frame_percentage * widget_width + 68;
@@ -140,6 +174,7 @@ bool timeline_int_interval_class::timeline_int_interval_track(float widget_width
                         }
                     }
                 }
+                timeline_interval_max_frame = current_max_frame;
 //std::cout << "animation_timeline_panel_class::new_SliderScalar : 111 " << current_max_frame << ":" << current_max_button_pos << ":" << ":" << std::endl;
             }else{
                max_button_initial = false;
@@ -154,40 +189,26 @@ bool timeline_int_interval_class::timeline_int_interval_track(float widget_width
         }
     }
 
-    
+    draw_timeline_interval(window, widget_width, timeline_data, min_button_pos, max_button_pos);
+
+    return value_changed;
+}
 
 
-    //*********
-/*
-    if (value_changed) {
-        ImGui::MarkItemEdited(id);
-
-        int   no_frames = timeline_data.zoom_end_frame - timeline_data.zoom_start_frame;
-        float frame_percentage = 1.0f / float(no_frames);
-
-        float slider_value = *(float*)p_data;
-
-//std::cout << "animation_timeline_panel_class::new_SliderScalar : 1111 " << no_frames << ":" << frame_percentage << ":" << slider_value << ":" << std::endl;
-        if (timeline_data.zoom_start_frame + int(slider_value / frame_percentage) < timeline_interval_min_frame) {
-            slider_value = float(timeline_interval_min_frame- timeline_data.zoom_start_frame)*frame_percentage;
-        }
-
-        timeline_interval_max_frame = timeline_data.zoom_start_frame + int(slider_value / frame_percentage);
-    }
-*/
-
-    // Render grab
-    // Only render a grab widget rectangle if the current frame lies within the current zoom range
+void timeline_int_interval_class::draw_timeline_interval(ImGuiWindow* window, 
+                                                         float widget_width,
+                                                         int_timeline_parameter_data_struct_type timeline_data,
+                                                         float min_button_pos,float max_button_pos) {
     float min_interval_frame_draw = -1.0f;
     float max_interval_frame_draw = -1.0f;
 
-    if(interval_in_display_range(timeline_data))
+    if (interval_in_display_range(timeline_data))
     {
         if (timeline_data.inside_timeline_display_range(timeline_interval_min_frame))
             min_interval_frame_draw = min_button_pos;
         else
             if (timeline_data.below_timeline_display_range(timeline_interval_min_frame))
-                min_interval_frame_draw = 0.0 +68.0f;
+                min_interval_frame_draw = 0.0 + 68.0f;
 
         if (timeline_data.inside_timeline_display_range(timeline_interval_max_frame))
             max_interval_frame_draw = max_button_pos;
@@ -210,21 +231,7 @@ bool timeline_int_interval_class::timeline_int_interval_track(float widget_width
 
         window->DrawList->AddLine(cf_p1, cf_p2, IM_COL32(0, 255, 0, 255), 1.0f);
 
-    } else
-        ImGui::SetCursorScreenPos({ sc_pos.x,sc_pos.y + 20.0f }); // Need this to ensure any following ImGui widgets do not over lay on this one
-
-    // Display value using user-provided display format so user can add prefix/suffix/decorations to the value.
-/*    if (display_int_slider_value) {
-        char value_buf[64];
-        const char* value_buf_end = value_buf + ImGui::DataTypeFormatString(value_buf, IM_ARRAYSIZE(value_buf), data_type, p_data, format);
-        if (g.LogEnabled)
-            ImGui::LogSetNextTextDecoration("{", "}");
-        ImGui::RenderTextClipped(frame_bb.Min, frame_bb.Max, value_buf, value_buf_end, NULL, ImVec2(0.5f, 0.5f));
-
-        if (label_size.x > 0.0f)
-            ImGui::RenderText(ImVec2(frame_bb.Max.x + style.ItemInnerSpacing.x, frame_bb.Min.y + style.FramePadding.y), label);
     }
-*/
- //   IMGUI_TEST_ENGINE_ITEM_INFO(id, label, g.LastItemData.StatusFlags | (temp_input_allowed ? ImGuiItemStatusFlags_Inputable : 0));
-    return value_changed;
+    else
+        ImGui::SetCursorScreenPos({ sc_pos.x,sc_pos.y + 20.0f }); // Need this to ensure any following ImGui widgets do not over lay on this one and are aligned properly : Critiacal !!!
 }

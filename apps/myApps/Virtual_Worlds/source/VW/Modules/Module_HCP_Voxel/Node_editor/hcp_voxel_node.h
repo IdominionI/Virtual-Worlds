@@ -2,6 +2,7 @@
 // Mandatory for all VW node editor nodes
 #include <Universal_FW/ImNodes/Kernal/node.h>
 
+
 #include <VW_framework/Scene/vw_scene.h>
 
 #include <VW/Editor/Main_Window/Panels/log_panel.h>
@@ -12,6 +13,8 @@
 #include "hcp_voxel_node_definitions.h"
 #include "../Object/voxel_hcp_object.h"
 #include "../Editor/Menus/hcp_voxel_menu_functions.h"
+
+#include "../Animation/hcp_voxel_animation.h" // +++++++++++
 
 class hcp_voxel_node_class : public node_basis_class {
 public:
@@ -24,6 +27,12 @@ public:
 
     //Unique class that node class is related to
     voxel_hcp_object_class *hcp_voxel = nullptr;
+
+    // ++++++++++++++++++++++
+    hcp_animation_object_class *hcp_animation_object = nullptr;
+    unsigned int                timeline_interval_track_id = UINT_MAX;
+    // future added track id varables go here
+    // ++++++++++++++++++++++
 
     // node_basis_class functions
     bool define_node(ImVec2 click_pos,node_id_type entity_id_);
@@ -66,6 +75,11 @@ public:
     }
 
     bool create_hcp_voxel();
+    // +++++++++++++++++++
+    bool create_hcp_timeline_link();
+    void delete_hcp_timeline_link();
+    // +++++++++++++++++++
+
     void delete_node_entity();
 
     void editor_menu_options();

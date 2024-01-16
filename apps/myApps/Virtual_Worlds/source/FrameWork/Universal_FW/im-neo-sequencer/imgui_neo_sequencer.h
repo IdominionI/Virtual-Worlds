@@ -1,12 +1,16 @@
+#pragma once
+
 //
 // Created by Matty on 2022-01-28.
 //
 
-#ifndef IMGUI_NEO_SEQUENCER_H
-#define IMGUI_NEO_SEQUENCER_H
+#include <vector>
 
 #include "imgui.h"
-#include <vector>
+
+#include "imgui_neo_internal.h"
+
+typedef int32_t FrameIndexType;
 
 typedef int ImGuiNeoSequencerFlags;
 typedef int ImGuiNeoSequencerCol;
@@ -26,6 +30,8 @@ enum ImGuiNeoSequencerFlags_
     // Selection options, only work with enable selection flag
     ImGuiNeoSequencerFlags_Selection_EnableDragging = 1 << 5,
     ImGuiNeoSequencerFlags_Selection_EnableDeletion = 1 << 6,
+    
+    ImGuiNeoSequencerFlags_Enable_controls          = 1 << 7,
 
 };
 
@@ -96,60 +102,224 @@ struct ImGuiNeoSequencerStyle {
     ImGuiNeoSequencerStyle();
 };
 
-namespace ImGui {
-    typedef int32_t FrameIndexType;
+// Internal state, used for deletion of old keyframes.
+struct ImGuiNeoTimelineKeyframes
+{
+    ImGuiID TimelineID;
+    ImVector<int32_t> KeyframesToDelete;
+};
 
-    IMGUI_API const ImVec4& GetStyleNeoSequencerColorVec4(ImGuiNeoSequencerCol idx);
-    IMGUI_API ImGuiNeoSequencerStyle& GetNeoSequencerStyle();
+// Internal struct holding how many times was keyframe on certain frame rendered, used as offset for duplicates
+struct ImGuiNeoKeyframeDuplicate
+{
+    int32_t Frame;
+    uint32_t Count;
+};
 
-    IMGUI_API void PushNeoSequencerStyleColor(ImGuiNeoSequencerCol idx, ImU32 col);
-    IMGUI_API void PushNeoSequencerStyleColor(ImGuiNeoSequencerCol idx, const ImVec4& col);
-    IMGUI_API void PopNeoSequencerStyleColor(int count = 1);
+enum class SelectionState
+{
+    Idle, // Doing nothing related
+    Selecting,  // Selecting selection
+    Dragging    // Dragging selection
+};
 
-    IMGUI_API bool BeginNeoSequencer(const char* id, FrameIndexType * frame, FrameIndexType * startFrame, FrameIndexType * endFrame,const ImVec2& size = ImVec2(0, 0),ImGuiNeoSequencerFlags flags = ImGuiNeoSequencerFlags_None);
-    IMGUI_API void EndNeoSequencer(); //Call only when BeginNeoSequencer() returns true!!
+struct ImGuiNeoSequencerInternalData
+{
+    float header_display_offset = 0.0f;  // y Offset from top of window to allow additional widgets or graphics to be displayed above sequencer main body.
+    float frame_display_padding = 50.0f; // x Padding of frame display from edge of window. To allow display of end frame 
 
-    IMGUI_API bool BeginNeoGroup(const char* label, bool* open = nullptr);
-    IMGUI_API void EndNeoGroup();
+    ImVec2 TopLeftCursor = { 0, 0 };   // Cursor on top of whole widget
+    ImVec2 TopBarStartCursor = { 0, 0 }; // Cursor on top, below Zoom slider
+    ImVec2 StartValuesCursor = { 0, 0 }; // Cursor on top of values
+    ImVec2 ValuesCursor = { 0, 0 }; // Current cursor position, used for values drawing
 
-    IMGUI_API bool BeginNeoTimeline(const char* label,FrameIndexType ** keyframes, uint32_t keyframeCount, bool * open = nullptr, ImGuiNeoTimelineFlags flags = ImGuiNeoTimelineFlags_None);
-    IMGUI_API void EndNeoTimeLine(); //Call only when BeginNeoTimeline() returns true!!
+    ImVec2 Size = { 0, 0 }; // Size of whole sequencer
+    ImVec2 TopBarSize = { 0, 0 }; // Size of top bar without Zoom
+
+    FrameIndexType StartFrame = 0;
+    FrameIndexType EndFrame = 0;
+    FrameIndexType OffsetFrame = 0; // Offset from start
+
+    //float ValuesWidth = 32.0f; // Width of biggest label in timeline, used for offset of timeline
+    float ValuesWidth = 48.0f; // Width of biggest label in timeline, used for offset of timeline
+
+    float FilledHeight = 0.0f; // Height of whole sequencer
+
+    float Zoom = 1.0f;
+
+    ImGuiID Id;
+
+    ImGuiID LastSelectedTimeline = 0;
+    ImGuiID SelectedTimeline = 0;
+    bool LastTimelineOpenned = false;
+
+    ImVector<ImGuiID> TimelineStack;
+    ImVector<ImGuiID> GroupStack;
+
+    FrameIndexType CurrentFrame = 0;
+    bool HoldingCurrentFrame = false; // Are we draging current frame?
+    ImVec4 CurrentFrameColor; // Color of current frame, we have to save it because we render on EndNeoSequencer, but process at BeginneoSequencer
+
+    bool HoldingZoomSlider = false;
+
+    //Selection
+    ImVector<ImGuiID> Selection; // Contains ids of keyframes
+    ImVec2 SelectionMouseStart = { 0, 0 };
+    SelectionState StateOfSelection = SelectionState::Idle;
+    ImVec2 DraggingMouseStart = { 0, 0 };
+    bool StartDragging = true;
+    ImVector<int32_t> DraggingSelectionStart; // Contains start values of all selection elements
+    bool DraggingEnabled = true;
+    bool SelectionEnabled = true;
+    bool IsSelectionRightClicked = false;
+
+    //Last keyframe data
+    bool IsLastKeyframeHovered = false;
+    bool IsLastKeyframeSelected = false;
+    bool IsLastKeyframeRightClicked = false;
+
+    //Deletion
+    bool DeleteDataDirty = false;
+    bool DeleteEnabled = true;
+    ImVector<ImGuiNeoTimelineKeyframes> SelectionData;
+};
+
+ImGuiNeoSequencerStyle::ImGuiNeoSequencerStyle()
+{
+    Colors[ImGuiNeoSequencerCol_Bg] = ImVec4{0.31f, 0.31f, 0.31f, 1.00f};
+    Colors[ImGuiNeoSequencerCol_TopBarBg] = ImVec4{0.22f, 0.22f, 0.22f, 0.84f};
+    Colors[ImGuiNeoSequencerCol_SelectedTimeline] = ImVec4{0.98f, 0.706f, 0.322f, 0.88f};
+    Colors[ImGuiNeoSequencerCol_TimelinesBg] = Colors[ImGuiNeoSequencerCol_TopBarBg];
+    Colors[ImGuiNeoSequencerCol_TimelineBorder] = Colors[ImGuiNeoSequencerCol_Bg] * ImVec4{0.5f, 0.5f, 0.5f, 1.0f};
+
+    Colors[ImGuiNeoSequencerCol_FramePointer] = ImVec4{0.98f, 0.24f, 0.24f, 0.50f};
+    Colors[ImGuiNeoSequencerCol_FramePointerHovered] = ImVec4{0.98f, 0.15f, 0.15f, 1.00f};
+    Colors[ImGuiNeoSequencerCol_FramePointerPressed] = ImVec4{0.98f, 0.08f, 0.08f, 1.00f};
+
+    Colors[ImGuiNeoSequencerCol_Keyframe] = ImVec4{0.59f, 0.59f, 0.59f, 0.50f};
+    Colors[ImGuiNeoSequencerCol_KeyframeHovered] = ImVec4{0.98f, 0.39f, 0.36f, 1.00f};
+    Colors[ImGuiNeoSequencerCol_KeyframePressed] = ImVec4{0.98f, 0.39f, 0.36f, 1.00f};
+    Colors[ImGuiNeoSequencerCol_KeyframeSelected] = ImVec4{0.32f, 0.23f, 0.98f, 1.00f};
+
+    Colors[ImGuiNeoSequencerCol_FramePointerLine] = ImVec4{0.98f, 0.98f, 0.98f, 0.8f};
+
+    Colors[ImGuiNeoSequencerCol_ZoomBarBg] = ImVec4{0.59f, 0.59f, 0.59f, 0.90f};
+    Colors[ImGuiNeoSequencerCol_ZoomBarSlider] = ImVec4{0.8f, 0.8f, 0.8f, 0.60f};
+    Colors[ImGuiNeoSequencerCol_ZoomBarSliderHovered] = ImVec4{0.98f, 0.98f, 0.98f, 0.80f};
+    Colors[ImGuiNeoSequencerCol_ZoomBarSliderEnds] = ImVec4{0.59f, 0.59f, 0.59f, 0.90f};
+    Colors[ImGuiNeoSequencerCol_ZoomBarSliderEndsHovered] = ImVec4{0.93f, 0.93f, 0.93f, 0.93f};
+
+    Colors[ImGuiNeoSequencerCol_SelectionBorder] = ImVec4{0.98f, 0.706f, 0.322f, 0.61f};
+    Colors[ImGuiNeoSequencerCol_Selection] = ImVec4{0.98f, 0.706f, 0.322f, 0.33f};
+
+}
+
+class neo_sequencer_class : public neo_sequencer_internal_class {
+public:
+    uint32_t idCounter = 0;
+    char idBuffer[16];
+
+
+    ImGuiNeoSequencerStyle style; // NOLINT(cert-err58-cpp)
+
+    //Global context stuff
+    bool inSequencer = false;
+
+    // Height of timeline right now
+    float currentTimelineHeight = 0.0f;
+
+    // Current active sequencer
+    ImGuiID currentSequencer;
+
+    // Current timeline depth, used for offset of label
+    uint32_t currentTimelineDepth = 0;
+
+    ImVector<ImGuiColorMod> sequencerColorStack;
+
+    // Data of all sequencers, this is main c++ part and I should create C alternative or use imgui ImVector or something
+    //std::unordered_map<ImGuiID, ImGuiNeoSequencerInternalData> sequencerData;
+    ImGuiNeoSequencerInternalData sequencerData;
+
+    ImVector<ImGuiNeoKeyframeDuplicate> keyframeDuplicates;
+
+    // ******
+    float  getPerFrameWidth(ImGuiNeoSequencerInternalData& context);
+    float  getKeyframePositionX(FrameIndexType frame, ImGuiNeoSequencerInternalData& context);
+    float  getWorkTimelineWidth(ImGuiNeoSequencerInternalData& context);
+    ImRect getCurrentFrameBB(FrameIndexType frame, ImGuiNeoSequencerInternalData& context);
+    void   processCurrentFrame(FrameIndexType* frame, ImGuiNeoSequencerInternalData& context);
+    void   finishPreviousTimeline(ImGuiNeoSequencerInternalData& context);
+    ImColor getKeyframeColor(ImGuiNeoSequencerInternalData& context, bool hovered, bool inSelection);
+    void   addKeyframeToDeleteData(int32_t value, ImGuiNeoSequencerInternalData& context, const ImGuiID timelineId);
+    bool   getKeyframeInSelection(int32_t value, ImGuiID id, ImGuiNeoSequencerInternalData& context, const ImRect bb);
+    ImGuiID getKeyframeID(int32_t* frame);
+    bool createKeyframe(int32_t* frame);
+    const char* generateID();
+    void        resetID();
+    void renderCurrentFrame(ImGuiNeoSequencerInternalData& context);
+    
+    float calculateZoomBarHeight();
+
+    void  processAndRenderZoom(ImGuiNeoSequencerInternalData& context, const ImVec2& cursor, bool allowEditingLength,
+                               FrameIndexType* start, FrameIndexType* end);
+    
+    void processSelection(ImGuiNeoSequencerInternalData& context);
+    void renderSelection(ImGuiNeoSequencerInternalData& context);
+    bool groupBehaviour(const ImGuiID id, bool* open, const ImVec2 labelSize);
+    bool timelineBehaviour(const ImGuiID id, const ImVec2 labelSize);
+
+
+    // ******
+
+    const ImVec4& GetStyleNeoSequencerColorVec4(ImGuiNeoSequencerCol idx);
+    ImGuiNeoSequencerStyle& GetNeoSequencerStyle();
+
+    void PushNeoSequencerStyleColor(ImGuiNeoSequencerCol idx, ImU32 col);
+    void PushNeoSequencerStyleColor(ImGuiNeoSequencerCol idx, const ImVec4& col);
+    void PopNeoSequencerStyleColor(int count = 1);
+
+    bool BeginNeoSequencer(const char* id, FrameIndexType* frame, FrameIndexType* startFrame, FrameIndexType* endFrame, const ImVec2& size = ImVec2(0, 0), ImGuiNeoSequencerFlags flags = ImGuiNeoSequencerFlags_None);
+    void EndNeoSequencer(); //Call only when BeginNeoSequencer() returns true!!
+
+    bool BeginNeoGroup(const char* label, bool* open = nullptr);
+    void EndNeoGroup();
+
+    bool BeginNeoTimeline(const char* label, FrameIndexType** keyframes, uint32_t keyframeCount, bool* open = nullptr, ImGuiNeoTimelineFlags flags = ImGuiNeoTimelineFlags_None);
+    void EndNeoTimeLine(); //Call only when BeginNeoTimeline() returns true!!
 
     // Fully customizable timeline with per key callback
-    IMGUI_API bool BeginNeoTimelineEx(const char* label, bool * open = nullptr, ImGuiNeoTimelineFlags flags = ImGuiNeoTimelineFlags_None);
-    IMGUI_API void NeoKeyframe(int32_t* value);
+    bool BeginNeoTimelineEx(const char* label, bool* open = nullptr, ImGuiNeoTimelineFlags flags = ImGuiNeoTimelineFlags_None);
+    void NeoKeyframe(int32_t* value);
 
-    IMGUI_API bool IsNeoKeyframeHovered();
-    IMGUI_API bool IsNeoKeyframeSelected();
-    IMGUI_API bool IsNeoKeyframeRightClicked();
+    bool IsNeoKeyframeHovered();
+    bool IsNeoKeyframeSelected();
+    bool IsNeoKeyframeRightClicked();
 
 
     // Selection API
     // DON'T delete keyframes while dragging, internal buffer will get corrupted
     // Order for deletion is generally:
     // CanDelete? -> DataSize? -> GetData() -> Delete your data -> ClearSelection()
-    IMGUI_API void NeoClearSelection(); // Clears selection
-    IMGUI_API bool NeoIsSelecting(); // Are we currently selecting?
-    IMGUI_API bool NeoHasSelection(); // Is anything selected?
-    IMGUI_API bool NeoIsDraggingSelection(); // Are we dragging selection?
-    IMGUI_API bool NeoCanDeleteSelection(); // Can selection deletion be done?
-    IMGUI_API bool IsNeoKeyframeSelectionRightClicked(); // Is selection rightclicked?
+    void NeoClearSelection(); // Clears selection
+    bool NeoIsSelecting(); // Are we currently selecting?
+    bool NeoHasSelection(); // Is anything selected?
+    bool NeoIsDraggingSelection(); // Are we dragging selection?
+    bool NeoCanDeleteSelection(); // Can selection deletion be done?
+    bool IsNeoKeyframeSelectionRightClicked(); // Is selection rightclicked?
 
     // Call only in BeginNeoTimeline / EndNeoTimeLine scope, returns selection per timeline and size per timeline
-    IMGUI_API uint32_t GetNeoKeyframeSelectionSize();
-    IMGUI_API void GetNeoKeyframeSelection(FrameIndexType  * selection);
+    uint32_t GetNeoKeyframeSelectionSize();
+    void GetNeoKeyframeSelection(FrameIndexType* selection);
 
 
     // Sets currently selected timeline inside BeginNeoSequencer scope
-    IMGUI_API void SetSelectedTimeline(const char* timelineLabel);
+    void SetSelectedTimeline(const char* timelineLabel);
 
-    IMGUI_API bool IsNeoTimelineSelected(ImGuiNeoTimelineIsSelectedFlags flags = ImGuiNeoTimelineIsSelectedFlags_None);
+    bool IsNeoTimelineSelected(ImGuiNeoTimelineIsSelectedFlags flags = ImGuiNeoTimelineIsSelectedFlags_None);
 
 #ifdef __cplusplus
     // C++ helper
-    IMGUI_API bool BeginNeoTimeline(const char* label,std::vector<int32_t> & keyframes ,bool * open = nullptr, ImGuiNeoTimelineFlags flags = ImGuiNeoTimelineFlags_None);
+    bool BeginNeoTimeline(const char* label, std::vector<int32_t>& keyframes, bool* open = nullptr, ImGuiNeoTimelineFlags flags = ImGuiNeoTimelineFlags_None);
 #endif
-}
 
-
-#endif //IMGUI_NEO_SEQUENCER_H
+};

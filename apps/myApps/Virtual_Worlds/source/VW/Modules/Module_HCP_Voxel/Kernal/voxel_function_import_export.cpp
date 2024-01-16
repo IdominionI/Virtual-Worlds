@@ -128,7 +128,7 @@
 		std::string line;
 
        line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 1111 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 1111 : " << line_number << ":" << lines[line_number] << std::endl;
         if (!FW::stringtools::contains(lines[line_number], BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
             //error message
             return false;
@@ -159,7 +159,7 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
 
         line_number++;
         line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 2222 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 2222 : " << line_number << ":" << lines[line_number] << std::endl;
         if (!FW::stringtools::contains(lines[line_number], FLOAT_BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
             //error message
             return false;
@@ -167,9 +167,9 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
 
         line_number++;
         line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 3333 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 3333 : " << line_number << ":" << lines[line_number] << std::endl;
         voxel_generator_parameter_variable_struct_type variable;
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 3333AAAA : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 3333AAAA : " << line_number << ":" << lines[line_number] << std::endl;
         while (!FW::stringtools::contains(lines[line_number], FLOAT_BLOCK_END)) {// Have not reached end of node pin data block
             variable.active_variable       = stoi(lines[line_number]);line_number++;
             line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
@@ -181,7 +181,7 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
             generator_parameters.variables.push_back(variable);
         }
 
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 4444 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 4444 : " << line_number << ":" << lines[line_number] << std::endl;
         if (!FW::stringtools::contains(lines[line_number], FLOAT_BLOCK_END)) { // There msut allways be at least two nodes. The input and output link nodes
             //error message
             return false;
@@ -189,7 +189,7 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
 
         line_number++;
         line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-        std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 5555 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 5555 : " << line_number << ":" << lines[line_number] << std::endl;
         if (!FW::stringtools::contains(lines[line_number], INT_BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
             //error message
             return false;
@@ -197,7 +197,7 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
 
         line_number++;
         line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 6666 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 6666 : " << line_number << ":" << lines[line_number] << std::endl;
         voxel_generator_parameter_int_variable_struct_type int_variable;
         while (!FW::stringtools::contains(lines[line_number], INT_BLOCK_END)) {// Have not reached end of node pin data block
             int_variable.active_variable       = stoi(lines[line_number]);line_number++;
@@ -210,7 +210,7 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
             generator_parameters.int_variables.push_back(int_variable);
         }
 
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 7777 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 7777 : " << line_number << ":" << lines[line_number] << std::endl;
         if (!FW::stringtools::contains(lines[line_number], INT_BLOCK_END)) { // There msut allways be at least two nodes. The input and output link nodes
             //error message
             return false;
@@ -218,7 +218,7 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
 
         line_number++;
         line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 8888 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 8888 : " << line_number << ":" << lines[line_number] << std::endl;
         if (!FW::stringtools::contains(lines[line_number], BOOL_BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
             //error message
             return false;
@@ -226,7 +226,7 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
 
         line_number++;
         line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 9999 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 9999 : " << line_number << ":" << lines[line_number] << std::endl;
         voxel_generator_parameter_bool_variable_struct_type bool_variable;
         while (!FW::stringtools::contains(lines[line_number], BOOL_BLOCK_END)) {// Have not reached end of node pin data block
             int_variable.active_variable       = stoi(lines[line_number]);line_number++;
@@ -237,7 +237,7 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
             generator_parameters.bool_variables.push_back(bool_variable);
         }
 
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters AAAA : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters AAAA : " << line_number << ":" << lines[line_number] << std::endl;
         if (!FW::stringtools::contains(lines[line_number], BOOL_BLOCK_END)) { // There msut allways be at least two nodes. The input and output link nodes
             //error message
             return false;
@@ -245,7 +245,7 @@ std::cout << "voxel_function_import_export_class: read_expression_into_voxel_gen
 
         line_number++;
         line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters BBBB : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters BBBB : " << line_number << ":" << lines[line_number] << std::endl;
         if (!FW::stringtools::contains(lines[line_number], BLOCK_END)) { // There msut allways be at least two nodes. The input and output link nodes
             //error message
             return false;

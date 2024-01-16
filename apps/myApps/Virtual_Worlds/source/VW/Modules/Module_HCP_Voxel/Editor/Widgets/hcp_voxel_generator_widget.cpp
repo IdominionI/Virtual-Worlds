@@ -122,34 +122,36 @@
 
 	}
 
-	void voxel_hcp_generation_widget_class::perform_decrement_variables() {
-//printf("perform_decrement_variables button clicked\n");// replace with decrement step
+	void voxel_hcp_generation_widget_class::perform_decrement_variables(float frame_interval) {
+//printf("perform_decrement_variables button clicked\n");
 		for (voxel_generator_parameter_variable_struct_type &variable : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.variables) {
-			if (variable.active_variable_step) variable.value -= variable.variable_step;
+//std::cout << "voxel_hcp_generation_widget_class::perform_decrement_variables : DDDDD 00000 : " << frame_interval << ":" << variable.value << ":" << variable.variable_step << ":"<<std::endl;
+			if (variable.active_variable_step) variable.value -= variable.variable_step * frame_interval;
+//std::cout << "voxel_hcp_generation_widget_class::perform_decrement_variables : DDDDD 00000 : " << frame_interval << ":" << variable.value << ":" << variable.variable_step << ":"<<std::endl;
 		}
 
 		for (voxel_generator_parameter_int_variable_struct_type &int_variable : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.int_variables) {
-			if (int_variable.active_variable_step) int_variable.value -= int_variable.variable_step;
+			if (int_variable.active_variable_step) int_variable.value -= int(float(int_variable.variable_step) * frame_interval);
 		}
 
 		execute_voxel_function();
 	}
 
-	void voxel_hcp_generation_widget_class::perform_increment_variables() {
-//printf("perform_increment_variables button clicked\n");// replace with decrement step
+	void voxel_hcp_generation_widget_class::perform_increment_variables(float frame_interval) {
+//printf("perform_increment_variables button clicked\n");
 		for (voxel_generator_parameter_variable_struct_type &variable : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.variables) {
-			if (variable.active_variable_step) variable.value += variable.variable_step; 
+			if (variable.active_variable_step) variable.value += variable.variable_step * frame_interval;
 		}
 
 		for (voxel_generator_parameter_int_variable_struct_type &int_variable : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.int_variables) {
-			if (int_variable.active_variable_step) int_variable.value += int_variable.variable_step;
+			if (int_variable.active_variable_step) int_variable.value += int(float(int_variable.variable_step) * frame_interval);
 		}
 
 		execute_voxel_function();
 	}
 
 	void voxel_hcp_generation_widget_class::execute_voxel_function(bool notification) {
-//printf("Execute Function button clicked\n");
+std::cout <<"Execute Function button clicked\n";
 
 		//####### GET  OBJECT DATA THAT HAS PARAMETER DATA AND UPDATE #######
 
@@ -168,7 +170,7 @@
 		}
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function 1111\n");
 		define_voxel_generation_parameters(); // Only need to define invocation values
-//editor_logging_panel.add_log_message("INFO","Execute Buttton 111 : " + voxel_generation_item.current_selected_component_name);
+//printf("INFO","Execute Buttton 111 : \n");
 		// set voxel_generation object id to execute funtion data on
 		
 		//voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters = voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters;

@@ -3,6 +3,8 @@
 #include <FrameWork/Kernels/imgui-docking/imgui.h>
 #include <FrameWork/Kernels/imgui-docking/imgui_internal.h>
 
+
+
 struct int_timeline_parameter_data_struct_type {
 	float zoom             = 5.0f;
 	int zoom_current_frame = 8;// Initial value must be same as start frame
@@ -45,8 +47,21 @@ struct int_timeline_parameter_data_struct_type {
 	bool above_timeline_range(int frame) {
 		return (frame > end_frame);
 	}
+
+	int number_displayed_frames() {
+		return zoom_end_frame - zoom_start_frame;
+	}
+
+	int total_frames() {
+		return end_frame - start_frame;
+	}
 };
 
+// At the moment this is set up only for a single interval track
+// In future need to cater for multiple intervals per track
+// ie have std::vector<int_timeline_parameter_data_struct_type> 
+// as parmater passed to functions in place of 
+// int_timeline_parameter_data_struct_type
 class timeline_track_basis_class {
 public:
 	int track_id = 0;

@@ -7,6 +7,12 @@
 #include "../Functions/vw_voxel_exports.h"
 #include "../Editor/Widgets/hcp_voxel_parameters_widget.h"
 
+
+// +++++++++++++++++
+#include <Universal_FW/Timeline/timeline_tracks.h>
+
+// +++++++++++++++++
+
 bool hcp_voxel_node_class::define_node(ImVec2 click_pos, node_id_type entity_id_) {
     node_dimensions = { 60.0f,5.0f };
 
@@ -20,12 +26,19 @@ bool hcp_voxel_node_class::define_node(ImVec2 click_pos, node_id_type entity_id_
     ui_node_type.node_data_context = ENTITY_DATA_CONTEXT;
 
 
-    std::cout << "hcp_voxel_node_class :: define_node 111  : " << std::endl;
+std::cout << "hcp_voxel_node_class :: define_node 111  : " << std::endl;
 
     if (!create_hcp_voxel()) {
         return false;
     }
-    std::cout << "hcp_voxel_node_class :: define_node 222  : " << std::endl;
+std::cout << "hcp_voxel_node_class :: define_node 222  : " << std::endl;
+
+// +++++++++++++++++++
+//    if (!create_hcp_animation_link()) {
+//        return false;
+//    }
+//std::cout << "hcp_voxel_node_class :: define_node 222  : " << std::endl;
+// ++++++++++++++++++++
 
     node_entity_id          = hcp_voxel->id;
     node_entity_category_id = hcp_voxel->object_category_id;
@@ -102,7 +115,7 @@ std::cout << "hcp_voxel_node_class:create_hcp_voxel :  object_category_id == -1 
 
     hcp_voxel->parameter_widget->log_panel = log_panel;
 
-    if (!vw_scene->scene_entities_manager.add_object(hcp_voxel, hcp_voxel->object_category_id))
+    if (!vw_scene->scene_entities_manager.add_object(hcp_voxel, hcp_voxel->object_category_id))// This is where hcp_voxel->id is defined
         return false;
 
     hcp_voxel->object_type_id = ENTITY_TYPE_OBJECT;
@@ -152,21 +165,97 @@ std::cout << "hcp_voxel_node_class:create_hcp_voxel: hcp_voxel Shader not create
     return true;
 }
 
+// ++++++++++++++++++++++++++++++
+bool hcp_voxel_node_class::create_hcp_timeline_link() {
+    hcp_animation_object = new hcp_animation_object_class;
+
+    if (!hcp_voxel || !hcp_animation_object) return false;
+
+    hcp_animation_object->voxel_hcp_object = hcp_voxel;
+    hcp_animation_object->log_panel        = log_panel;
+
+    if (!animation_timeline_tracks_widget->timeline_track_group_exists(node_id)) {
+//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 000 : !animation_timeline_tracks_widget->timeline_track_group_exists(node_id)\n";
+
+        int index = animation_timeline_tracks_widget->add_timeline_group(label, node_id);
+        if (index!= INVALID_ID && index < animation_timeline_tracks_widget->timeline_track_groups.size()) {
+//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 111: animation_timeline_tracks_widget->add_timeline_group(label, node_id) " << index << std::endl;
+
+            animation_timeline_tracks_widget->timeline_track_groups[index].animation_object = hcp_animation_object;
+            animation_timeline_tracks_widget->timeline_track_groups[index].data_type_id     = TIMELINE_OBJECT_DATA_TYPE_ID_VOXEL;
+
+            timeline_int_interval_class *group_track = new timeline_int_interval_class;
+            if (!group_track) {
+//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 333: !group_track\n";
+                animation_timeline_tracks_widget->delete_timeline_group(node_id);
+                return false;
+            }
+//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 444:\n";
+            timeline_interval_track_id = animation_timeline_tracks_widget->get_timeline_group_track_id();
+            group_track->track_id      = timeline_interval_track_id;
+            group_track->button_id_add = group_track->track_id;
+            group_track->label         = "hcp voxel";
+//std::cout << "hcp_voxel_node_class::create_hcp_animation_link group_track->button_id_add 555: " << group_track->button_id_add << std::endl;
+            animation_timeline_tracks_widget->timeline_track_groups[index].add_track(group_track);
+
+            // future added tracks go here
+
+//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 666:\n";
+        }
+    }
+    // *************************
+
+    return true;
+}
+// ++++++++++++++++++++++++++++++
+
 void  hcp_voxel_node_class::delete_node_entity() {
     if (!hcp_voxel || !vw_scene) return;
 //std::cout << "hcp_voxel_node_class:create_hcp_voxel: delete_node_entity : 0000" << std::endl;
+    delete_hcp_timeline_link();// +++++++
     vw_scene->scene_entities_manager.delete_object(node_entity_id, node_entity_category_id);
 //std::cout << "hcp_voxel_node_class:create_hcp_voxel: delete_node_entity : 1111" << std::endl;
    // delete hcp_voxel; // Not to be used as this is called by the process of vw_scene->scene_entities_manager.delete_object(node_entity_id, node_entity_category_id);
+   
+
 //std::cout << "hcp_voxel_node_class:create_hcp_voxel: delete_node_entity : 2222" << std::endl;
+}
+
+void  hcp_voxel_node_class::delete_hcp_timeline_link() {
+    animation_timeline_tracks_widget->delete_timeline_group(node_id);
+    delete hcp_animation_object;
+    hcp_animation_object       = nullptr;
+    timeline_interval_track_id = UINT_MAX;
+
+    // If have more tha one trck in a group 
+    // : delete track hcp_animation_object and initialise variables to unassigned values here
 }
 
 void hcp_voxel_node_class::editor_menu_options(){
     if (ImGui::BeginMenu("Voxel ... ###nvoxel")) {
-
-        if (ImGui::MenuItem("Define Surface points###nvfs")) {
+        std::string menu_text = "Define Surface points###nvfs" + std::to_string(node_id);
+        if (ImGui::MenuItem(menu_text.c_str())) {
             voxel_main_window_menu_functions.voxel_volume_to_voxel_surface(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
         }
+
+        // ++++++++++++++++
+        menu_text = "Add timeline track###nvfs" + std::to_string(node_id);
+        if (ImGui::MenuItem(menu_text.c_str())) {
+            if(hcp_animation_object == nullptr)
+                create_hcp_timeline_link();
+        }
+
+        menu_text = "Delete timeline group###nvfs" + std::to_string(node_id);
+        if (ImGui::MenuItem(menu_text.c_str())) {
+            delete_hcp_timeline_link();
+        }
+
+        // When more than one track in a group uncomment the following
+        //menu_text = "Delete animation track###nvfs" + std::to_string(node_id);
+        //if (ImGui::MenuItem(menu_text.c_str())) {
+        //    animation_timeline_tracks_widget->delete_timeline_group_track(node_id, timeline_interval_track_id);
+        //}
+        // ++++++++++++++++
 
         ImGui::EndMenu();
     }

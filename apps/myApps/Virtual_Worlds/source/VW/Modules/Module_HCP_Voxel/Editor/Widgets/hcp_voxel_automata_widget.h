@@ -1,8 +1,5 @@
 #pragma once
 
-//#include <Source/Editor/Main_Window/Panels/log_panel.h>
-//#include <Source/Editor/Scene/scene_manager.h>
-
 #include <VW/Editor/Main_Window/Panels/log_panel.h>
 #include <VW_framework/Scene/vw_scene.h>
 

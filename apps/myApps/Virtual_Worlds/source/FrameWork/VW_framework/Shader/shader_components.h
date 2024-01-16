@@ -7,6 +7,7 @@ struct material_basis_struct_type : public shader_format_class {
 	shader_db_manager_class shader_manager;
 
 	virtual void define_shader_uniforms() {};
+	virtual bool update_shader_variables_value_increment(int frame_increment) { return false; };
 	virtual bool update_shader_variables() { return false; };
 
 };
@@ -49,11 +50,29 @@ struct material_struct_type : public material_basis_struct_type {
 		//other shader uniform datatypes to be added here
 	}
 
+	bool update_shader_variables_value_increment(int frame_increment) {
+		if (!shader_program_id) return false;
+//printf("material_struct_type : update_shader_variables 1111 : \n");
+		for (shader_parameter_variable_struct_type variable : variables) {
+			if (variable.active_variable && variable.active_variable_step) {
+				variable.value += variable.variable_step * float(frame_increment);
+			}
+		}
+
+		for (shader_parameter_int_variable_struct_type int_variable : int_variables) {
+			if (int_variable.active_variable && int_variable.active_variable_step) {
+				int_variable.value += int_variable.variable_step * frame_increment;
+			}
+		}
+
+		return true;
+	}
+
 	bool update_shader_variables() {
-		//printf("material_struct_type : update_shader_variables 0000 : %i \n", shader_program_id);
+//printf("material_struct_type : update_shader_variables 0000 : %i \n", shader_program_id);
 
 		if (!shader_program_id) return false;
-		//printf("material_struct_type : update_shader_variables 1111 : \n");
+//printf("material_struct_type : update_shader_variables 1111 : \n");
 		for (shader_parameter_variable_struct_type variable : variables) {
 			shader_manager.shader.set_f1(shader_program_id, variable.value, variable.variable_name);
 		}

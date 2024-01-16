@@ -83,6 +83,13 @@ public:
         parameter_panel.log_panel     = log_panel;
         parameter_panel.scene_manager = scene_manager;
 
+        // ++++++++++++++
+        // Define a global pointer to the time line tracks widget whch is part of the timeline widget
+        // that can be referenced by any object to perform animations with 
+        timeline_class* animation_tracks = dynamic_cast<timeline_class*> (&animation_timeline_panel);
+        animation_timeline_tracks_widget = &animation_tracks->timeline_tracks_widget;
+        // ++++++++++++++
+
         scene_node_editor = new scene_node_editor_class;
         node_editor_panel.log_panel     = log_panel;
         node_editor_panel.vw_scene      = vw_scene; // May need to crete this as a new vw_scene_class
@@ -216,10 +223,10 @@ public:
         //parameter_panel.show(selected_node);
 
         // Following uncommented when investigating ImGui widget examples
-        ImGui::Begin;
-        bool show_demo_window = true;
-        ImGui::ShowDemoWindow(&show_demo_window);
-        ImGui::End;
+        //ImGui::Begin;
+        //bool show_demo_window = true;
+        //ImGui::ShowDemoWindow(&show_demo_window);
+        //ImGui::End;
         // ----------------------------------
         // !!!!!!! TESTING !!!!!!!!!!!!!!!!
         if (!shaders_loaded) return;

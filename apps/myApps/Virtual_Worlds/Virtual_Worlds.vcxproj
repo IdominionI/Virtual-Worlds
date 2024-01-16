@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -160,6 +160,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\FrameWork\Universal_FW\Animation\animation.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_internal.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_interval.h" />
@@ -167,6 +168,8 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_tracks.h" />
     <ClInclude Include="source\VW\Editor\Import_Export\vw_import_export_parameters.h" />
     <ClInclude Include="source\VW\Editor\Main_Window\Panels\animation_timeline_panel.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\hcp_voxel_animation.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\hcp_voxel_automata_animation.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\automata_byte_import_export.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\voxel_automata_functions.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Menus\hcp_voxel_menu_functions.h" />

@@ -38,13 +38,15 @@ public:
 
 
 	void display();
-	void perform_decrement_variables();
-	void perform_increment_variables();
+	void perform_decrement_variables(float frame_interval = 1.0f);
+	void perform_increment_variables(float frame_interval = 1.0f);
 	void execute_voxel_function(bool notification = true);
 	void initialise_parameters();
 	void initialise_invocation();
 	void test_voxel_cell_coord_from_cartesian(voxel_object_data_class voxel_object_data);
 
+
+	void load_generation_parameters();// testing only delete comment out when done
 private:
 	int invocation = 4;
 
@@ -57,7 +59,7 @@ private:
 	void define_voxel_generation_parameters();
 	void get_expression_file();
 	void save_generation_parameters();
-	void load_generation_parameters();
+	//void load_generation_parameters();// Uncomment when testing complete
 	void clear_variables();
 
 };
