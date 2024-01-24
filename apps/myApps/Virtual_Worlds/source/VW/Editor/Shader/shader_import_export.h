@@ -180,7 +180,7 @@ public:
 		std::string line;
 
 		if (!FW::stringtools::contains(lines[line_number], SHADER_BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
-			std::cout << "Import voxel  texture model ERROR : \n Could not find start block to import unser shader files.";
+			std::cout << "Import voxel  texture model ERROR : \n Could not find start block to import user shader files at line : " << line_number << " : " << lines[line_number] << std::endl;
 			return false;
 		}
 

@@ -21,7 +21,7 @@ public:
 //std::cout << "hcp_animation_object_class:setup_animation_data : in setup_animation_data\n";
 		//if (!voxel_hcp_object || !voxel_hcp_automata_byte_rules) {
 		if (!voxel_hcp_automata_widget) {
-std::cout << "hcp_voxel_automata_animation_object_class:setup_animation_data : !voxel_hcp_object\n";
+//std::cout << "hcp_voxel_automata_animation_object_class:setup_animation_data : !voxel_hcp_object\n";
 			return false;
 		}
 
@@ -42,8 +42,8 @@ std::cout << "hcp_voxel_automata_animation_object_class:setup_animation_data : !
 	}
 
 
-	void perform_animation_for_frame(int frame) {
-std::cout << "hcp_voxel_automata_animation_object_class:perform_animation_for_frame : in perform_animation_for_frame hcp_voxel_automata_animation_object_class\n";
+	void perform_animation_for_frame(int frame, int track) {
+//std::cout << "hcp_voxel_automata_animation_object_class:perform_animation_for_frame : in perform_animation_for_frame hcp_voxel_automata_animation_object_class\n";
 
 		if(!voxel_hcp_automata_widget) return ;
 

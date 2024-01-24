@@ -1,6 +1,6 @@
 //#version 450
 //#version 450 core
-#version 330 core
+#version 450 core
 
 // -------------- Shader Reserved Uniforms -------------------
 layout(points) in;

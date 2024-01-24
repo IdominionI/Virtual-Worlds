@@ -72,38 +72,20 @@ bool hcp_voxel_automata_node_class::create_hcp_automata_timeline_link() {
     // does not work and this pointer becomes a local variable that needs initialisation 
     hcp_animation_object->voxel_hcp_automata_widget = &voxel_hcp_automata_widget;
 
-
-    if (!animation_timeline_tracks_widget->timeline_track_group_exists(node_id)) { // Do not have this node hcp voxel  as a time line track object
+    // ================ define as a create timeline group function ===============
+    if (!animation_timeline_tracks_widget->timeline_track_group_exists(node_id)) {
 //std::cout << "hcp_voxel_node_class::create_hcp_animation_link 000 : !animation_timeline_tracks_widget->timeline_track_group_exists(node_id)\n";
-
-        int index = animation_timeline_tracks_widget->add_timeline_group(label, node_id);
-        if (index!= INVALID_ID && index < animation_timeline_tracks_widget->timeline_track_groups.size()) {
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 111: animation_timeline_tracks_widget->add_timeline_group(label, node_id) " << index << std::endl;
-
-            animation_timeline_tracks_widget->timeline_track_groups[index].animation_object = hcp_animation_object;
-            animation_timeline_tracks_widget->timeline_track_groups[index].data_type_id     = TIMELINE_OBJECT_DATA_TYPE_ID_VOXEL_AUTOMATA;
-
-            timeline_int_interval_class *group_track = new timeline_int_interval_class;
-            if (!group_track) {
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 333: !group_track\n";
+        int index = animation_timeline_tracks_widget->add_timeline_group(label, node_id, hcp_animation_object, TIMELINE_OBJECT_DATA_TYPE_ID_VOXEL_AUTOMATA);
+        if (index != INVALID_ID && index < animation_timeline_tracks_widget->timeline_track_groups.size()) {
+            
+            timeline_interval_track_id = animation_timeline_tracks_widget->timeline_track_groups[index].add_interval_track("hcp voxel\nAutomata");
+            if (timeline_interval_track_id == UINT_MAX) {
                 animation_timeline_tracks_widget->delete_timeline_group(node_id);
                 return false;
             }
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 444:\n";
-           
-            timeline_interval_track_id = animation_timeline_tracks_widget->get_timeline_group_track_id();
-            group_track->track_id      = timeline_interval_track_id;
-            group_track->button_id_add = group_track->track_id;
-            group_track->label         = "hcp voxel\nAutomata";
-//std::cout << "hcp_voxel_automata_node_class::create_hcp_animation_link group_track->button_id_add 555: " << group_track->button_id_add << std::endl;
-            animation_timeline_tracks_widget->timeline_track_groups[index].add_track(group_track);
-
-            // future added tracks go here
-
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 666:\n";
         }
     }
-    // *************************
+    // =====================================================
 
     return true;
 }

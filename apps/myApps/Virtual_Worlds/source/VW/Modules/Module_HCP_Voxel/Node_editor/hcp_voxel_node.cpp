@@ -7,11 +7,7 @@
 #include "../Functions/vw_voxel_exports.h"
 #include "../Editor/Widgets/hcp_voxel_parameters_widget.h"
 
-
-// +++++++++++++++++
 #include <Universal_FW/Timeline/timeline_tracks.h>
-
-// +++++++++++++++++
 
 bool hcp_voxel_node_class::define_node(ImVec2 click_pos, node_id_type entity_id_) {
     node_dimensions = { 60.0f,5.0f };
@@ -25,37 +21,32 @@ bool hcp_voxel_node_class::define_node(ImVec2 click_pos, node_id_type entity_id_
     ui_node_type.node_type         = NODE_TYPE_ID_HCP_VOXEL;
     ui_node_type.node_data_context = ENTITY_DATA_CONTEXT;
 
-
-std::cout << "hcp_voxel_node_class :: define_node 111  : " << std::endl;
+//std::cout << "hcp_voxel_node_class :: define_node 111  : " << std::endl;
 
     if (!create_hcp_voxel()) {
         return false;
     }
-std::cout << "hcp_voxel_node_class :: define_node 222  : " << std::endl;
-
-// +++++++++++++++++++
-//    if (!create_hcp_animation_link()) {
-//        return false;
-//    }
 //std::cout << "hcp_voxel_node_class :: define_node 222  : " << std::endl;
-// ++++++++++++++++++++
+
+    // !!! CRITICAL : MUST HAVE node_entity_id : node_entity_category_id : node_entity_type_id
+    // !!! DEFINED ELSE WILL NOT HAVE PARAMETER UI DISPLAYED
 
     node_entity_id          = hcp_voxel->id;
     node_entity_category_id = hcp_voxel->object_category_id;
     node_entity_type_id     = hcp_voxel->object_type_id;
 
     label = "HCP VOXEL " + std::to_string(hcp_voxel->id);
-    hcp_voxel->name = "HCP_VOXEL_" + std::to_string(hcp_voxel->id);;
+    hcp_voxel->name = "HCP_VOXEL_" + std::to_string(hcp_voxel->id);
 
-    node_header_color = ImColor(0, 139, 139, 255);
-    node_header_hovered_color = ImColor(0, 175, 175, 255);
+    node_header_color          = ImColor(0, 139, 139, 255);
+    node_header_hovered_color  = ImColor(0, 175, 175, 255);
     node_header_selected_color = ImColor(0, 255, 255, 255);
-    node_header_label_color = ImColor(255, 255, 255, 255);// ImGui does not have a color function that accepts its own ImColor type for textS
+    node_header_label_color    = ImColor(255, 255, 255, 255);// ImGui does not have a color function that accepts its own ImColor type for textS
 
-    node_body_color = ImColor(75, 75, 75, 255);
-    node_body_hovered_color = ImColor(100, 100, 100, 255);
+    node_body_color          = ImColor(75, 75, 75, 255);
+    node_body_hovered_color  = ImColor(100, 100, 100, 255);
     node_body_selected_color = ImColor(150, 150, 150, 255);
-    node_outline_color = ImColor(50, 50, 50, 255);
+    node_outline_color       = ImColor(50, 50, 50, 255);
 
     graph->node_editor->SetNodeScreenSpacePos(node_id, click_pos);
     return true;
@@ -96,10 +87,6 @@ if (!log_panel) { std::cout << "hcp_voxel_node_class:create_hcp_voxel 000AAAA ::
 
     hcp_voxel->log_panel = log_panel;
 
-std::cout << "hcp_voxel_node_class:create_hcp_voxel 111 \n";
-if(!vw_scene) { std::cout << "hcp_voxel_node_class:create_hcp_voxel 111AAAA :: vw_scene == nullptr \n"; return false; }
-if (!log_panel) { std::cout << "hcp_voxel_node_class:create_hcp_voxel 111AAAA :: log_panel == nullptr \n"; return false; }
-
     int object_category_id = vw_scene->scene_entities_manager.get_objects_category_index(SCENE_CATEGORY_HCP_VOXEL);
     if (object_category_id == -1){
 std::cout << "hcp_voxel_node_class:create_hcp_voxel :  object_category_id == -1 \n"; 
@@ -120,7 +107,6 @@ std::cout << "hcp_voxel_node_class:create_hcp_voxel :  object_category_id == -1 
 
     hcp_voxel->object_type_id = ENTITY_TYPE_OBJECT;
 
-   // if (vw_scene->scene_entities_manager.add_object(hcp_voxel, hcp_voxel->object_category_id)) {
 std::cout << "hcp_voxel_node_class:create_hcp_voxel :  vw_scene.scene_entities_manager.add_object : " << hcp_voxel->id << " : " << hcp_voxel->object_category_id << std::endl;
 
         hcp_voxel->define_initial_shader_program();
@@ -137,14 +123,13 @@ std::cout << "hcp_voxel_node_class:create_hcp_voxel: ofIsGLProgrammableRenderer(
             }
             else {
 std::cout << "hcp_voxel_node_class:create_hcp_voxel:!!!!ofIsGLProgrammableRenderer() : " << std::endl;
-                int i = vw_scene->scene_entities_manager.get_objects_category_index("HCP_Voxel");
+                int i = vw_scene->scene_entities_manager.get_objects_category_index("HCP_Voxel");// SCENE_CATEGORY_HCP_VOXEL does not work ?????
                 if (i > -1) {
                     vw_scene->scene_entities_manager.delete_object(hcp_voxel->id, vw_scene->scene_entities_manager.scene_objects[i].objects_category_id);
                 }
                 return false;
             }
 
-            //if (!shaders_loaded) {
             if (!hcp_voxel->geometry->shader->shader_compile_successful) {
 std::cout << "hcp_voxel_node_class:create_hcp_voxel: hcp_voxel Shaders not loaded !!!!! : " << std::endl;
 //std::string s = "jjjj\n";
@@ -161,11 +146,9 @@ std::cout << "hcp_voxel_node_class:create_hcp_voxel: hcp_voxel Shaders not loade
         else
 std::cout << "hcp_voxel_node_class:create_hcp_voxel: hcp_voxel Shader not created : " << std::endl;
 
-   //}
     return true;
 }
 
-// ++++++++++++++++++++++++++++++
 bool hcp_voxel_node_class::create_hcp_timeline_link() {
     hcp_animation_object = new hcp_animation_object_class;
 
@@ -174,40 +157,32 @@ bool hcp_voxel_node_class::create_hcp_timeline_link() {
     hcp_animation_object->voxel_hcp_object = hcp_voxel;
     hcp_animation_object->log_panel        = log_panel;
 
+
+    // ================ define as a create timeline group function ===============
     if (!animation_timeline_tracks_widget->timeline_track_group_exists(node_id)) {
 //std::cout << "hcp_voxel_node_class::create_hcp_animation_link 000 : !animation_timeline_tracks_widget->timeline_track_group_exists(node_id)\n";
-
-        int index = animation_timeline_tracks_widget->add_timeline_group(label, node_id);
-        if (index!= INVALID_ID && index < animation_timeline_tracks_widget->timeline_track_groups.size()) {
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 111: animation_timeline_tracks_widget->add_timeline_group(label, node_id) " << index << std::endl;
-
-            animation_timeline_tracks_widget->timeline_track_groups[index].animation_object = hcp_animation_object;
-            animation_timeline_tracks_widget->timeline_track_groups[index].data_type_id     = TIMELINE_OBJECT_DATA_TYPE_ID_VOXEL;
-
-            timeline_int_interval_class *group_track = new timeline_int_interval_class;
-            if (!group_track) {
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 333: !group_track\n";
+        int index = animation_timeline_tracks_widget->add_timeline_group(label, node_id, hcp_animation_object, TIMELINE_OBJECT_DATA_TYPE_ID_VOXEL);
+        if (index != INVALID_ID && index < animation_timeline_tracks_widget->timeline_track_groups.size()) {
+            
+            timeline_interval_track_id = animation_timeline_tracks_widget->timeline_track_groups[index].add_interval_track("hcp voxel");
+            if (timeline_interval_track_id == UINT_MAX) {
                 animation_timeline_tracks_widget->delete_timeline_group(node_id);
                 return false;
             }
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 444:\n";
-            timeline_interval_track_id = animation_timeline_tracks_widget->get_timeline_group_track_id();
-            group_track->track_id      = timeline_interval_track_id;
-            group_track->button_id_add = group_track->track_id;
-            group_track->label         = "hcp voxel";
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link group_track->button_id_add 555: " << group_track->button_id_add << std::endl;
-            animation_timeline_tracks_widget->timeline_track_groups[index].add_track(group_track);
+            hcp_animation_object->voxel_interval_track_id = timeline_interval_track_id;
 
-            // future added tracks go here
-
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 666:\n";
+            timeline_interval_track_id = animation_timeline_tracks_widget->timeline_track_groups[index].add_interval_track("shader");
+            if (timeline_interval_track_id == UINT_MAX) {
+                animation_timeline_tracks_widget->delete_timeline_group(node_id);
+                return false;
+            }
+            hcp_animation_object->voxel_shader_interval_track_id = timeline_interval_track_id;
         }
     }
-    // *************************
+    // =====================================================
 
     return true;
 }
-// ++++++++++++++++++++++++++++++
 
 void  hcp_voxel_node_class::delete_node_entity() {
     if (!hcp_voxel || !vw_scene) return;
@@ -227,51 +202,78 @@ void  hcp_voxel_node_class::delete_hcp_timeline_link() {
     hcp_animation_object       = nullptr;
     timeline_interval_track_id = UINT_MAX;
 
-    // If have more tha one trck in a group 
-    // : delete track hcp_animation_object and initialise variables to unassigned values here
+    // If have more than one group 
+    // : delete group animation object and initialise variables to unassigned values here
 }
 
 void hcp_voxel_node_class::editor_menu_options(){
-    if (ImGui::BeginMenu("Voxel ... ###nvoxel")) {
-        std::string menu_text = "Define Surface points###nvfs" + std::to_string(node_id);
+
+    std::string menu_text = "Voxel ... ###nvoxel" + std::to_string(node_id);
+    if (ImGui::BeginMenu(menu_text.c_str())) {
+        menu_text = "Define Surface points###nvfs" + std::to_string(node_id);
         if (ImGui::MenuItem(menu_text.c_str())) {
             voxel_main_window_menu_functions.voxel_volume_to_voxel_surface(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
         }
 
-        // ++++++++++++++++
-        menu_text = "Add timeline track###nvfs" + std::to_string(node_id);
+        ImGui::EndMenu();
+    }
+
+    menu_text = "Timeline ... ###nvtimeline" + std::to_string(node_id);
+    if (ImGui::BeginMenu(menu_text.c_str())) {
+
+        menu_text = "Add timeline tracks###nvfs" + std::to_string(node_id);
         if (ImGui::MenuItem(menu_text.c_str())) {
-            if(hcp_animation_object == nullptr)
+            if (hcp_animation_object == nullptr) // Mist have no existing animation timeline object linked to this node
                 create_hcp_timeline_link();
         }
 
-        menu_text = "Delete timeline group###nvfs" + std::to_string(node_id);
-        if (ImGui::MenuItem(menu_text.c_str())) {
-            delete_hcp_timeline_link();
-        }
+        menu_text = "Delete ... ###nvtracks" + std::to_string(node_id);
+        if (ImGui::BeginMenu(menu_text.c_str())) {
+            menu_text = "Delete timeline group###nvfs" + std::to_string(node_id);
+            if (ImGui::MenuItem(menu_text.c_str())) {
+                delete_hcp_timeline_link();
+            }
 
-        // When more than one track in a group uncomment the following
-        //menu_text = "Delete animation track###nvfs" + std::to_string(node_id);
-        //if (ImGui::MenuItem(menu_text.c_str())) {
-        //    animation_timeline_tracks_widget->delete_timeline_group_track(node_id, timeline_interval_track_id);
-        //}
-        // ++++++++++++++++
+            // When more than one track in a group uncomment the following
+            menu_text = "Delete generation track###nvfs" + std::to_string(node_id);
+            if (ImGui::MenuItem(menu_text.c_str())) {
+                if (hcp_animation_object) {// Must have a timeline animation object linked to this node
+                    animation_timeline_tracks_widget->delete_timeline_group_track(node_id, hcp_animation_object->voxel_interval_track_id);
+                    hcp_animation_object->voxel_interval_track_id = -1; 
+                }
+            }
+
+            menu_text = "Delete shader track###nvfs" + std::to_string(node_id);
+            if (ImGui::MenuItem(menu_text.c_str())) {
+                if (hcp_animation_object) {// Must have a timeline animation object linked to this node
+                    animation_timeline_tracks_widget->delete_timeline_group_track(node_id, hcp_animation_object->voxel_shader_interval_track_id);
+                    hcp_animation_object->voxel_shader_interval_track_id = -1;
+                }
+            }
+            ImGui::EndMenu();
+        }
 
         ImGui::EndMenu();
     }
 
-    if (ImGui::BeginMenu("Export ...###nexport")) {
-        if (ImGui::MenuItem("As Point Cloud###nvepc")) {
+    menu_text = "Export ...###nexport" + std::to_string(node_id);
+    if (ImGui::BeginMenu(menu_text.c_str())) {
+        if (hcp_voxel && vw_scene) { // Must have a defined voxel and a scene with voxel data in it.
+            menu_text = "As Point Cloud###nvepc" + std::to_string(node_id);
+            if (ImGui::MenuItem(menu_text.c_str())) {
 //std::cout << "hcp_voxel_node_class::editor_menu_options ^^^^^^^^ : " << vw_scene->scene_entities_manager.get_objects_of_category(SCENE_CATEGORY_HCP_VOXEL).category_objects.size() << ":" << globalc::get_current_selected_entity_id() << ":" << hcp_voxel->id << std::endl;
-            voxel_main_window_menu_functions.export_voxels_center_point_data(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
-        }
+                voxel_main_window_menu_functions.export_voxels_center_point_data(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
+            }
 
-        if (ImGui::MenuItem("As Point Surface###nveps")) {
-            voxel_main_window_menu_functions.export_voxels_point_surface_data(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
-        }
+            menu_text = "As Point Surface###nveps" + std::to_string(node_id);
+            if (ImGui::MenuItem(menu_text.c_str())) {
+                voxel_main_window_menu_functions.export_voxels_point_surface_data(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
+            }
 
-        if (ImGui::MenuItem("As Face Surface###nvefs")) {
-            voxel_main_window_menu_functions.export_voxels_surface_face_data(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
+            menu_text = "As Face Surface###nvefs" + std::to_string(node_id);
+            if (ImGui::MenuItem(menu_text.c_str())) {
+                voxel_main_window_menu_functions.export_voxels_surface_face_data(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
+            }
         }
         ImGui::EndMenu();
     }    

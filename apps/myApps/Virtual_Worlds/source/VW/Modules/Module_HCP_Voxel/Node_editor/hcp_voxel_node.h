@@ -14,7 +14,7 @@
 #include "../Object/voxel_hcp_object.h"
 #include "../Editor/Menus/hcp_voxel_menu_functions.h"
 
-#include "../Animation/hcp_voxel_animation.h" // +++++++++++
+#include "../Animation/hcp_voxel_animation.h"
 
 class hcp_voxel_node_class : public node_basis_class {
 public:
@@ -28,11 +28,8 @@ public:
     //Unique class that node class is related to
     voxel_hcp_object_class *hcp_voxel = nullptr;
 
-    // ++++++++++++++++++++++
     hcp_animation_object_class *hcp_animation_object = nullptr;
     unsigned int                timeline_interval_track_id = UINT_MAX;
-    // future added track id varables go here
-    // ++++++++++++++++++++++
 
     // node_basis_class functions
     bool define_node(ImVec2 click_pos,node_id_type entity_id_);
@@ -75,10 +72,9 @@ public:
     }
 
     bool create_hcp_voxel();
-    // +++++++++++++++++++
+
     bool create_hcp_timeline_link();
     void delete_hcp_timeline_link();
-    // +++++++++++++++++++
 
     void delete_node_entity();
 
@@ -89,7 +85,6 @@ public:
     // this voxel_hcp_parameters_widget instance, or the central one only
      
     bool define_ui();
-    //void display_ui(node_id_type current_selected_object_id = -1);
 
     void export_node(std::fstream &stream) {
         if (!hcp_voxel) {
@@ -106,7 +101,6 @@ public:
 
         export_node_pin_data(stream);// mandatory node export function that must be present in all graph node exports if have pins
     }
-
 
     void  export_hcp_voxel_node_parameter_data(std::fstream &stream) {
         voxel_function_import_export_class voxel_function_import_export;

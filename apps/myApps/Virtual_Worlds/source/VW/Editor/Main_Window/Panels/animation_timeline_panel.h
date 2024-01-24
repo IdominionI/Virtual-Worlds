@@ -2,7 +2,6 @@
 
 #include <Kernels/imgui-docking/imgui.h>
 
-//#include <Universal_FW/im-neo-sequencer/imgui_neo_sequencer.h>
 #include <Universal_FW/animation/animation.h>
 #include <Universal_FW/Timeline/timeline.h>
 
@@ -35,8 +34,6 @@ public:
     }
 
     void show() {
-        //timeline_data.zoom = 5.0f;// testing only 
-
         float x_pos = 0.0f, y_pos = 100.0f;
 
         ImGuiWindow* window = ImGui::GetCurrentWindow();
@@ -49,9 +46,6 @@ public:
 
         // Diaplsy frame range zoom slider 
         integer_input("###tlsf", timeline_data.start_frame, x_pos + 10, y_pos, timeline_data.input_box_size.x);
-        //ImGui::SliderFloat("scrollbar", &currentFramef, startFrame, endFrame,"%f",0);
-        //ImGui::SliderScalar("scrollbar0", ImGuiDataType_U32, &currentFrame, &startFrame, &endFrame, "%d", 0);
-        //new_SliderScalar("scrollbar", ImGuiDataType_Float, &currentFramef, &startFramef, &endFramef, "%f", 0);
 
         ImGui::SetCursorPosX(x_pos + 75);
         ImGui::SetCursorPosY(y_pos);
@@ -77,14 +71,10 @@ public:
             draw_timeline_frame_annotation();
         ImGui::EndChild();
 
-        // +++++++++++++++++++++
-        //ImGui::SetCursorPosX(x_pos + 75 - 7);
         ImGui::SetCursorPosX(5);
         timeline_tracks_widget.display_tracks(ImVec2(window->Size.x - 10, window->Size.y - 195), window->Size.x - timeline_data.window_x_space, timeline_data);
 
 		perforn_animation();
-
-        // +++++++++++++++++++++
 
         //ImGui::End;// Remove/comment out this if do not want dockable panel
 
@@ -178,7 +168,6 @@ public:
 //std::cout <<"animation_timeline_panel_class:perforn_animation 111 : animation play\n";
 				if (timeline_data.current_frame >= timeline_data.end_frame) {
 //std::cout <<"animation_timeline_panel_class:perforn_animation 222 urrent_animation_frame >= end_frame\n";
-					//if (restore_animation_on_completion && current_animation_frame >= end_frame) { // Restore initial conditions of animation
 					if (restore_animation_on_completion && !animation_repeat) { // Restore initial conditions of animation
 						restore_initial_frame_conditions();
 					} else {
@@ -317,7 +306,6 @@ public:
 
 	void setup_timeline_data() {
 		animation_settings.current_frame = timeline_data.current_frame;
-		//animation_settings.current_time  = timeline_data.;
 
 		animation_range.frame_interval.first  = timeline_data.start_frame;
 		animation_range.frame_interval.second = timeline_data.end_frame;
@@ -411,9 +399,6 @@ public:
 		if (!animation_range.frame_inside_interval(timeline_data.current_frame))  //current frame is outside defined timeline boundary
 			return false;
 
-		//if (!animation_range.frame_inside_interval(timeline_data.current_frame - timeline_data.frame_step_increment))//decremented frame is outside defined timeline boundary
-		//	timeline_data.current_frame = animation_range.time_interval.first;                                       // Assign decremented frame to min timeline boundary
-
 		animation_settings.animation_action = animation_action_enum::step_back;
 		animation_settings.frame_step       = timeline_data.frame_step_increment;
 		animation_settings.previous_frame   = timeline_data.current_frame;
@@ -432,7 +417,7 @@ public:
 	}
 
 	void restore_initial_frame_conditions() {
-std::cout << "animation_timeline_panel_class:restore_initial_frame_conditions 000 : restore_initial_frame_conditions\n";
+//std::cout << "animation_timeline_panel_class:restore_initial_frame_conditions 000 : restore_initial_frame_conditions\n";
 
 		stop_animation();
 		timeline_data.current_frame      = timeline_data.start_frame;
@@ -443,12 +428,11 @@ std::cout << "animation_timeline_panel_class:restore_initial_frame_conditions 00
 	}
 
 	void animate_current_frame(bool setup_frame) {
-std::cout << "animation_timeline_panel_class:animate_current_frame 000 : animate_current_frame\n";
+//std::cout << "animation_timeline_panel_class:animate_current_frame 000 : animate_current_frame\n";
 		if (animation_range.frame_inside_interval(animation_settings.current_frame)) {// current frame is inside the time range that is to be animated
-std::cout << "animation_timeline_panel_class:animate_current_frame 111 : frame_inside_interval\n";
-// +++++++++++++
+//std::cout << "animation_timeline_panel_class:animate_current_frame 111 : frame_inside_interval\n";
 			 for (timeline_track_group_class timeline_track_group : timeline_tracks_widget.timeline_track_groups) {
-std::cout << "animation_timeline_panel_class:animate_current_frame 222 : frame_inside_interval\n";
+//std::cout << "animation_timeline_panel_class:animate_current_frame 222 : frame_inside_interval\n";
 				 if (timeline_track_group.group_active()) {
 					 for (timeline_track_basis_class *timeline_track : timeline_track_group.timeline_tracks) {
 						if (timeline_track->track_active) {
@@ -458,7 +442,7 @@ std::cout << "animation_timeline_panel_class:animate_current_frame 222 : frame_i
 								//for (timeline_interval_data_struct<int> timeline_interval : timeline_int_interval->intervals) {
 								//	timeline_track_group.animation_object->perform_animation_for_frame(timeline_data.current_frame);
 								//}
-std::cout << "animation_timeline_panel_class:animate_current_frame 333 : frame_inside_interval\n";
+//std::cout << "animation_timeline_panel_class:animate_current_frame 333 : frame_inside_interval\n";
 
 								//if(timeline_int_interval->frame_in_interval(timeline_data.current_frame)){
 								if(timeline_int_interval->frame_in_interval(timeline_data.current_frame)){
@@ -467,56 +451,20 @@ std::cout << "animation_timeline_panel_class:animate_current_frame 333 : frame_i
 									else
 										timeline_track_group.animation_object->update_animation_data(animation_settings);
 								
-									timeline_track_group.animation_object->perform_animation_for_frame(timeline_data.current_frame);
+									timeline_track_group.animation_object->perform_animation_for_frame(timeline_data.current_frame, timeline_track->track_id);
 								}
 							}
 						}
 					 }
 				 }
              }
-// +++++++++++++
-			//for (animation_object_basis_class animation_object : animation_objects) {
-			//	if (animation_object.frame_is_in_active_interval(animation_settings.current_frame)) {
-			//		animation_object.perform_animation_for_frame(animation_settings.current_frame);
-			//	}
-			//}
 		}
-		//return false;
 	}
-
-	//virtual bool perform_frame_step() {
-		// 1 : get timeline parameter data for frame
-		// 2 : pass timeline parameter data to object animation function
-		// In object animation function
-		// 3 : perform test to see if object performs animation task for current frame
-		//     if have an animation task to perform
-		//		3A : set up object to perform animation task.
-		//		3B : perform animation task based upon object animation functions
-
-
-
-
-	//	return false;
-
-	//}
-
-
 
 	// ----------------------------------------------
 
 	// this is for time based animation 
-
-	//void  animate_current_time() {
-	//	if (animation_range.time_inside_interval(current_time)) {
-	//		return perform_time_step();
-	//	}
-	//	return false;
-	//}
-
-	virtual bool perform_time_step() { return false; }
-
-
-
+	//virtual bool perform_time_step() { return false; }
 
 
 private:
@@ -537,42 +485,3 @@ private:
 		}
 	}
 };
-
-/*
-    if (ImGui::BeginNeoSequencer("Sequencer", &currentFrame, &startFrame, &endFrame, {0, 0},
-                                 ImGuiNeoSequencerFlags_EnableSelection |
-                                 ImGuiNeoSequencerFlags_Selection_EnableDragging |
-                                 ImGuiNeoSequencerFlags_Selection_EnableDeletion))
-    {
-        if (ImGui::BeginNeoGroup("Transform", &transformOpen))
-        {
-
-            if (ImGui::BeginNeoTimelineEx("Position"))
-            {
-                for (auto&& v: keys)
-                {
-                    ImGui::NeoKeyframe(&v);
-                    // Per keyframe code here
-                }
-
-
-                if (doDelete)
-                {
-                    uint32_t count = ImGui::GetNeoKeyframeSelectionSize();
-
-                    ImGui::FrameIndexType * toRemove = new ImGui::FrameIndexType[count];
-
-                    ImGui::GetNeoKeyframeSelection(toRemove);
-
-                    //Delete keyframes from your structure
-                }
-                ImGui::EndNeoTimeLine();
-            }
-            ImGui::EndNeoGroup();
-        }
-
-        ImGui::EndNeoSequencer();
-    }
-
-
-*/

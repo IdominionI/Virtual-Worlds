@@ -15,6 +15,8 @@
 
 #include "../Editor/Widgets/cart_to_voxel_parameters_widget.h"
 
+#include "../Animation/cart_to_hcp_voxel_animation.h"
+
 class cart_to_hcp_voxel_node_class : public node_basis_class {
 public:
     
@@ -26,6 +28,9 @@ public:
 
     //Unique class that node class is related to
     voxel_hcp_object_class *hcp_voxel = nullptr;
+
+    cart_to_hcp_animation_object_class *hcp_animation_object       = nullptr;
+    unsigned int                        timeline_interval_track_id = UINT_MAX;
 
     // node_basis_class functions
     bool define_node(ImVec2 click_pos,node_id_type entity_id_);
@@ -68,6 +73,10 @@ public:
     }
 
     bool create_hcp_voxel();
+
+    bool create_hcp_timeline_link();
+    void delete_hcp_timeline_link();
+
     void delete_node_entity();
 
     void editor_menu_options();
@@ -149,7 +158,6 @@ public:
 
         voxel_function_import_export_class voxel_function_import_export;
         line_number++;
-        //return voxel_function_import_export.read_cart_to_voxel_parameter_data(lines, cart_to_parameters_widget->cart_to_voxel_widget.cart_to_voxel_widget.cart_to_hcp_voxel_generator_parameters, line_number);
 
         if (!voxel_function_import_export.read_cart_to_voxel_parameter_data(lines, cart_to_parameters_widget->cart_to_voxel_widget.cart_to_voxel_widget.cart_to_hcp_voxel_generator_parameters, line_number)) {
             std::cout << "ERROR : Corruption of file . Import failed.\n" << std::endl;
@@ -158,7 +166,6 @@ public:
         }
 
 //std::cout << "cart_to_hcp_voxel_node_class :: import_hcp_voxel_node_parameter_data : " << cart_to_parameters_widget->cart_to_voxel_widget.cart_to_voxel_widget.cart_to_hcp_voxel_generator_parameters.ply_file_pathname << std::endl;
-        //cart_to_parameters_widget->cart_to_voxel_widget.cart_to_voxel_widget.define_generatione_variables();
         return true;
     }
 

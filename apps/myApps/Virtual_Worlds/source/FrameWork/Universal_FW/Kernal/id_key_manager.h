@@ -13,6 +13,8 @@
 // A template is used just to make things easier : initial values and datatype assumes 
 // unsigned integer is the data type for T
 
+#define INVALID_ID_KEY UINT_MAX
+
 template <class T>
 class id_key_manager_class {
 public:
@@ -84,6 +86,8 @@ private:
 
 //  Management of a negative id key type where new key ids are a decrement of the currently
 //  newest used negative id key
+
+#define INVALID_NEG_ID_KEY 0
 
 class neg_id_key_manager_class {
 public:

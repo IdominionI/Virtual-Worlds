@@ -118,7 +118,7 @@ public:
         import_export_byte_automata_rules_class import_export_byte_automata_rules;
         line_number++;
 
-        std::cout << "hcp_voxel_automata_node_class::import_hcp_voxel_automata_rules <------ : " << line_number << ":" << lines[line_number] << std::endl;
+std::cout << "hcp_voxel_automata_node_class::import_hcp_voxel_automata_rules <------ : " << line_number << ":" << lines[line_number] << std::endl;
         return import_export_byte_automata_rules.read_automata_byte_rules_into_byte_rules_parameters(lines, voxel_hcp_automata_byte_rules, line_number);
     }
 

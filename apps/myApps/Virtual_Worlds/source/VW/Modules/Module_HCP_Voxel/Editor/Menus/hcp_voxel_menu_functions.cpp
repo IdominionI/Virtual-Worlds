@@ -17,7 +17,7 @@
             return;
         }
 
-        voxel_object_data_class    voxel_object_surface_data;
+        //voxel_object_data_class    voxel_object_surface_data;
 
         switch (selection) {
             case SELECTED_EXPORT: voxel_center_points_selected(*voxel_hcp_objects, current_selected_entity_id, log_panel); break;

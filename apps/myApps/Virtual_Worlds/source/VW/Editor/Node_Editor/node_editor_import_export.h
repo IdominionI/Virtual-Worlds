@@ -97,9 +97,11 @@ public:
 			case NODE_TYPE_ID_GROUP_OUTPUT : return import_link_node(node_group_editor,_node.ui_node_type.node_type, _node.node_location); break;
 			
 			// ADD NEW NODES HERE
-			case NODE_TYPE_ID_HCP_VOXEL         : return import_node<hcp_voxel_node_class>(node_group_editor, _node.node_location); break;
-			case NODE_TYPE_ID_CART_TO_HCP_VOXEL : return import_node<cart_to_hcp_voxel_node_class>(node_group_editor, _node.node_location); break;
-			case NODE_TYPE_ID_HCP_VOXEL_AUTOMATA: return import_node<hcp_voxel_automata_node_class>(node_group_editor, _node.node_location); break;
+			case NODE_TYPE_ID_HCP_VOXEL            : return import_node<hcp_voxel_node_class>(node_group_editor, _node.node_location); break;
+			case NODE_TYPE_ID_CART_TO_HCP_VOXEL    : return import_node<cart_to_hcp_voxel_node_class>(node_group_editor, _node.node_location); break;
+			case NODE_TYPE_ID_HCP_VOXEL_AUTOMATA   : return import_node<hcp_voxel_automata_node_class>(node_group_editor, _node.node_location); break;
+			case NODE_TYPE_ID_HEX_SURFACE          : return import_node<hex_surface_node_class>(node_group_editor, _node.node_location); break;
+			case NODE_TYPE_ID_HEX_SURFACE_AUTOMATA : return import_node<hex_surface_automata_node_class>(node_group_editor, _node.node_location); break;
 			default : return nullptr;
 		}
 

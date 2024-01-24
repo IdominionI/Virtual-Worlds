@@ -42,6 +42,24 @@
     <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\Timeline\timeline.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\Timeline\timeline_interval.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_object.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Kernal\hex_surface_function_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_node.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Render\hex_surface_render.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Menus\hex_surface_main_menu_functions.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_generation_selection_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_generator_variables_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_generator_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_parameters_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_shader_variables_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_shaders_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\cart_to_hex_generator.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_automata_node.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_rules_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -167,5 +185,35 @@
     <ClInclude Include="source\FrameWork\Universal_FW\Animation\animation.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\hcp_voxel_animation.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\hcp_voxel_automata_animation.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\cart_to_hcp_voxel_animation.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_data_storage.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_import_export.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_object.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_parameters.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Kernal\hex_surface_function_import_export.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_node_definitions.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Render\hex_surface_render.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\DataTypes\dt_hex_surface_automata.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\DataTypes\dt_hex_surface_generator.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\DataTypes\dt_hex_surface_shader_parameters.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Menus\hex_surface_main_menu_functions.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Scene\hex_surface_scene_objects.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Functions\hex_surface_exports.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_generation_selection_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_generator_variables_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_generator_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_parameters_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_shader_variables_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_shaders_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\cart_to_hex_generator.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Animation\hex_surface_animation.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_automata_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_rules_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Animation\hex_surface_automata_animation.h" />
   </ItemGroup>
 </Project>

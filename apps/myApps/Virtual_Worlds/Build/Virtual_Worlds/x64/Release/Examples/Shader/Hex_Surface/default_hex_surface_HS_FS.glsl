@@ -4,7 +4,7 @@
 
 //#include "shader_basis_code/universal_reserved_uniforms.glsl"
 
-#include "shader_basis_code/fs_reserved_uniforms.glsl"
+#include "Shader_basis_code/fs_reserved_uniforms.glsl"
 
 // -------------- User Defined Uniforms ----------------------
 

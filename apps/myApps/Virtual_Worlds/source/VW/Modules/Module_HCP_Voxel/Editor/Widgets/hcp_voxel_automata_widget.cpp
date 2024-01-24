@@ -17,16 +17,16 @@ void voxel_hcp_automata_widget_class::display() {
 	title("Voxel HCP Automata");
 
 
-	y_pos += 20;
+	//y_pos += 20;
 
 	//ImGui::SetCursorPosX(x_pos + 10);
 	//ImGui::SetCursorPosY(y_pos);
 	//ImGui::Checkbox("Use\nMultithreading###vaumt", &use_multithreading);
 
-	ImGui::SetCursorPosX(x_pos + 190);
-	ImGui::SetCursorPosY(y_pos);
-	//ImGui::Checkbox("Animate\nAutomata###vauanim", &voxel_hcp_object_to_execute->animate_automata);
-	ImGui::Checkbox("Animate\nAutomata###vauanim", &animate_automata);
+	//ImGui::SetCursorPosX(x_pos + 190);
+	//ImGui::SetCursorPosY(y_pos);
+	////ImGui::Checkbox("Animate\nAutomata###vauanim", &voxel_hcp_object_to_execute->animate_automata);
+	//ImGui::Checkbox("Animate\nAutomata###vauanim", &animate_automata);
 
 	y_pos += 35;
 
@@ -252,7 +252,7 @@ void voxel_hcp_automata_widget_class::next_step_voxel_automata_no_thread() {
 }
 
 bool voxel_hcp_automata_widget_class::perform_automata_step(int step) {
-	//printf("INFO", "perform_automata_step 00 : %i\n" , step);
+//printf("INFO", "perform_automata_step 00 : %i\n" , step);
 
 	// Apparently the way that Imgui or the cpu works, it seems this log message is not displayed until after
 	// the perform_voxel_automata_generation function is completed, so no advantage having it executed
@@ -266,7 +266,7 @@ bool voxel_hcp_automata_widget_class::perform_automata_step(int step) {
 	}
 
 	if (!voxel_automata_hcp_functions.perform_voxel_automata_generation(step)) return false;
-	//printf("INFO","perform_automata_step 01 : %i",step);
+//printf("INFO","perform_automata_step 01 : %i",step);
 
 	if (log_panel != NULL) {
 		log_panel->application_log.AddLog("Completed performing hcp voxel cellular automata rules !!!\n");

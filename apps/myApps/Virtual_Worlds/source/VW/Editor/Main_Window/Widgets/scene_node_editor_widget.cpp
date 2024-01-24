@@ -4,9 +4,14 @@
 #include <FrameWork/Universal_FW/Tools/dialogs.h>
 
 // Place node headerfiles here
+// hcp Voxel nodes
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/hcp_voxel_node.h>
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/cart_to_hcp_voxel_node.h>
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/hcp_voxel_automata_node.h>
+
+// hex suface nodes
+#include <VW/Modules/Module_Hex_Surface/Node_editor/hex_surface_node.h>
+#include <VW/Modules/Module_Hex_Surface/Node_editor/hex_surface_automata_node.h>
 
 // Critical these includes are placed here in this order
 #include "../../Node_Editor/node_editor_extras.h"
@@ -59,6 +64,23 @@ void scene_node_editor_class::display() {
 
                             ImGui::EndMenu();
                         }
+
+                        if (ImGui::BeginMenu("Hex Surface ...")) {
+                            if (ImGui::MenuItem("Create Hex suface Node")) {
+                                create_node<hex_surface_node_class>(click_pos);
+                            }
+
+                            if (ImGui::MenuItem("Create Cart to Hex suface Node")) {
+                                //create_node<cart_to_hcp_voxel_node_class>(click_pos);
+                            }
+
+                            if (ImGui::MenuItem("Create Hex suface Automata Node")) {
+                                create_node<hex_surface_automata_node_class>(click_pos);
+                            }
+
+                            ImGui::EndMenu();
+                        }
+
 
                         if (ImGui::MenuItem("Create Group Node")) {
                             create_group_node(click_pos);
@@ -165,6 +187,11 @@ void scene_node_editor_class::display() {
 
                     ImGui::EndMenu();
                 }
+
+                if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Right)) {
+                    toggle_group_node_visibility(current_selected_node_id);
+                }
+
             }
 
             // If selected node is an entity node, then these options are available to be performed

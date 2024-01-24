@@ -1,14 +1,8 @@
 #pragma once
 
-//#include <Universal/ImGui/imgui.h>
 #include <FrameWork/Kernels/imgui-docking/imgui.h>
-//
-//#include <Source/Editor/Common/definitions.h>
-//#include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
-#include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
 
-//#include <Source/Graphics_Engine/Shader/shader_parameters.h>
-//#include <Source/Graphics_Engine/Shader/shader_components.h>
+#include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
  
 #include <VW_framework/Shader/shader_parameters.h>
 #include <VW_framework/Shader/shader_components.h>

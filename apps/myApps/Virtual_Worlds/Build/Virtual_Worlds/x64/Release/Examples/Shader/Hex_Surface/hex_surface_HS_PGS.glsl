@@ -20,12 +20,12 @@
 
 // -------------- User Defined Functions -------------------
 // A layout for the output must be defined for whatever geometry shader functions are performed
-layout(triangle_strip, max_vertices = 72) out; // The output needs to be defined by the user in the function definitions
+//layout(triangle_strip, max_vertices = 72) out; // The output needs to be defined by the user in the function definitions
 //layout(triangle_strip, max_vertices = 1) out; // The output needs to be defined by the user in the function definitions
-//layout(points, max_vertices = 1) out; // The output needs to be defined by the user in the function definitions
+layout(points, max_vertices = 1) out; // The output needs to be defined by the user in the function definitions
 
 void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
-     vec3 diffuse;
+/*     vec3 diffuse;
      float NdotL;
      vec3 viewDir;
      vec3 reflectDir;
@@ -43,10 +43,9 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 
      //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
      float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
-     vec3 specular = specular_strength * spec * light_color.xyz;
+     vec3 specular = mat_specular * spec * light_color.xyz;
 
-	 light_intensity = (ambience + diffuse + specular)*lighting_intensity*0.5;//*.25
-
+	 light_intensity = (mat_ambient + diffuse + specular)*lighting_intensity*0.5;//*.25
 
 	 camera_light_intensity = vec3(0.0,0.0,0.0);
 	 if(use_camera_lighting!=0){
@@ -69,7 +68,7 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 
 		 //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 		 float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
-		 vec3 specular = specular_strength * spec * light_color.xyz;
+		 vec3 specular = mat_specular * spec * light_color.xyz;
 		 
 		 camera_light_intensity = (diffuse + specular)*lighting_intensity; //*.5
 	 }
@@ -77,6 +76,10 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
      //gs_out.varyingColor = vec4((light_intensity+camera_light_intensity),1.0)* raw_color;
      gs_out.varyingColor = vec4((light_intensity+camera_light_intensity),1.0)* gs_in[0].varyingColor;
      //gs_out.varyingColor = gs_in[0].varyingColor;
+*/	 
+
+//111
+	 gs_out.varyingColor = raw_color;
 }
 
 /*
@@ -456,20 +459,25 @@ void add_sides(vec4 center){
 
 
 void main (){
+	mvpMatrix = modelViewProjectionMatrix;
 
 	vec4 center = gl_in[0].gl_Position;
 
-	add_top(center,true); // top surface element
-	
-	add_sides(center);
+	// following do not work : need to fix as probably die to uniforms 
+	// mat_specular and others not being set
+	//add_top(center,true); // top surface element
+	//add_sides(center);    // side surface element 
 
-	
+
 	//add_top(vec4(center.x,center.y,0.0,1.0),false); // bottom surface element
 	
-	//gs_out.varyingColor = gs_in[0].varyingColor;
+	// following for testing only : delete when finished
+	gs_out.varyingColor = gs_in[0].varyingColor;
+	//gs_out.varyingColor = vec4(1.0,0.0,0.0,1.0);
+	gl_Position = mvpMatrix*center;
 	//gl_Position = mvpMatrix*(center + point_0);
-	//EmitVertex();
-	//EndPrimitive();
+	EmitVertex();
+	EndPrimitive();
 
 	
 	

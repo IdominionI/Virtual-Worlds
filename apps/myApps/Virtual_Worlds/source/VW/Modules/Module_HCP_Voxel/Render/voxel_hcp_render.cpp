@@ -36,17 +36,7 @@
 		else
 			shader_material->glsl_fragment_shader_file_pathname = shader_material->fragment_shader_file_pathname;
 
-		// Copile the OpenGL shader and store the id reference to it to be used
-		//shader_db_manager.remove_shader_program(entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id);
-		//entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id = -1;
-
-//std::cout << "voxel_hcp_render_class::define_shader_program 111\n";
-//printf("define_shader_program :Vertex glsl file  %i : %s\n" , shader_material->use_default_vertex_shader, shader_material->glsl_vertex_shader_file_pathname.string().c_str());
-//printf("define_shader_program :Geometry glsl file %i : %i :: %i : %s\n" , shader_material->use_point_shader, shader_material->use_default_geometry_shader, shader_material->use_default_point_shader, shader_material->glsl_geometry_shader_file_pathname.string().c_str());
-//printf("define_shader_program :point glsl file %s : %s\n" ,  shader_material->point_shader_file_pathname.string().c_str(), shader_material->default_point_shader_file_pathname.string().c_str());
-//printf("define_shader_program :geometry glsl file %s : %s\n" , shader_material->geometry_shader_file_pathname.string().c_str(), shader_material->default_geometry_shader_file_pathname.string().c_str());
-//printf("define_shader_program :Fragment glsl file %i : %s\n" , shader_material->use_default_fragment_shader, shader_material->glsl_fragment_shader_file_pathname.string().c_str());
-
+		// Compile the OpenGL shader and store the id reference to it to be used
 		shaders_loaded = shader->load(shader_material->glsl_vertex_shader_file_pathname, shader_material->glsl_fragment_shader_file_pathname, shader_material->glsl_geometry_shader_file_pathname);
 
 //std::cout << "voxel_hcp_render_class::define_shader_program 222\n";

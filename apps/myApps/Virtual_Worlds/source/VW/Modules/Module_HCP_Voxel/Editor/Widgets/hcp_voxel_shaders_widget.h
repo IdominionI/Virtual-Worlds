@@ -33,8 +33,8 @@ public:
 	voxel_hcp_object_class  *voxel_hcp_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 
 	void display();
-	void perform_decrement_variables();
-	void perform_increment_variables();
+	void perform_decrement_variables(float frame_interval = 1.0f);
+	void perform_increment_variables(float frame_interval = 1.0f);
 	void update_shader_variables();
 	void update_voxel_shaders(bool notification = true);
 	bool initialise_parameters();

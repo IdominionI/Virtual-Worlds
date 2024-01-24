@@ -101,14 +101,19 @@ private:
         nlinks       += node_editor->graph.links.links.size();
     }
 
+    void toggle_group_node_visibility(node_id_type node_id) {
+        for (scene_node_editor_class* node_group : child_groups) {
+            if (node_group->editor_id == current_selected_node_id) {
+                node_group->display_on = !node_group->display_on;
+            }
+        }
+    }
+
     void expand_group_node(node_id_type node_id) {
 //std::cout << "scene_node_editor_class : expand_node_group 000: " << node_id << std::endl;
         for (scene_node_editor_class *node_group : child_groups) {
 //std::cout << "scene_node_editor_class : expand_node_group 111: " << node_group->editor_id << std::endl;
             if (node_group->editor_id == node_id) {
-
-                // Somehow need to define initial input and ouptput link node locations here or in link node
-                // class.
 //std::cout << "scene_node_editor_class : expand_node_group 222: " << node_group->editor_id << std::endl;
                 node_group->display_on = true;
             }

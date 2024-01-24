@@ -5,7 +5,8 @@
 #include <VW/Editor/Node_Editor/node_editor_extras.h>
 
 #include "../Functions/vw_voxel_exports.h"
-//#include "../Editor/Widgets/cart_to_voxel_parameters_widget.h"
+
+#include <Universal_FW/Timeline/timeline_tracks.h>
 
 bool cart_to_hcp_voxel_node_class::define_node(ImVec2 click_pos, node_id_type entity_id_) {
     node_dimensions = { 60.0f,5.0f };
@@ -108,8 +109,7 @@ std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel :  object_category_i
 
     hcp_voxel->object_type_id = ENTITY_TYPE_OBJECT;
 
-   // if (vw_scene->scene_entities_manager.add_object(hcp_voxel, hcp_voxel->object_category_id)) {
-std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel :  vw_scene.scene_entities_manager.add_object : " << hcp_voxel->id << " : " << hcp_voxel->object_category_id << std::endl;
+ std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel :  vw_scene.scene_entities_manager.add_object : " << hcp_voxel->id << " : " << hcp_voxel->object_category_id << std::endl;
 
         hcp_voxel->define_initial_shader_program();
 
@@ -132,7 +132,6 @@ std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel:!!!!ofIsGLProgrammab
                 return false;
             }
 
-            //if (!shaders_loaded) {
             if (!hcp_voxel->geometry->shader->shader_compile_successful) {
 std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel: hcp_voxel Shaders not loaded !!!!! : " << std::endl;
 //std::string s = "jjjj\n";
@@ -153,9 +152,43 @@ std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel: hcp_voxel Shader no
     return true;
 }
 
+bool cart_to_hcp_voxel_node_class::create_hcp_timeline_link() {
+    hcp_animation_object = new cart_to_hcp_animation_object_class;
+
+    if (!hcp_voxel || !hcp_animation_object) return false;
+
+    hcp_animation_object->voxel_hcp_object = hcp_voxel;
+    hcp_animation_object->log_panel = log_panel;
+
+    // ================ define as a create timeline group function ===============
+    if (!animation_timeline_tracks_widget->timeline_track_group_exists(node_id)) {
+//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 000 : !animation_timeline_tracks_widget->timeline_track_group_exists(node_id)\n";
+        int index = animation_timeline_tracks_widget->add_timeline_group(label, node_id, hcp_animation_object, TIMELINE_OBJECT_DATA_TYPE_ID_CART_TO_VOXEL);
+        if (index != INVALID_ID && index < animation_timeline_tracks_widget->timeline_track_groups.size()) {
+            timeline_interval_track_id = animation_timeline_tracks_widget->timeline_track_groups[index].add_interval_track("shader");
+            if (timeline_interval_track_id == UINT_MAX) {
+                animation_timeline_tracks_widget->delete_timeline_group(node_id);
+                return false;
+            }
+            //hcp_animation_object->voxel_shader_interval_track_id = timeline_interval_track_id;
+        }
+    }
+    // =====================================================
+
+    return true;
+}
+
+void cart_to_hcp_voxel_node_class::delete_hcp_timeline_link() {
+    animation_timeline_tracks_widget->delete_timeline_group(node_id);
+    delete hcp_animation_object;
+    hcp_animation_object = nullptr;
+    timeline_interval_track_id = UINT_MAX;
+}
+
 void  cart_to_hcp_voxel_node_class::delete_node_entity() {
     if (!hcp_voxel || !vw_scene) return;
 //std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel: delete_node_entity : 0000" << std::endl;
+    delete_hcp_timeline_link();
     vw_scene->scene_entities_manager.delete_object(node_entity_id, node_entity_category_id);
 //std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel: delete_node_entity : 1111" << std::endl;
    // delete hcp_voxel; // Not to be used as this is called by the process of vw_scene->scene_entities_manager.delete_object(node_entity_id, node_entity_category_id);
@@ -163,7 +196,8 @@ void  cart_to_hcp_voxel_node_class::delete_node_entity() {
 }
 
 void cart_to_hcp_voxel_node_class::editor_menu_options(){
-    if (ImGui::BeginMenu("Voxel ... ###nvoxel")) {
+    std::string menu_text = "Voxel ... ###nvoxel"+ std::to_string(node_id);
+    if (ImGui::BeginMenu(menu_text.c_str())) {
 
         if (ImGui::MenuItem("Define Surface points###nvfs")) {
             voxel_main_window_menu_functions.voxel_volume_to_voxel_surface(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
@@ -172,17 +206,38 @@ void cart_to_hcp_voxel_node_class::editor_menu_options(){
         ImGui::EndMenu();
     }
 
-    if (ImGui::BeginMenu("Export ...###nexport")) {
-        if (ImGui::MenuItem("As Point Cloud###nvepc")) {
+    menu_text = "Timeline ... ###nvtimeline" + std::to_string(node_id);
+    if (ImGui::BeginMenu(menu_text.c_str())) {
+
+        menu_text = "Add timeline tracks###nvfs" + std::to_string(node_id);
+        if (ImGui::MenuItem(menu_text.c_str())) {
+            if (hcp_animation_object == nullptr) // Mist have no existing animation timeline object linked to this node
+                create_hcp_timeline_link();
+        }
+
+        menu_text = "Delete timeline group###nvfs" + std::to_string(node_id);
+        if (ImGui::MenuItem(menu_text.c_str())) {
+            delete_hcp_timeline_link();
+        }
+
+        ImGui::EndMenu();
+    }
+
+    menu_text = "Export ...###nexport" + std::to_string(node_id);
+    if (ImGui::BeginMenu(menu_text.c_str())) {
+        menu_text = "As Point Cloud###nvepc" + std::to_string(node_id);
+        if (ImGui::MenuItem(menu_text.c_str())) {
 //std::cout << "cart_to_hcp_voxel_node_class::editor_menu_options ^^^^^^^^ : " << vw_scene->scene_entities_manager.get_objects_of_category(SCENE_CATEGORY_HCP_VOXEL).category_objects.size() << ":" << globalc::get_current_selected_entity_id() << ":" << hcp_voxel->id << std::endl;
             voxel_main_window_menu_functions.export_voxels_center_point_data(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
         }
 
-        if (ImGui::MenuItem("As Point Surface###nveps")) {
+        menu_text = "As Point Surface###nveps" + std::to_string(node_id);
+        if (ImGui::MenuItem(menu_text.c_str())) {
             voxel_main_window_menu_functions.export_voxels_point_surface_data(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
         }
 
-        if (ImGui::MenuItem("As Face Surface###nvefs")) {
+        menu_text = "As Face Surface###nvefs" + std::to_string(node_id);
+        if (ImGui::MenuItem(menu_text.c_str())) {
             voxel_main_window_menu_functions.export_voxels_surface_face_data(SELECTED_EXPORT, hcp_voxel->id, &vw_scene->scene_entities_manager, log_panel);
         }
         ImGui::EndMenu();

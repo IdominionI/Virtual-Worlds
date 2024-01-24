@@ -19,12 +19,12 @@ void voxel_shaders_widget_class::display() {
 
 	title("Voxel  Shaders ");
 
-	y_pos += 30;
-	text("Animate Shaders : ", x_pos + 80, y_pos);
+	//y_pos += 30;
+	//text("Animate Shaders : ", x_pos + 80, y_pos);
 
-	ImGui::SetCursorPosX(x_pos + 220);
-	ImGui::SetCursorPosY(y_pos);
-	ImGui::Checkbox("###sdisplas", &voxel_shader_parameters->animate_shaders);
+	//ImGui::SetCursorPosX(x_pos + 220);
+	//ImGui::SetCursorPosY(y_pos);
+	//ImGui::Checkbox("###sdisplas", &voxel_shader_parameters->animate_shaders);
 
 	y_pos += 30;
 	text("Display Bounding Volume : ", x_pos + 80, y_pos);
@@ -132,58 +132,74 @@ void voxel_shaders_widget_class::display() {
 //		   and
 //         <variable>.value +-= <variable>.variable_step; 
 //          
-void voxel_shaders_widget_class::perform_decrement_variables() {
-	//std::cout <<"perform_decrement_variables button clicked\n");// replace with decrement step
+void voxel_shaders_widget_class::perform_decrement_variables(float frame_interval) {
+//std::cout <<"perform_decrement_variables button clicked\n");// replace with decrement step
 	for (shader_parameter_variable_struct_type& variable : voxel_shader_parameters->variables) {
+		float var_step = variable.variable_step * frame_interval;
 		if (variable.active_variable_step) {
-			if (variable.variable_step > 0.0 && variable.value - variable.variable_step < variable.slider_min)
+			//if (variable.variable_step > 0.0 && variable.value - variable.variable_step < variable.slider_min)
+			if (variable.variable_step > 0.0 && variable.value - var_step < variable.slider_min)
 				variable.value = variable.slider_min;
 			else
-				if (variable.variable_step < 0.0 && variable.value - variable.variable_step > variable.slider_max)
+				//if (variable.variable_step < 0.0 && variable.value - variable.variable_step > variable.slider_max)
+				if (variable.variable_step < 0.0 && variable.value - var_step > variable.slider_max)
 					variable.value = variable.slider_max;
 				else
-					variable.value -= variable.variable_step;
+					//variable.value -= variable.variable_step;
+					variable.value -= var_step;
 		}
 	}
 
 	for (shader_parameter_int_variable_struct_type& int_variable : voxel_shader_parameters->int_variables) {
+		int var_step = int(float(int_variable.variable_step) * frame_interval);
 		if (int_variable.active_variable_step) {
-			if (int_variable.variable_step > 0 && int_variable.value - int_variable.variable_step < int_variable.slider_min)
+			//if (int_variable.variable_step > 0 && int_variable.value - int_variable.variable_step < int_variable.slider_min)
+			if (int_variable.variable_step > 0 && int_variable.value - var_step < int_variable.slider_min)
 				int_variable.value = int_variable.slider_min;
 			else
-				if (int_variable.variable_step < 0 && int_variable.value - int_variable.variable_step > int_variable.slider_max)
+				//if (int_variable.variable_step < 0 && int_variable.value - int_variable.variable_step > int_variable.slider_max)
+				if (int_variable.variable_step < 0 && int_variable.value - var_step > int_variable.slider_max)
 					int_variable.value = int_variable.slider_max;
 				else
-					int_variable.value -= int_variable.variable_step;
+					//int_variable.value -= int_variable.variable_step;
+					int_variable.value -= var_step;
 		}
 	}
 
 	update_shader_variables();
 }
 
-void voxel_shaders_widget_class::perform_increment_variables() {
-	//std::cout <<"perform_increment_variables button clicked\n");// replace with decrement step
+void voxel_shaders_widget_class::perform_increment_variables(float frame_interval) {
+//std::cout <<"perform_increment_variables button clicked\n");// replace with decrement step
 	for (shader_parameter_variable_struct_type& variable : voxel_shader_parameters->variables) {
+		float var_step = variable.variable_step * frame_interval;
 		if (variable.active_variable_step) {
-			if (variable.variable_step < 0.0 && variable.value + variable.variable_step < variable.slider_min)
+			//if (variable.variable_step < 0.0 && variable.value + variable.variable_step < variable.slider_min)
+			if (variable.variable_step < 0.0 && variable.value + var_step < variable.slider_min)
 				variable.value = variable.slider_min;
 			else
-				if (variable.variable_step > 0.0 && variable.value + variable.variable_step > variable.slider_max)
+				//if (variable.variable_step > 0.0 && variable.value + variable.variable_step > variable.slider_max)
+				if (variable.variable_step > 0.0 && variable.value + var_step > variable.slider_max)
 					variable.value = variable.slider_max;
 				else
-					variable.value += variable.variable_step;
+					//variable.value += variable.variable_step;
+					variable.value += var_step;
 		}
 	}
 
 	for (shader_parameter_int_variable_struct_type& int_variable : voxel_shader_parameters->int_variables) {
+		int var_step = int(float(int_variable.variable_step) * frame_interval);
 		if (int_variable.active_variable_step) {
-			if (int_variable.variable_step < 0 && int_variable.value + int_variable.variable_step < int_variable.slider_min)
+			//if (int_variable.variable_step < 0 && int_variable.value + int_variable.variable_step < int_variable.slider_min)
+			if (int_variable.variable_step < 0 && int_variable.value + var_step < int_variable.slider_min)
 				int_variable.value = int_variable.slider_min;
 			else
-				if (int_variable.variable_step > 0 && int_variable.value + int_variable.variable_step > int_variable.slider_max)
+				//if (int_variable.variable_step > 0 && int_variable.value + int_variable.variable_step > int_variable.slider_max)
+				if (int_variable.variable_step > 0 && int_variable.value + var_step > int_variable.slider_max)
 					int_variable.value = int_variable.slider_max;
 				else
-					int_variable.value += int_variable.variable_step;
+					//int_variable.value += int_variable.variable_step;
+					int_variable.value += var_step;
 		}
 	}
 
