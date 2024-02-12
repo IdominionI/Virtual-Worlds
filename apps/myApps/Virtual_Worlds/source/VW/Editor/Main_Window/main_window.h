@@ -28,9 +28,13 @@
 #include <FrameWork/VW_framework/GL/vw_shader_Constructor.h>
 
 #include <VW_framework/Shader/shader.h>
+
+//#include <VW_framework/3D/Overlays/reference_grid.h>
 // ++++++++++++++++++++++++++++++++++
 
 #include <VW/Modules/Module_HCP_Voxel/Object/voxel_hcp_object.h>
+
+//#include <VW_framework/Scene/scene_global_light.h>
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -47,12 +51,23 @@ public:
         ImGui_ui_context.ImGui_end();
         //render_context->end();
         //node_editor_panel.NodeEditorShutdown();
+
+        // Delete all pointers here ?????
+        //delete reference_grid;
     }
 
     shared_ptr<ofAppBaseWindow> main_window = NULL;
 
+    bool display_grid        = true;
+    bool display_info        = true;
+    bool display_gimbal      = true;
+    bool display_crosshairs  = true;
+    //glm::vec4 xhair_color = glm::vec4{ 255.0f,255.0f,255.0f,255.0f };
+    ofColor xhair_color = { 255,255,255,255 };
+
     void setup() {
-//cout << "setup here : 000" << std::endl;
+        
+        cout << "setup here : 000" << std::endl;
         //ofDisableArbTex();
 
         GLFW_window_ptr = ((ofAppGLFWWindow*)ofGetWindowPtr())->getGLFWWindow();
@@ -63,15 +78,13 @@ public:
         }
 
         ImGui_ui_context.ImGui_init(GLFW_window_ptr);
-        
-        //ImNodes::CreateContext();
 
         log_panel = new log_panel_class();
         if (log_panel == NULL) {
             cout << "CRITCAL ERROR :: No Applicaton Logger Defined : Cannot perform application \n";
             return;
         }
-//cout << "setup here : " << std::endl;
+        cout << "setup here 11111: " << std::endl;
         //scene_manager = new scene_entities_manager_class;
         vw_scene = new vw_scene_class;
         scene_manager = &vw_scene->scene_entities_manager;
@@ -80,9 +93,15 @@ public:
         //scene_manager->log_panel = log_panel;
 
         //parameter_panel.scene_manager = scene_manager;
-        parameter_panel.log_panel     = log_panel;
+        parameter_panel.log_panel = log_panel;
         parameter_panel.scene_manager = scene_manager;
 
+
+        parameter_panel.viewport_properties_widget.display_camera_info = &display_info;// ++++++
+        parameter_panel.viewport_properties_widget.display_gimbal      = &display_gimbal;// ++++++
+        parameter_panel.viewport_properties_widget.display_crosshairs  = &display_crosshairs;// ++++++
+
+        parameter_panel.viewport_properties_widget.xhair_color_viewport = &xhair_color;// ++++++
         // ++++++++++++++
         // Define a global pointer to the time line tracks widget whch is part of the timeline widget
         // that can be referenced by any object to perform animations with 
@@ -91,8 +110,8 @@ public:
         // ++++++++++++++
 
         scene_node_editor = new scene_node_editor_class;
-        node_editor_panel.log_panel     = log_panel;
-        node_editor_panel.vw_scene      = vw_scene; // May need to crete this as a new vw_scene_class
+        node_editor_panel.log_panel = log_panel;
+        node_editor_panel.vw_scene = vw_scene; // May need to crete this as a new vw_scene_class
         //node_editor_panel.scene_manager = scene_manager;
         //node_editor_panel.scene_node_editor = scene_node_editor;
         //node_editor_panel.scene_node_editors.push_back(scene_node_editor);
@@ -103,11 +122,27 @@ public:
         //node_editor_panel.scene_manager = scene_manager;
         //node_editor_panel.scene_node_editor1 = scene_node_editor1;
 
-        setup_test_data();
+        // ############################# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // default Openframeworks requires at least one light to be defined otherwise app will crash
+        // This is fine as need a global light anyway to display image and for shaders to use.
+        
+        if (!scene_manager->scene_lights.define_global_light()) {
+             cout << "setup here : !scene_lights_manager.define_global_light()" << std::endl; // +++++++++++
+        } else{
+            parameter_panel.global_light_parameters_widget.global_light = scene_manager->scene_lights.scene_global_light;
+        }
+         // ############################# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        camer = scene_manager->scene_cameras.cameras[0];// to Test camera parameter display panel : delete when done
-        camer->setNearClip(.001);
-        camer->setFarClip(10000);
+        //setup_test_data(); // #######################
+           
+
+        //current_camera = scene_manager->scene_cameras.add_camera();
+//cout << "setup here : scene_manager->scene_cameras.cameras size : " << scene_manager->scene_cameras.cameras.size() << std::endl; // +++++++++++
+        //current_camera = scene_manager->scene_cameras.cameras[0];// to Test camera parameter display panel : delete when done
+        current_camera = scene_manager->scene_cameras.selected_camera;// to Test camera parameter display panel : delete when done
+        current_camera->setNearClip(.001);
+        current_camera->setFarClip(10000);
+//cout << "setup here : scene_manager->scene_cameras.cameras id : " << current_camera->id << std::endl; // +++++++++++
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         // Set up the fonts file to use to display text 
         // and the awesome icon font file to display icons since ImGui is not designed
@@ -133,13 +168,17 @@ public:
 
         ImFont* iconFont = io.Fonts->AddFontFromFileTTF("Fonts/fontawesome_6_solid.otf", 13.0f + 1.0, &icons_config, icons_ranges);
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+cout << "setup here ZZZZZZ: " << std::endl;
+
+        reference_grid = new reference_grid_class;
+        parameter_panel.viewport_properties_widget.reference_grid = reference_grid;
     }
 
     void update() {
         //entity_object->setPosition(-200.0, 0.0, 0.0);// this works
         //entity_object02->setPosition(200.0, 0.0, 0.0);// this does not work
-
-
+//###############################
+/*
         if (cs == 0) {
             entity_object02->set_local_orientation( -45.0,0.0,0.0 , true, true);
 
@@ -181,7 +220,8 @@ public:
             //entity_object->change_geometry_scale();
 
         }
-
+*/
+//###############################
         cs++;
     }
     
@@ -200,12 +240,12 @@ public:
         log_panel->display_application_log();
         log_panel->display_code_log();
 
-        if (camer != NULL) {
-//cout << "setup here : camer != NULL" << std::endl;
-            //globalc::set_current_selected_entity_id(camer->id);
+        if (current_camera != NULL) {
+//cout << "setup here : current_camera != NULL" << std::endl;
+            //globalc::set_current_selected_entity_id(current_camera->id);
             //globalc::set_current_selected_entity_type_id(ENTITY_TYPE_CAMERA);
 
-            //current_selected_entity_id = camer->id;
+            //current_selected_entity_id = current_camera->id;
             //current_selected_entity_type_id = ENTITY_TYPE_CAMERA;
         }
 
@@ -215,6 +255,8 @@ public:
 //            globalc::set_current_selected_entity_category_type_id(hcp_voxel->object_category_id);
 //            globalc::set_current_selected_entity_type_id(ENTITY_TYPE_OBJECT);
 //        }
+
+        parameter_panel.camera_poperties_widget.camera = current_camera;// move to update
 
         parameter_panel.show();
         node_editor_panel.show();
@@ -229,9 +271,9 @@ public:
         //ImGui::End;
         // ----------------------------------
         // !!!!!!! TESTING !!!!!!!!!!!!!!!!
-        if (!shaders_loaded) return;
+        //if (!shaders_loaded) return; // ##################################
 
-        //ofBackground(0.0,1.0,1.0,1.0);
+        //ofBackground(0.0,255,255,1.0);
 
         ofEnableDepthTest();// +++++++++++++
         
@@ -256,16 +298,24 @@ public:
 
 
         scene_lights_manager.scene_lights_render_setup();
-        scene_cameras_manager.scene_cameras_render_setup();
+        scene_manager->scene_cameras.scene_cameras_render_setup();
+        //scene_cameras_manager.scene_cameras_render_setup();
 
         // If Mouse or keyboard inputs are outside the 2D graphics viewport
         // disable all mouse and keyboard events that the scene cameras capture
         // and use to alter or perform tasks in the viewport window.
-        if (io.WantCaptureMouse && io.WantCaptureKeyboard)
-            scene_cameras_manager.disable_render_mouse_input();
-        else
-            scene_cameras_manager.enable_render_mouse_input();
+        if (io.WantCaptureMouse && io.WantCaptureKeyboard){
+            scene_manager->scene_cameras.disable_camera_mouse_input();
+            scene_manager->scene_cameras.disable_camera_keyboard_input();
+        }else{
+            scene_manager->scene_cameras.enable_camera_mouse_input();
+            scene_manager->scene_cameras.enable_camera_keyboard_input();
+        }
 
+
+        // The following is only neccessary if rendering lights with shadows
+        // !!!!Decided not to use shadws just yet : for future upgrade !!!!!
+/*
         if (light->shouldRenderShadowDepthPass()) {
             int numShadowPasses = light->getNumShadowDepthPasses();
 //cout << "light->shouldRenderShadowDepthPass() : " << numShadowPasses << std::endl;
@@ -284,7 +334,7 @@ public:
         }
         //else
         //    cout << "! light->shouldRenderShadowDepthPass() : " << std::endl;
-
+*/
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (!ofIsGLProgrammableRenderer()) {
             ofEnableLighting();
@@ -319,11 +369,46 @@ public:
         //}
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        scene_cameras_manager.scene_cameras_render_exit();
+        
+        //ofDrawAxis(100.0f);
+        //ofDrawArrow({ 0.0,0.0,0.0 }, { 10.0,0.0,0.0 },10.0);
+
+        //ofDrawLine({ 0.0,0.0,0.0 }, { 100.0,0.0,0.0 });
+
+        display_gimbal_overlay();
+        //display_grid_planes();
+        reference_grid->camera_loc = current_camera->getPosition();
+        reference_grid->display_grid(); // +++++
+
+        //scene_cameras_manager.scene_cameras_render_exit();
+        scene_manager->scene_cameras.scene_cameras_render_exit();
         scene_lights_manager.scene_lights_render_exit();
 
         ofDisableDepthTest(); // +++++++++++++
         // !!!!!!!!!!!!!!!! END to be done in vw_scene.render_scene() !!!!!!!!!!!!!!!!!!!
+       
+        display_camera_crosshairs();
+        display_info_overlay();
+        
+
+//void of3dGraphics::drawAxis(float size) const{
+//	glm::mat4 m = glm::scale(glm::mat4(1.0), glm::vec3(size,size,size));
+//	renderer->pushMatrix();
+//    renderer->multMatrix(m);
+//    renderCached3dPrimitive( axis );
+//    renderer->popMatrix();
+//}
+
+
+        //float size = 100;
+        //glm::mat4 m = glm::scale(glm::mat4(1.0), glm::vec3(size,size,size));
+        //glm::mat4 gtm = current_camera->getGlobalTransformMatrix();
+
+        //glm::vec4 xa = gtm* glm::vec4{ 1.0,0.0,0.0,size };
+        //glm::vec4 xy = gtm* glm::vec4{ 1.0,0.0,0.0,size };
+        //glm::vec4 xz = gtm* glm::vec4{ 1.0,0.0,0.0,size };
+
+        //ofDrawLine({ 0.0,0.0 }, { 100.0,0.0 });
 
 
         ImGui_ui_context.ImGui_post_render();
@@ -331,19 +416,20 @@ public:
 
     void render_scene() {
 
-        vw_scene->scene_entities_manager.render_objects();
+        //vw_scene->scene_entities_manager.render_objects();
+        vw_scene->render_scene();
 
         //matSphere.begin();
 //if(shad != NULL){
         //shad->begin();
-       // ofPushMatrix();
+        //ofPushMatrix();
         //vw_icosphere->render();
         //vw_icosphere->sphere.draw();
         //ofPopMatrix();
         //shad->end();
 //}
         //matSphere.end();
-
+/* #######################
         matSphere.begin();
         ofPushMatrix();
         //ofScale(50);
@@ -358,16 +444,18 @@ public:
         mesh_plane.draw();
         ofPopMatrix();
         mat_plane.end();
+*/ //#################
     }
 
     void setup_test_data() {
         // !!!!!!!!!!!!!!!!!!! testing !!!!!!!!!!!!!!!!!!!!!!
 
 // ++++++++++++++++++++++++++++++++++++++++++++++
+ // ################################
+ /*
         entity_catedgory_id = vw_scene->scene_entities_manager.define_new_entity_category("point_cloud");
-        //cout << "setup entity_catedgory_id @@@@ : " << entity_catedgory_id << std::endl;
+//cout << "setup entity_catedgory_id @@@@ : " << entity_catedgory_id << std::endl;
 
-                // ++++++++++++++++++++++++++++++++++++++++++++++
         entity_object = new vw_object_base_class;
         entity_object02 = new vw_object_base_class;
         entity_object03 = new vw_object_base_class;
@@ -410,7 +498,6 @@ public:
             else {
                 shaders_loaded = entity_object->geometry->shader->load("Shaders/passthru.vert", "Shaders/grid_fragment_shader.glsl");
 
-                //if (!shaders_loaded) {
                 if (!entity_object->geometry->shader->shader_compile_successful) {
                     cout << " Shaders not loaded !!!!! : " << std::endl;
                     //std::string s = "jjjj\n";
@@ -442,7 +529,6 @@ public:
             else {
                 shaders_loaded = entity_object02->geometry->shader->load("Shaders/passthru.vert", "Shaders/grid_fragment_shader2.glsl");
 
-                //if (!shaders_loaded) {
                 if (!entity_object02->geometry->shader->shader_compile_successful) {
                     cout << " Shaders not loaded 2 !!!!! : " << std::endl;
                     cout << entity_object02->geometry->shader->compile_log << std::endl;
@@ -470,7 +556,6 @@ public:
                 // shader files must exist in directory called data. Need to change this
                 shaders_loaded = entity_object03->geometry->shader->load("Shaders/passthru.vert", "Shaders/grid_fragment_shader2.glsl");
 
-                //if (!shaders_loaded) {
                 if (!entity_object03->geometry->shader->shader_compile_successful) {
                     cout << " Shaders not loaded 3 !!!!! : " << std::endl;
                     cout << entity_object03->geometry->shader->compile_log << std::endl;
@@ -482,11 +567,16 @@ public:
                 cout << " VBO vertices Num  3 : " << pc3->vertex_buffer.getNumVertices() << std::endl;
             }
         }
+*/
+  // ################################
+
         cout << "Entities 00 " << std::endl;
-        //entity_category_id = vw_scene.scene_entities_manager.define_new_entity_category("mesh");
+
+// ################################
+/*
         ico_entity = new vw_object_base_class;
         ico_entity->object_category_id = vw_scene->scene_entities_manager.define_new_entity_category("mesh");
-        //ico_entity->geometry = new entity_base_geometry_class(ico_entity);
+
         ico_entity->geometry = new entity_base_geometry_class();
         vw_icosphere = new icosphere_geometry_class;
         ico_entity->geometry = vw_icosphere;
@@ -496,78 +586,32 @@ public:
         ico_entity->axis_size = 100.0;
         ico_entity->display_normals = true;
 
-        // Test setting existing attribute data to a given shader program
-        //if (!entity_object->geometry->define_geometry_attributes_shader()) {
-        //    cout << " !entity_object->geometry->define_geometry_attributes_shader()" << std::endl;
-        //}
-
-        //if (!entity_object02->geometry->define_geometry_attributes_shader()) {
-        //    cout << " !entity_object02->geometry->define_geometry_attributes_shader()" << std::endl;
-        //}
-
-        //if (!entity_object03->geometry->define_geometry_attributes_shader()) {
-        //    cout << " !entity_object03->geometry->define_geometry_attributes_shader()" << std::endl;
-        //}
-
         // -------------------------------------
  //cout << "Entities 01 "  << std::endl;
-/*        entity_object02->setParent(*entity_object); // setParent may need to be changed
-        entity_object03->setParent(*entity_object02);// setParent may need to be changed
-        entity_object->add_child(entity_object02);
-        entity_object02->add_child(entity_object03);
 
-        ico_entity->setParent(*entity_object03);
-        entity_object03->add_child(ico_entity);
-        //cout << "Entities 02 "  << std::endl;
-        ico_entity->set_local_location(-200.0, 0.0, 0.0, true, true);
-        entity_object03->set_local_location(0.0, -200.0, 0.0, true, true);
-        entity_object02->set_local_location(0.0, -200.0, 0.0, true, true);
-        entity_object->set_local_location(0.0, 100.0, 0.0, true, true);
-        //cout << "Entities 03 "  << std::endl;
-        vw_scene.scene_entities_manager.add_object(entity_object, entity_catedgory_id);
-        vw_scene.scene_entities_manager.add_object(entity_object02, entity_catedgory_id);
-        vw_scene.scene_entities_manager.add_object(entity_object03, entity_catedgory_id);
-
-
-
-        cout << "ico_entity colors number : " << vw_icosphere->getNumColors() << std::endl;
-        for (int i = 0; i < vw_icosphere->getNumVertices(); i++) {
-            vw_icosphere->addColor({ 1.0,1.0,0.0 });
-        }
-        cout << "ico_entity colors number after add : " << vw_icosphere->getNumColors() << std::endl;
-
-        vw_scene.scene_entities_manager.add_object(ico_entity, ico_entity->object_category_id);
-        ico_entity->geometry->display_wireframe = true;
-        ico_entity->geometry->display_faces     = true;
-        //ico_entity->geometry->display_vertices  = true;
-*/
         vw_icosphere->material->setPBR(true);
         vw_icosphere->material->setDiffuseColor(ofFloatColor(1.0, 1.0));
         vw_icosphere->material->setMetallic(1.0);
         vw_icosphere->material->setAmbientColor(1.0);
-        ////matSphere.setRoughness(0.05);
         vw_icosphere->material->setRoughness(.75);
         vw_icosphere->define_geometry_render_texture_method(geometry_render_texture_method_enum::material);
+*/
         // -------------------------------------
  //cout << " Lights 00 "  << std::endl;
-        //light = new ofLight;
+         // Must have at least one light defined but only works for ofMaterial ofProgramableRenderer etc !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         light = scene_lights_manager.add_light();
-        //light = scene_lights_manager.selected_light;
-        //light = new vw_light_class;
+
  //cout << " Lights 01 "  << std::endl;
 
-        //light->enable();
-        //light->setPointLight();
-        //light->setSpotlight(60, 20);
-        //light->setup();
         light->setDirectional();
-
 
         //light->setPosition(100.1, 400, 600);
         light->setPosition(100.1, 900, 1300);
         light->lookAt(glm::vec3(0, 0, 0));
 
-        light->getShadow().setEnabled(true);// +++++
+        // Decided not to bother with shadows as only works 
+        // for openframeworks : for future upgrade 
+ /*       light->getShadow().setEnabled(true);// +++++
         light->getShadow().setGlCullingEnabled(true);// +++++
         light->getShadow().setDirectionalBounds(2000, 1000);// +++++
         light->getShadow().setNearClip(200);// +++++
@@ -579,53 +623,14 @@ public:
         light->setDiffuseColor(ofFloatColor(0.5, 2.0));
         light->display_shadow_frustrum = true;
 
-        // light->disable();
-  //cout << " Lights 02 "  << std::endl;
-         //light2 = new ofLight;
-         //light2 = new vw_light_class;
- /*        light2 = scene_lights_manager.add_light();
- // cout << " Lights 03 "  << std::endl;
-         //light2->setup();
-         //light2->setDirectional();
-         light2->setPointLight();
-         light2->enable();
-         //light2->setPosition(-100.1,-400,-600);
-         light2->set_position(-100.1,-400,-600);
-         //light2->lookAt(glm::vec3(0, 0, 0));
-         //light2->getShadow().setEnabled(true);
-         //light2->getShadow().setGlCullingEnabled(true);
-         //light2->getShadow().setDirectionalBounds(2000, 1000);
-         //light2->getShadow().setNearClip(200);
-         //light2->getShadow().setFarClip(2000);
-         //light2->getShadow().setStrength(1.0);
-         // increase alpha value to increase strength of light2
-         light2->setDiffuseColor(ofFloatColor(0.5, 2.0));
-         //light2->getShadow().setShadowType(OF_SHADOW_TYPE_PCF_LOW);
-         light2->disable();
-  //cout << " Lights 04 "  << std::endl;
-  */
+
         vw_scene->set_scene_shadow_render_settings();
-        /*
-                 // shadows are disabled by default
-                 // call this function to enable all of them that are attached to lights
-                 ofShadow::enableAllShadows();// +++++++++++
-                 // shadow bias is the margin of error the shadow depth
-                 // increasing the bias helps reduce shadow acne, but can cause light leaking
-                 // try to find a good balance that fits your needs
-                 // bias default is 0.005
-                 ofShadow::setAllShadowBias(0.007);// +++++++++++
-                 // normal bias default is 0
-                 // moves the bias along the normal of the mesh, helps reduce shadow acne
-                 ofShadow::setAllShadowNormalBias(-4.f);// +++++++++++
-                #ifndef TARGET_OPENGLES
-                 ofShadow::setAllShadowDepthResolutions(1024, 1024);// +++++++++++
-                #endif
-                 ofShadowType shadowType = OF_SHADOW_TYPE_PCF_LOW;// +++++++++++
-                 ofShadow::setAllShadowTypes(shadowType);// +++++++++++
-        */
+*/
 
+// #########################################
 
-        // higher resolution sphere
+ //###########################################
+/*        // higher resolution sphere
         meshPlySphere = ofMesh::icosphere(1.0, 5);
 
         //meshPlySphere.clearColors();
@@ -691,7 +696,7 @@ public:
         shader_contructor.material_shader.setMetallic(.5);// only works for PBR set to true otherwise if used will cause shader not to display object
         shader_contructor.material_shader.setAmbientColor(.6);
         shader_contructor.material_shader.setRoughness(.25);// only works for PBR set to true otherwise if used will cause shader not to display object
-
+*/ //###########################################
 
 
         //shad = shader_contructor.material_shader.getShader(OF_NO_TEXTURE, false, *ofGLPRenderer);
@@ -711,7 +716,7 @@ public:
         //shader_contructor.define_basic_vertex_source_code(basic_shader_function_type_enum::color,ofGLPRenderer, true);
         //geometry_shader_definition_struct_type geometry_shader_definition;
         //shader_contructor.define_basic_geometry_source_code(geometry_shader_definition,ofGLPRenderer);
-
+/* // ##################################################
         // +++++++++++++++++++++++++++++++++++++++++++
         hcp_voxel = new voxel_hcp_object_class;
         hcp_voxel->object_category_id = vw_scene->scene_entities_manager.define_new_entity_category("HCP_Voxel");
@@ -772,7 +777,7 @@ cout << "vw_scene->scene_entities_manager.add_object : " << hcp_voxel->id << " :
             //current_selected_entity_category_type_id = hcp_voxel->object_category_id;
             //current_selected_entity_type_id = ENTITY_TYPE_OBJECT;
         }
-
+*/ // ##################################################
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     }
 
@@ -789,10 +794,152 @@ cout << "vw_scene->scene_entities_manager.add_object : " << hcp_voxel->id << " :
     void dragEvent(ofDragInfo dragInfo) {}
     void gotMessage(ofMessage msg) {}
 
+    void display_camera_crosshairs() {
+  //cout << "display_viewport_crosshairs 0000"  << std::endl;
+        if (display_crosshairs) {// Draw crosshairs at center of viewport
+ // cout << "display_viewport_crosshairs 1111"  << std::endl;
+            
+            ofRectangle view_dim = current_camera->get_camera_viewport_rect();
+
+//cout << "display_viewport_crosshairs 1111"  << view_dim.width << ":" << view_dim.height << std::endl;
+            // Center of viewport
+            glm::vec2 p1 = { view_dim.width / 2 - 10, view_dim.height / 2 };
+            glm::vec2 p2 = { view_dim.width / 2 + 10, view_dim.height / 2 };
+            glm::vec2 p3 = { view_dim.width / 2,      view_dim.height / 2 - 10 };
+            glm::vec2 p4 = { view_dim.width / 2,      view_dim.height / 2 + 10 };
+            
+            ofSetColor(xhair_color);
+            //ofDrawLine(100.0f,100.0f,100.0f,-90.0f);
+            ofDrawLine(p1,p2);
+            ofDrawLine(p3,p4);
+        }
+    }
+
+    void display_info_overlay() {
+        if (display_info) {
+            glm::vec2 info_location = { 10.0f,50.0f };
+            float y_spacing = 20.0f;
+            std::string s;
+
+            glm::vec3 pos = current_camera->getPosition();
+            glm::vec3 orient = current_camera->getOrientationEulerDeg();
+            float round_r = 4.0;
+
+            ofSetColor(xhair_color,20);
+            ofDrawRectRounded(info_location,180,150,round_r,round_r,round_r,round_r);
+
+            ofSetColor(xhair_color,255);
+            info_location.x += 5.0; info_location.y += 23.0f;
+
+            s = "X Coord : " + std::to_string(pos.x);
+            ofDrawBitmapString(s, info_location.x, info_location.y);
+            info_location.y += y_spacing;
+            s = "Y Coord : " + std::to_string(pos.y);
+            ofDrawBitmapString(s, info_location.x, info_location.y);
+            info_location.y += y_spacing;
+            s = "Z Coord : " + std::to_string(pos.z);
+            ofDrawBitmapString(s, info_location.x, info_location.y);
+            info_location.y += y_spacing + 5;
+            s = "Pitch : " + std::to_string(orient.x);
+            ofDrawBitmapString(s, info_location.x, info_location.y);
+            info_location.y += y_spacing;
+            s = "Yaw   : " + std::to_string(orient.y);
+            ofDrawBitmapString(s, info_location.x, info_location.y);
+            info_location.y += y_spacing;
+            s = "Roll  : " + std::to_string(orient.z);
+            ofDrawBitmapString(s, info_location.x, info_location.y);
+        }
+    }
+
+
+    // This is a workaround to display the cameras global orientation
+    // and needs to be ofset from the center of the screen in a fixed
+    // location. Needs an axis display that is draw to the viewport
+    // as an overlay after all 3d rendering complete. This solution is
+    // not ideal
+    void display_gimbal_overlay() {
+        if (display_gimbal) {
+            //ofDrawAxis(100.0f);
+            glm::vec3 cp      = current_camera->getPosition();
+            glm::vec3 cam_dir = current_camera->getLookAtDir();
+            glm::vec3 offset  = glm::vec3{0.0,0.0,cam_dir.z - 1.0f};
+
+            float axis_size  = 0.5f;
+            float arrow_size = 0.05f;
+
+            glm::vec3 p0 = cp + cam_dir*5.0f;
+            glm::vec3 px = glm::vec3{ p0.x+axis_size,p0.y,p0.z };
+            glm::vec3 py = glm::vec3{ p0.x,p0.y+axis_size,p0.z };
+            glm::vec3 pz = glm::vec3{ p0.x,p0.y,p0.z+axis_size };
+
+            shared_ptr<ofBaseRenderer> renderer = ofGetCurrentRenderer();
+            ofColor prevColor = renderer->getStyle().color;
+
+            ofSetColor(255,0,0,255);
+            ofDrawArrow(p0, px,arrow_size);
+            ofSetColor(0,255,0,255);
+            ofDrawArrow(p0, py,arrow_size);
+            ofSetColor(0,0,255,255);
+            ofDrawArrow(p0, pz,arrow_size);
+
+            renderer->setColor(prevColor);
+        }
+    }
+
+    void display_grid_planes() {
+       //void of3dGraphics::drawGrid(float stepSize, size_t numberOfSteps, bool labels, bool x, bool y, bool z) const{
+        float stepSize = 10.0f;
+        size_t numberOfSteps = 20;
+        bool labels = false;
+        bool x = true; bool y = true; bool z= true;
+
+        shared_ptr<ofBaseRenderer> renderer = ofGetCurrentRenderer();
+
+	    //ofColor c;
+	    ofColor prevColor = renderer->getStyle().color;
+
+	    if (y) {
+		    //c.setHsb(0.0f, 200.0f, 255.0f);
+		    renderer->setColor(0,255,0,255);
+		    renderer->get3dGraphics().drawGridPlane(stepSize, numberOfSteps, labels);
+	    }
+	    if (z) {
+		    //c.setHsb(255.0f / 3.0f, 200.0f, 255.0f);
+		    renderer->setColor(0,0,255,255);
+		    glm::mat4 m = glm::rotate(glm::mat4(1.0), glm::half_pi<float>(), glm::vec3(0,0,-1));
+		    renderer->pushMatrix();
+		    renderer->multMatrix(m);
+		    renderer->get3dGraphics().drawGridPlane(stepSize, numberOfSteps, labels);
+		    renderer->popMatrix();
+	    }
+	    if (x) {
+		    //c.setHsb(255.0f * 2.0f / 3.0f, 200.0f, 255.0f);
+		    renderer->setColor(255, 0, 0, 255);
+		    glm::mat4 m = glm::rotate(glm::mat4(1.0), glm::half_pi<float>(), glm::vec3(0,1,0));
+		    renderer->pushMatrix();
+		    renderer->multMatrix(m);
+		    renderer->get3dGraphics().drawGridPlane(stepSize, numberOfSteps, labels);
+		    renderer->popMatrix();
+	    }
+
+	    if (labels) {
+		    ofDrawBitmapMode mode = renderer->getStyle().drawBitmapMode;
+		    renderer->setColor(255, 255, 255);
+		    float labelPos = stepSize * (numberOfSteps + 0.5);
+		    renderer->setBitmapTextMode(OF_BITMAPMODE_MODEL_BILLBOARD);
+		    renderer->drawString("x", labelPos, 0, 0);
+		    renderer->drawString("y", 0, labelPos, 0);
+		    renderer->drawString("z", 0, 0, labelPos);
+		    renderer->setBitmapTextMode(mode);
+	    }
+	    renderer->setColor(prevColor);
+//}
+
+    }
 
     // !!!!!!!!!!!!!!!! Testing !!!!!!!!!!!!!!!!
-    vw_object_base_class *entity_object, *entity_object02, *entity_object03,* ico_entity;;
-    point_cloud3D_class *pc, *pc2, *pc3;
+    //vw_object_base_class *entity_object, *entity_object02, *entity_object03,* ico_entity;;
+   // point_cloud3D_class *pc, *pc2, *pc3;
    // ofShader shader, shader2;shader3;
     bool shaders_loaded = false;
 
@@ -801,16 +948,16 @@ cout << "vw_scene->scene_entities_manager.add_object : " << hcp_voxel->id << " :
     //ofCubeMap cubeMap;
     ofLight *light, *light2;
     //ofLight _light; // This crashes the application
-    ofVboMesh meshPlySphere, mesh_plane;
+    //ofVboMesh meshPlySphere, mesh_plane;
 
-    ofMaterial matSphere,mat_plane;
+    //ofMaterial matSphere,mat_plane;
     shader_contruction_class shader_contructor;
 
     ofGLProgrammableRenderer *ofGLPRenderer;
     ofBaseGLRenderer *ofGLBRenderer;
 
     //vw_camera_class vw_camera;
-    scene_cameras_manager_class scene_cameras_manager;
+    //scene_cameras_manager_class scene_cameras_manager;
     scene_lights_manager_class scene_lights_manager;
 
     vw_scene_objects_category_class vw_scene_objects_category;
@@ -820,7 +967,7 @@ cout << "vw_scene->scene_entities_manager.add_object : " << hcp_voxel->id << " :
 
     icosphere_geometry_class *vw_icosphere;
 
-    vw_camera_class* camer = NULL;
+    vw_camera_class* current_camera = NULL;
 
     // +++++++++++++++++++++++
 
@@ -833,7 +980,8 @@ cout << "vw_scene->scene_entities_manager.add_object : " << hcp_voxel->id << " :
 private:
     
     GLFWwindow                 *GLFW_window_ptr; // glfw 
-
+    //ImGuiContext *viewport_ctx = nullptr;// $$$$$$$$$$$$$$$$$$
+    //ImVec2 viewportPanelSize;// $$$$$$$$$$$$$$$$$$
 
     ImGui_ui_context_class ImGui_ui_context;
 
@@ -846,4 +994,11 @@ private:
     node_editor_panel_class        node_editor_panel;
     animation_timeline_panel_class animation_timeline_panel;
 
+
+    // Overlays
+    // Because ofFrameworks use shared pointers or due to a contructor  
+    // in one of it classes, if this is not a pointer the app crashes 
+    // upon openingcause. It seems that use of shared ponters cause more
+    // problems than they solve
+    reference_grid_class *reference_grid = NULL;
 };

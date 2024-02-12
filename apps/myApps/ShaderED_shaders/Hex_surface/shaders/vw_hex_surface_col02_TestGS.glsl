@@ -1,22 +1,50 @@
 #version 450 core
 
-// -------------- Shader Reserved Uniforms -------------------
+// ---------- Universal shader uniforms ------------
+uniform mat4 matVP;
+uniform mat4 matGeo;
 
-//#include "shader_basis_code/universal_reserved_uniforms.glsl"
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
 
-#include "Shader_basis_code/pgs_reserved_uniforms.glsl"
+uniform mat4 modelViewProjectionMatrix;//model-view-projection matrix
+//uniform mat4 mvpMatrix; //model-view-projection matrix
+mat4 mvpMatrix; //model-view-projection matrix
 
-// -------------- User Defined Uniforms ----------------------
+// ---------- End Universal shader uniforms ----------
 
-// -------------Application dynamicly defined uniorms---------
-// Do not delete next line with DDU as applicatioin defined uniforms are placed here
-// Must exist in every glsl code unless user whishes to manually enter uniforms that
-// the application generates.
-// #DD#
+// ========== PGS reserved shader uniforms ===========
+//layout(points) in;
+layout(triangles) in;// This is a ShaderED thing that loads an imported file as triangles
 
-// -------------- Shader Reserved funtions ----------------
+//uniform float hexSize;
+float hexSize = .01;
 
-#include "Shader_basis_code/pgs_defined_functions.glsl"
+//hex surface display data
+//uniform float hex_min_surface_display_value;
+//uniform float hex_max_surface_display_value;
+
+
+//uniform vec2  grid_origin;
+//uniform float voxel_hcp_z_increment;
+vec2  grid_origin = vec2(0.0,0.0);
+float voxel_hcp_z_increment = .01f;
+
+in VertexData
+{
+ // float value;
+  vec4 varyingColor;
+} gs_in[]; // Must have as an array otherwise will not work as one for each input vertex,
+
+out VertexData
+{
+//  float value;
+  vec4 varyingColor;
+} gs_out;
+
+
+// ========== End PGS shader uniforms =============
 
 // -------------- User Defined Functions -------------------
 // A layout for the output must be defined for whatever geometry shader functions are performed
@@ -24,6 +52,8 @@
 //layout(triangle_strip, max_vertices = 1) out; // The output needs to be defined by the user in the function definitions
 layout(points, max_vertices = 1) out; // The output needs to be defined by the user in the function definitions
 
+
+// -------------------------------------------------------------------------------
 void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 /*     vec3 diffuse;
      float NdotL;
@@ -82,85 +112,7 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 	 gs_out.varyingColor = raw_color;
 }
 
-/*
-void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
-
-     vec4 diffuse;
-     float NdotL;
-     vec3 viewDir;
-     vec3 reflectDir;
-     vec4 light_intensity;
-	 vec4 camera_light_intensity;
-	 vec3 light_direction_vector;
-	 
- 
-     NdotL   = max(dot(normalize(vertex_normal), normalize(-lighting_direction)), 0.0);
-     diffuse = NdotL * light_color;
-
-     viewDir    = normalize(camera_loc - vec3(vertex.xyz));
-	 
-	 vec3 result = vec3(0.0,0.0,0.0);
-	 
-	 // phase 1: directional lighting
-	 for(int i = 0; i < number_directional_lights; i++)
-	     result += CalcDirLight(DirLight[i], vertex_normal, viewDir, material);
-
-	 // phase 2: point lights
-	mat4 model = mat4( 1.0f );
-	vec3 FragPos = vec3(model * vertex);
-    for(int i = 0; i < number_point_lights; i++)// !!!!!!!!
-        result += CalcPointLight(PointLights[i], vertex_normal, FragPos, viewDir, material);
-
-	 // phase 3: spot light
-	 for(int i = 0; i < number_spot_lights; i++)
-		 result += CalcSpotLight(SpotLight[i], vertex_normal, FragPos, viewDir, material);
-
-//gs_out.varyingColor = vec4(result, 1.0)* raw_color; 	 
-
-
-//gs_out.varyingColor = vec4((vec4(result, 1.0)+camera_light_intensity))* raw_color;
-	 
-     reflectDir = reflect(normalize(-lighting_direction), vertex_normal);
-
-     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
-     vec4 specular = specular_strength * spec * light_color;
-
-	 light_intensity = (ambience + diffuse + specular)*lighting_intensity*0.5;//*.25
-
-	 camera_light_intensity = vec4(0.0,0.0,0.0,1.0);
-	 if(use_camera_lighting!=0){
-		 if(camera_lighting_type == 0){
-			 vec3 light_camera_relative_x = camera_right_vector *lighting_camera_offset.x;
-			 vec3 light_camera_relative_y = camera_up_vector    *lighting_camera_offset.y;
-			 vec3 light_camera_relative_z = camera_front_vector *lighting_camera_offset.z;
-			 
-			 vec3 light_loc =  camera_loc  + light_camera_relative_x + light_camera_relative_y + light_camera_relative_z;
-			 
-			 light_direction_vector = -(light_loc - vertex.xyz);// spot light from camera pointing dir of camera
-		 } else
-			 light_direction_vector = (camera_front_vector);//  global light pointing in direction of camera : not good
-		 
-		 NdotL   = max(dot(normalize(vertex_normal), normalize(-light_direction_vector)), 0.0);
-		 diffuse = NdotL * light_color;
-
-		 viewDir    = normalize(camera_loc - vec3(vertex.xyz));
-		 reflectDir = reflect(normalize(-light_direction_vector), normalize(vertex_normal));
-
-		 //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-		 float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
-		 vec4 specular = specular_strength * spec * light_color;
-		 
-		 camera_light_intensity = (diffuse + specular)*lighting_intensity; //*.5
-		 
-		 gs_out.varyingColor = vec4((vec4(result, 1.0)+camera_light_intensity))* raw_color;
-	 } else {
-		gs_out.varyingColor = vec4((vec4(result, 1.0)+light_intensity))* raw_color;
-	 }
-     //gs_out.varyingColor = vec4((vec4(0.5f,0.5f,0.5f, 1.0)+camera_light_intensity))* raw_color;
-}
-*/
-// -------------------------------------------------------------------------------
-
+// -------------------------------------------------
 float xp = 0.866025;
 
 vec4 point_0 = vec4(0.0,0.0,0.0,1.0) ;
@@ -458,22 +410,28 @@ void add_sides(vec4 center){
 }
 
 
+// !!!!!!!!!!!!!!!!!!!!!!  GEOMETRY SHADER CODE !!!!!!!!!!!!!!!!!!!!!!
+
 void main (){
-	mvpMatrix = modelViewProjectionMatrix;
+	
+	//mvpMatrix = modelViewProjectionMatrix;
+	mvpMatrix = matVP*matGeo;//modelViewProjectionMatrix;
+	//mvpMatrix = projection*view*model;
 
 	vec4 center = gl_in[0].gl_Position;
 
 	// following do not work : need to fix as probably die to uniforms 
 	// mat_specular and others not being set
-	//add_top(center,true); // top surface element
-	//add_sides(center);    // side surface element 
-
-
-	//add_top(vec4(center.x,center.y,0.0,1.0),false); // bottom surface element
+	add_top(center,true); // top surface element
+	add_sides(center);    // side surface element 
+	add_top(vec4(center.x,center.y,0.0,1.0),false); // bottom surface element
 	
 	// following for testing only : delete when finished
 	gs_out.varyingColor = gs_in[0].varyingColor;
 	//gs_out.varyingColor = vec4(1.0,0.0,0.0,1.0);
+	
+	
+	//gl_Position = center;
 	gl_Position = mvpMatrix*center;
 	//gl_Position = mvpMatrix*(center + point_0);
 	EmitVertex();

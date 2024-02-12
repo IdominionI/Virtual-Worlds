@@ -1,12 +1,5 @@
 #include "hex_shaders_widget.h"
 
-//#include <Universal/ImGui/imgui.h>
-//
-//#include <Source/Editor/Interface/IconsFontAwesome.h> //*****
-//#include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
-//#include <Source/Editor/Tools/dialogs.h>
-//#include <Source/Editor/Main_Window/Panels/log_panel.h>
-
 #include <FrameWork/Kernels/imgui-docking/imgui.h>
 
 #include <Universal_FW/Interface/IconsFontAwesome.h>
@@ -23,29 +16,8 @@
 
 		title("Voxel  Shaders ");
 
-		//y_pos += 30;
-		//text("Animate Shaders : ", x_pos+80, y_pos);
-
-		//ImGui::SetCursorPosX(x_pos + 220);
-		//ImGui::SetCursorPosY(y_pos);
-		////ImGui::Checkbox("###sdisplas", &animate_shaders);
-		//ImGui::Checkbox("###sdisplas", &hex_surface_shader_parameters->animate_shaders);
-
 		y_pos += 30;
 		text("Display Bounding Area : ", x_pos + 80, y_pos);
-
-		//ImGui::SetCursorPosX(x_pos + 273);
-		//ImGui::SetCursorPosY(y_pos);
-		//if (ImGui::Checkbox("###sdisplbv", &display_bounding_area)) {
-		//	if (scene_manager != NULL) {
-		//		// Commented out code for possible dissable of function if hcp voxel is not displayed.
-		//		//scene_node_class <render_object_class> *hcp_voxel_render_object = scene_manager->get_scene_entity_render_object(current_selected_entity_id);
-		//		scene_node_class <render_object_class>* bv_render_object = scene_manager->get_scene_entity_render_object(current_selected_entity_id + BOUNDING_GEOMETRY_OFFSET);
-
-		//		if (bv_render_object != NULL)
-		//			bv_render_object->scene_graph_object.scene_object_class.visible = display_bounding_area;
-		//	}
-		//}
 
 		y_pos += 20;
 		text("Shader Files", x_pos + 100, y_pos);
@@ -57,29 +29,17 @@
 		if (ex_button(hex_surface_shader_parameters->vertex_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 			select_vertex_shader_file();
 
-		//ImGui::SetCursorPosX(x_pos + 120+ 150+3);
-		//ImGui::SetCursorPosY(y_pos);
-		//ImGui::Checkbox("###sddvsf", &hex_surface_shader_parameters->use_default_vertex_shader);
-
 		y_pos += 23;
-		text("Point   :", x_pos, y_pos);
+		text("Geometry :", x_pos, y_pos);
 
-		if (ex_button(hex_surface_shader_parameters->point_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
+		if (ex_button(hex_surface_shader_parameters->geometry_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 			select_point_geometry_shader_file();
-
-		//ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
-		//ImGui::SetCursorPosY(y_pos);
-		//ImGui::Checkbox("###sddpsf", &hex_surface_shader_parameters->use_default_point_shader);
 
 		y_pos += 23;
 		text("Fragment:", x_pos, y_pos);
 
 		if (ex_button(hex_surface_shader_parameters->fragment_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 			select_fragment_shader_file();
-
-		//ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
-		//ImGui::SetCursorPosY(y_pos);
-		//ImGui::Checkbox("###sddfsf", &hex_surface_shader_parameters->use_default_fragment_shader);
 
 		y_pos += 23;
 		text("Shader Variables", x_pos + 80, y_pos);
@@ -261,8 +221,6 @@ void hex_surface_shaders_widget_class::update_hex_shaders(bool notification) {
 
 	shader_material->define_shader_uniforms();
 
-	//hex_surface_render.define_shader_program(entity_render_object,log_panel);
-
 	// Following required as generating a new shader program also needs to up date default shader variables
 	// that are defined in the Hex Generation widget
 	hex_surface_generation_widget->change_hex_display();
@@ -281,23 +239,15 @@ bool hex_surface_shaders_widget_class::initialise_parameters() {
 
 	if((hex_surface_shader_parameters->vertex_shader_file_pathname == "")) 
 		hex_surface_shader_parameters->vertex_shader_file_pathname = "...###hsf";
-	//else
-	//	hex_surface_shader_parameters->vertex_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->vertex_shader_file_pathname, "/");
 
 	if ((hex_surface_shader_parameters->point_shader_file_pathname == ""))
 		hex_surface_shader_parameters->point_shader_file_pathname = "...###hsf1";
-	//else
-	//	hex_surface_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->point_shader_file_pathname, "/");
 
 	if ((hex_surface_shader_parameters->geometry_shader_file_pathname == ""))
 		hex_surface_shader_parameters->geometry_shader_file_pathname = "...###hsf2";
-	//else
-	//	hex_surface_shader_parameters->geometry_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->geometry_shader_file_pathname, "/");
 
 	if ((hex_surface_shader_parameters->fragment_shader_file_pathname == ""))
 		hex_surface_shader_parameters->fragment_shader_file_pathname = "...###hsf3";
-	//else
-	//	hex_surface_shader_parameters->fragment_shader_file_name = vwDialogs::get_filename(hex_surface_shader_parameters->fragment_shader_file_pathname, "/");
 		
 	return true;
 }
@@ -370,20 +320,22 @@ bool hex_surface_shaders_widget_class::initialise_parameters() {
 		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 
 //printf("select_point_geometry_shader_file button pressed.\n");// replace with get file pathname tool
-		char const* patterns[] = { "*_PGS.glsl" };
+		char const* patterns[] = { "*_GS.glsl" };
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
 
 		if (file_pathname == nullptr) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No point geometry shader file selected.\n");
 			return;
 		}
-		//		else
-//printf("point_geometry_shader_file_pathname != NULL %s:\n", file_pathname);
+
+//printf("hex_surface_shaders_widget_class::select_point_geometry_shader_file : 00000 point_geometry_shader_file_pathname != NULL %s:\n", file_pathname);
 
 		//hex_surface_shader_parameters->point_shader_file_pathname = file_pathname;
-		std::string s                                            = FW::stringtools::replace(file_pathname, "\\", "/");
-		hex_surface_shader_parameters->point_shader_file_pathname      = s;
-		//hex_surface_shader_parameters->point_geometry_shader_file_name = vwDialogs::get_filename(file_pathname, "/");
+		std::string s                                            = FW::stringtools::replace(std::string(file_pathname), "\\", "/");
+		//hex_surface_shader_parameters->point_shader_file_pathname      = s;
+//printf("hex_surface_shaders_widget_class::select_point_geometry_shader_file : 11111 %s:\n", s.c_str());
+		hex_surface_shader_parameters->geometry_shader_file_pathname = s;
+//printf("hex_surface_shaders_widget_class::select_point_geometry_shader_file : 22222 %s:\n", s.c_str());
 
 	}
 

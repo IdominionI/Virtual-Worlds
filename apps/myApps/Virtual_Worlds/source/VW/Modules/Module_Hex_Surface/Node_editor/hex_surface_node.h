@@ -36,7 +36,6 @@ public:
     bool hex_surface_node_class::define_import_node(ImVec2 click_pos, node_id_type entity_id_, void* node_misc_data);
 
     bool define_inputs(pins_class& pins) {// This probably will not be needed but kept just in case
-        //return define_node_input_value_of_type("Grid", ENTITY_CATEGORY_HEX_SURF, HEX_CONTEXT_SURFACE_GRID, MODIFIER, HEX_SURFACE_GRID_VALUE, pin_type_enum::single_input, pins);
         pin_struct_type pin; 
 
         pin.label     = "Shader";
@@ -134,7 +133,7 @@ public:
         if (!hex_surface) return false;
 
         voxel_texture_import_export_class voxel_texture_import_export;
-        //std::cout << "hcp_voxel_node_class: import_hcp_voxel_node_shader_data 0000 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "hcp_voxel_node_class: import_hcp_voxel_node_shader_data 0000 : " << line_number << ":" << lines[line_number] << std::endl;
         line_number++;
         return voxel_texture_import_export.read_shader_parameter_data(lines, &hex_surface->hex_surface_object_data.hex_surface_shader_parameters, line_number);
     }

@@ -1,7 +1,7 @@
 #include "automata_byte_import_export.h"
 
 #include <Universal_FW/Kernal/FWstring_tools.h>
-#include <Universal_FW/Kernal/FWfile_tools.h> // ******
+#include <Universal_FW/Kernal/FWfile_tools.h>
 
 #define ENDL '\n'
 
@@ -23,15 +23,15 @@ void import_export_byte_automata_rules_class::close_file_stream() {
 }
 
 bool import_export_byte_automata_rules_class::export_hcp_automata_byte_rules(std::string file_pathname) {
-	////std::cout << "", file_pathname, //QMessageBox::Ok);
+//std::cout << "", file_pathname, //QMessageBox::Ok);
 
 	if (file_pathname.size() == 0) {
-		//std::cout << "", "No file name defined to save data to \n Save voxel automata byte rules aborted", //QMessageBox::Ok);
+//std::cout << "", "No file name defined to save data to \n Save voxel automata byte rules aborted", //QMessageBox::Ok);
 		return false;
 	}
 
 	if (!open_file_stream(file_pathname, OVER_WRITE_FUNCTION_FILE)) {
-		//std::cout << "", "Unable to open file\n" + file_pathname +"\n to save automata data to.", //QMessageBox::Ok);
+//std::cout << "", "Unable to open file\n" + file_pathname +"\n to save automata data to.", //QMessageBox::Ok);
 		return false;
 	}
 
@@ -109,18 +109,12 @@ bool import_export_byte_automata_rules_class::open_file_to_read(std::string file
 }
 
 bool import_export_byte_automata_rules_class::import_hcp_automata_byte_rules(std::vector <voxel_hcp_automata_byte_rule_struct_type> &automata_byte_rules_parameters, std::string file_pathname) {
-	////std::cout << "", file_pathname, //QMessageBox::Ok);
+//std::cout << "", file_pathname, //QMessageBox::Ok);
 
 	if (file_pathname.size() == 0) {
-		//std::cout << "", "No file name defined to import data from \n Import automata byte rules aborted", //QMessageBox::Ok);
+//std::cout << "", "No file name defined to import data from \n Import automata byte rules aborted", //QMessageBox::Ok);
 		return false;
 	}
-
-	//if (!open_file_to_read(file_pathname)) {
-	//	//std::cout << "", "Unable to open file\n" + file_pathname +"\n to import automata data to.", //QMessageBox::Ok);
-	//	return false;
-	//}
-
 
 	std::fstream working_model_file(file_pathname, std::ios::in);
 
@@ -138,141 +132,87 @@ bool import_export_byte_automata_rules_class::import_hcp_automata_byte_rules(std
 	std::vector<std::string> lines = FW::stringtools::split(working_model_string, '\n');
 	int line_number = 0;
 
-	//read_automata_byte_rules_into_byte_rules_parameters(file_pathname, automata_byte_rules_parameters);
 	read_automata_byte_rules_into_byte_rules_parameters(lines, automata_byte_rules_parameters, line_number);
 
 	stream.close();
 	return true;
 }
 
-//bool voxel_function_import_export_class::read_expression_into_voxel_generator_parameters(std::vector<std::string> lines, voxel_generator_parameters_struct_type  &generator_parameters, int &line_number) {
-//bool import_export_byte_automata_rules_class::read_automata_byte_rules_into_byte_rules_parameters(std::string file_pathname, std::vector <voxel_hcp_automata_byte_rule_struct_type>& generator_parameters) {
 bool import_export_byte_automata_rules_class::read_automata_byte_rules_into_byte_rules_parameters(std::vector<std::string> lines, std::vector <voxel_hcp_automata_byte_rule_struct_type> &generator_parameters, int &line_number) {
 	std::string line;
-	//int line_number = 0;
 
 	// First line read must be a START_HEADER_FLAG
 	line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rules_into_byte_rules_parameters 1111 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rules_into_byte_rules_parameters 1111 : " << line_number << ":" << lines[line_number] << std::endl;
 	if (!FW::stringtools::contains(lines[line_number], RULE_DATA_START)) { // There msut allways be at least two nodes. The input and output link nodes
-		//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing START_HEADER_FLAG", //QMessageBox::Ok);
+//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing START_HEADER_FLAG", //QMessageBox::Ok);
 		return false;
 	}
 
-	//if (!read_file_line_data()) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Failed to read data from file at line " + std::string::number(line_number) + " of file \n" +file_pathname, //QMessageBox::Ok);
-	//	return false;
-	//}
-////std::cout <<"Import Automata byte rules","Import Automata byte rules 00 :"+input_line+":", //QMessageBox::Ok);
-			//if (input_line.indexOf(RULE_DATA_START) == (std::string::npos)) {
-	//if (input_line.find(RULE_DATA_START) == (std::string::npos)) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing START_HEADER_FLAG", //QMessageBox::Ok);
-	//	return false;
-	//}
-
 	line_number++;
-	//if (!read_file_line_data()) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname, //QMessageBox::Ok);
-	//	return false;
-	//}
-////std::cout <<"Import Automata byte rules01 ",input_line, //QMessageBox::Ok);
 
 	line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rules_into_byte_rules_parameters 2222 : " << line_number << ":" << lines[line_number] << std::endl;
 	while (!FW::stringtools::contains(lines[line_number], RULE_DATA_END)) {
-	//while (input_line.find(RULE_DATA_END) == (std::string::npos) && !stream.eof()) {
-
 		voxel_hcp_automata_byte_rule_struct_type voxel_hcp_automata_rule;
 		if (!read_automata_byte_rule(lines, voxel_hcp_automata_rule, line_number)) return false;
 
 		generator_parameters.push_back(voxel_hcp_automata_rule);
 
 		line_number++;
-		//if (!read_file_line_data()) {
-		//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname, //QMessageBox::Ok);
-		//	return false;
-		//}
 	}
 
 	return true;
 }
 
-//bool import_export_byte_automata_rules_class::read_automata_byte_rule(std::string file_pathname, voxel_hcp_automata_byte_rule_struct_type& voxel_hcp_automata_rule) {
 bool import_export_byte_automata_rules_class::read_automata_byte_rule(std::vector<std::string> lines, voxel_hcp_automata_byte_rule_struct_type& voxel_hcp_automata_rule, int &line_number) {
 	std::string line;
 
-	//line_number++;
 	line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule AAAAAAA : " << line_number << ":" << lines[line_number] << std::endl;
 	// next line read must be a RULE_BLOCK_START flag
-	//if (input_line.find(RULE_BLOCK_START) == (std::string::npos)) {
 	if (!FW::stringtools::contains(lines[line_number], RULE_BLOCK_START)) {
-		//std::cout << "Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing RULE_BLOCK_START flag", //QMessageBox::Ok);
+//std::cout << "Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing RULE_BLOCK_START flag", //QMessageBox::Ok);
 		return false;
 	}
 
 	//next 5 lines must have rule name,active_rule,voxel_state,start_step,end_step in that order
 	line_number++;
 	line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule BBBBBB : " << line_number << ":" << lines[line_number] << std::endl;
-	//if (!read_file_line_data()) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-	//	return false;
-	//}
+//std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule BBBBBB : " << line_number << ":" << lines[line_number] << std::endl;
 	voxel_hcp_automata_rule.name = line;
 
 	line_number++;
 	line = lines[line_number];
-std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule CCCCCC : " << line_number << ":" << lines[line_number] << std::endl;
-	//if (!read_file_line_data()) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-	//	return false;
-	//}
-	//if (stoi(input_line) == 0) voxel_hcp_automata_rule.active_rule = false; else voxel_hcp_automata_rule.active_rule = true;
+//std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule CCCCCC : " << line_number << ":" << lines[line_number] << std::endl;
 	if (stoi(line) == 0) voxel_hcp_automata_rule.active_rule = false; else voxel_hcp_automata_rule.active_rule = true;
 
 	line_number++;
 	line = lines[line_number];
-std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule DDDDDD : " << line_number << ":" << lines[line_number] << std::endl;
-	//if (!read_file_line_data()) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-	//	return false;
-	//}
-	voxel_hcp_automata_rule.voxel_state = stoi(line);// .toUInt();
+//std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule DDDDDD : " << line_number << ":" << lines[line_number] << std::endl;
+	voxel_hcp_automata_rule.voxel_state = stoi(line);
 
 	line_number++;
 	line = lines[line_number];
-std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule EEEEE : " << line_number << ":" << lines[line_number] << std::endl;
-	//if (!read_file_line_data()) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-	//	return false;
-	//}
-	voxel_hcp_automata_rule.start_step = stoi(line);// .toUInt();
+//std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule EEEEE : " << line_number << ":" << lines[line_number] << std::endl;
+	voxel_hcp_automata_rule.start_step = stoi(line);
 
 	line_number++;
 	line = lines[line_number];
-std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule FFFFF : " << line_number << ":" << lines[line_number] << std::endl;
-	//if (!read_file_line_data()) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-	//	return false;
-	//}
-	voxel_hcp_automata_rule.end_step = stoi(line);// .toUInt();
+//std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule FFFFF : " << line_number << ":" << lines[line_number] << std::endl;
+	voxel_hcp_automata_rule.end_step = stoi(line);
 
 
 	// next line contains the self rule definitions where each rule defenintion is seperated by the deliminator RULE_DELIMINATOR
 	line_number++;
 	line = lines[line_number];
-std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule 00000AA : " << line_number << ":" << lines[line_number] << std::endl;
-	//if (!read_file_line_data()) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-	//	return false;
-	//}
+//std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule 00000AA : " << line_number << ":" << lines[line_number] << std::endl;
 
 	std::vector<std::string> rule_list;
 	rule_list = FW::stringtools::split(line, RULE_DELIMINATOR);
 
 	if (rule_list.size() < 4) {
-		//std::cout <<"Import Automata byte rules", "Error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n"+"Incorrect parameters for self rule", //QMessageBox::Ok);
+//std::cout <<"Import Automata byte rules", "Error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n"+"Incorrect parameters for self rule", //QMessageBox::Ok);
 		return false;
 	}
 
@@ -299,18 +239,13 @@ std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule 0
 	for (int i = 0; i < NUMBER_HCP_NEIGHBOURS; i++) {
 		line_number++;
 		line = lines[line_number];
-std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule 11111AA : " << line_number << ":" << lines[line_number] << std::endl;
-		//if (!read_file_line_data()) {
-		//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-		//	return false;
-		//}
-
+//std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule 11111AA : " << line_number << ":" << lines[line_number] << std::endl;
 
 		std::vector<std::string> rule_list;
 		rule_list = FW::stringtools::split(line, RULE_DELIMINATOR);
 
 		if (rule_list.size() < 4) {
-			//std::cout <<"Import Automata byte rules", "Error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n"+"Incorrect parameters for self rule", //QMessageBox::Ok);
+///std::cout <<"Import Automata byte rules", "Error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n"+"Incorrect parameters for self rule", //QMessageBox::Ok);
 			return false;
 		}
 
@@ -334,16 +269,10 @@ std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule 1
 	// next line read must be a RULE_BLOCK_END flag
 	line_number++;
 	line = lines[line_number];
-std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule 2222AA : " << line_number << ":" << lines[line_number] << std::endl;
-	//if (!read_file_line_data()) {
-	//	//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-	//	return false;
-	//}
+//std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule 2222AA : " << line_number << ":" << lines[line_number] << std::endl;
 
-
-	//if (input_line.find(RULE_BLOCK_END) == (std::string::npos)) {
 	if (!FW::stringtools::contains(lines[line_number], RULE_BLOCK_END)) {
-		//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing Rule block end flag", //QMessageBox::Ok);
+//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing Rule block end flag", //QMessageBox::Ok);
 		return false;
 	}
 
@@ -352,12 +281,3 @@ std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule 2
 	return true;
 }
 
-//----------------------------------------------
-
-//bool import_export_byte_automata_rules_class::read_file_line_data() {
-//			if(stream.eof()) return false;
-//
-//			std::getline(stream, input_line);
-//
-//			return true;
-//		}

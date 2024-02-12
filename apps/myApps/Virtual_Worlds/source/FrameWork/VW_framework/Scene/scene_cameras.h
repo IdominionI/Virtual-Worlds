@@ -8,10 +8,12 @@
 
 #include "../Widgets/parameter_widget_base.h"
 
+inline id_key_manager_class<idu_type> camera_id_key;// This needed as global so all catagories in all editors have a unique category id
+
 class scene_cameras_manager_class {
 public:
 	scene_cameras_manager_class() {
-		vw_camera_class *selected_camera = add_camera();// Need at least one camera in the scene to be able to view things
+		selected_camera = add_camera();// Need at least one camera in the scene to be able to view things
 		selected_camera->display_active = true;
 	}
 
@@ -32,9 +34,12 @@ public:
 	vw_camera_class *add_camera(bool new_camera_selected = true) {
 		vw_camera_class *new_camera = new vw_camera_class;
 		if (new_camera != NULL) {
-			new_camera->id = globalc::get_available_entity_id();
+			new_camera->id = camera_id_key.get_available_id_key();
 			cameras.push_back(new_camera);
-			if (new_camera_selected) selected_camera = new_camera;
+			if (new_camera_selected) {
+				selected_camera = new_camera;
+				selected_camera->display_active = true;
+			}
 		}
 		return new_camera;
 	}
@@ -59,7 +64,7 @@ public:
 		if (index > -1) {
 			delete cameras[index];
 			cameras.erase(cameras.begin() + index);
-			globalc::assign_free_entity_id(camera_id);// Free entity ID number to be reused when a new entity is created
+			camera_id_key.assign_free_id_key(camera_id);// Free entity ID number to be reused when a new entity is created
 			return true;
 		}
 		return false;
@@ -103,7 +108,7 @@ public:
 		}
 	}
 
-	void disable_render_mouse_input() {
+	void disable_camera_mouse_input() {
 		for (vw_camera_class* camera : cameras) {
 			if (camera->display_active) {
 				camera->disableMouseInput();
@@ -111,10 +116,26 @@ public:
 		}
 	}
 
-	void enable_render_mouse_input() {
+	void enable_camera_mouse_input() {
 		for (vw_camera_class* camera : cameras) {
 			if (camera->display_active) {
 				camera->enableMouseInput();
+			}
+		}
+	}
+
+	void disable_camera_keyboard_input() {
+		for (vw_camera_class* camera : cameras) {
+			if (camera->display_active) {
+				camera->disable_keyboard_input();
+			}
+		}
+	}
+
+	void enable_camera_keyboard_input() {
+		for (vw_camera_class* camera : cameras) {
+			if (camera->display_active) {
+				camera->enable_keyboard_input();
 			}
 		}
 	}

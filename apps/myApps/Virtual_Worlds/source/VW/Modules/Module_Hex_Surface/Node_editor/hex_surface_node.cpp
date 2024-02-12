@@ -89,7 +89,7 @@ if (!log_panel) { std::cout << "hex_surface_node_class:create_hex_surface 000AAA
 
     int object_category_id = vw_scene->scene_entities_manager.get_objects_category_index(SCENE_CATEGORY_HEX_SURFACE);
     if (object_category_id == -1) {
-std::cout << "hex_surface_node_class:create_hex_surface :  object_category_id == -1  111111111111 \n";
+//std::cout << "hex_surface_node_class:create_hex_surface :  object_category_id == -1  111111111111 \n";
         hex_surface->object_category_id = vw_scene->scene_entities_manager.define_new_entity_category(SCENE_CATEGORY_HEX_SURFACE);
     }
     else
@@ -112,8 +112,6 @@ std::cout << "hex_surface_node_class:create_hex_surface :  object_category_id ==
 
     hex_surface->define_initial_shader_program();
 
-    //hcp_voxel->geometry->create_shader();
-    //hcp_voxel->geometry->init();
     if (hex_surface->geometry->shader) {
         if (ofIsGLProgrammableRenderer()) {
 //std::cout << "hex_surface_node_class:create_hex_surface: ofIsGLProgrammableRenderer() : 33333 " << std::endl;
@@ -133,15 +131,13 @@ std::cout << "hex_surface_node_class:create_hex_surface :  object_category_id ==
 
         if (!hex_surface->geometry->shader->shader_compile_successful) {
 //std::cout << "hex_surface_node_class:create_hex_surface: hex_surface Shaders not loaded !!!!! : 55555 " << std::endl;
-            //std::string s = "jjjj\n";
-            //cout << s << std::endl;
 //std::cout << hex_surface->geometry->shader->compile_log << std::endl;
 //std::cout << "hex_surface_node_class:create_hex_surface: hex_surface Shaders not loaded !!!!! END : 66666" << std::endl;
         }
         else {
-            //cout << " Shaders loaded ^^^^^ : " << shader.getProgram() << " : " << std::endl;
+//cout << " Shaders loaded ^^^^^ : " << shader.getProgram() << " : " << std::endl;
             std::cout << "hex_surface_node_class:create_hex_surface: hex_surface Shaders loaded ^^^^^ : 77777" << std::endl;
-            //cout << entity_object03->geometry->shader->compile_log << std::endl;
+//cout << entity_object03->geometry->shader->compile_log << std::endl;
         }
     }
     else

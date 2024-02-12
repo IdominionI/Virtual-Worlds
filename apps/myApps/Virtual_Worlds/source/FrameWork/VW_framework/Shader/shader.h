@@ -153,11 +153,11 @@ public:
 			return shader_compile_successful;
 		}
 
-std::cout << "create_shader_program vshader id 2222222 :  \n";
+//std::cout << "create_shader_program vshader id 2222222 :  \n";
 		//shader_compile_successful = create_glsl_program(shader_program_format);
 		shader_compile_successful = create_glsl_program(shader_program_format);
 
-std::cout << "create_shader_program vshader id 2222222AA :  \n";
+//std::cout << "create_shader_program vshader id 2222222AA :  \n";
 //printf("create_shader_program vshader id 222B : %i \n", shader_compile_successful);
 
 		if (shader_compile_successful <= 0) {
@@ -193,7 +193,7 @@ std::cout << "create_shader_program vshader id 2222222AA :  \n";
 
 		program = glCreateProgram();
 		mHandle = program; // Delete mHandle when not needed !!!!
-std::cout << "create_glsl_program 00000 :  \n";
+//std::cout << "create_glsl_program 00000 :  \n";
 		//checkAndCreateProgram();// ofShader code that replaces above commented out lines
 
 		GLuint vertex_handle = loadShader(shader_program_format, shader_program_format.vertex_shader_source_code, shader_program_format.glsl_vertex_shader_file_pathname, GL_VERTEX_SHADER);
@@ -211,7 +211,7 @@ std::cout << "create_glsl_program 00000 :  \n";
 		// Other shader types tesselation and compute to go here ?????
 
 		glLinkProgram(program);
-std::cout << "create_glsl_program 111111 :  \n";
+//std::cout << "create_glsl_program 111111 :  \n";
 		//linkProgram();// ofShader code that replaces above commented out line
 		glValidateProgram(program);
 
@@ -442,8 +442,8 @@ std::cout << "create_glsl_program 111111 :  \n";
 	// ################# DEFINE SHADER UNIFORM VARIABLES #####################
 
 	void set_b1(GLuint shader_program_id, bool v, const std::string& name) {
-		//printf("shader b1 : %i : %i  : %s \n", shader_program_id, v, name.c_str());
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
+//printf("shader::set_b1 : %i : %i  : %i  : %s \n", shader_program_id, v,myLoc, name.c_str());
 		glProgramUniform1i(shader_program_id, myLoc, v);
 	}
 

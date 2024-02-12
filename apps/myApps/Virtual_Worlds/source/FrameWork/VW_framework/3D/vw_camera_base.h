@@ -185,10 +185,15 @@ public:
 	virtual void begin() {
 		begin(getViewport());
 	}
+
 	virtual void begin(const ofRectangle& viewport);
 
 	/// \brief Ends rendering with the camera.
 	virtual void end();
+
+	// VWCUSTOM  ++++++++++++++++++++++++++
+	virtual void update_shader_uniforms(GLint shader_id);
+	// END VWCUSTOM ++++++++++++++++++++++++++
 
 	/// \}
 	/// \name OpenGL Matrix
@@ -271,19 +276,46 @@ public:
 		drawFrustum(getViewport());
 	}
 
+	// VCUSTOM ADD ++++++++++++++++++
+	glm::vec3 get_forward_dir() {
+		//vec4 camDirection = glm::inverse(projectionViewMatrix) * vec4(0, 0, 1.0, 1.0);
+		glm::vec4 camera_forward_direction = glm::normalize(glm::inverse(getModelViewProjectionMatrix()) * glm::vec4(0, 0, 1.0, 1.0));
+//std::cout << "vw_camera_base::get_forward_dir : " << camera_forward_direction.x << " : " << camera_forward_direction.y << " : " << camera_forward_direction.y << " : " << std::endl;
+		return  glm::vec3(camera_forward_direction.x,camera_forward_direction.y,camera_forward_direction.z);
+	}
+
+	glm::vec3 get_up_dir() {
+		glm::vec4 camera_forward_direction = glm::normalize(glm::inverse(getModelViewProjectionMatrix()) * glm::vec4(0, 1.0, 0.0, 1.0));
+		return  glm::vec3(camera_forward_direction.x,camera_forward_direction.y,camera_forward_direction.z);
+	}
+
+	glm::vec3 get_right_dir() {
+		glm::vec4 camera_forward_direction = glm::normalize(glm::inverse(getModelViewProjectionMatrix()) * glm::vec4(1.0, 0, 0.0, 1.0));
+		return  glm::vec3(camera_forward_direction.x,camera_forward_direction.y,camera_forward_direction.z);
+	}
+	// END VCUSTOM ADD++++++++++++++++++
+
+	// VCUSTOM MOVED MMMMMMMMMMMMMMMMMMMM
+	bool isOrtho;
+	float fov;
+	float nearClip;
+	float farClip;
+	float aspectRatio; // only used when forceAspect=true, = w / h
+	// END CUSTOM MOVED MMMMMMMMMMMMMMMMMMMM
+
 protected:
 	ofRectangle getViewport() const;
 	std::shared_ptr<ofBaseRenderer> getRenderer() const;
 	void calcClipPlanes(const ofRectangle& viewport);
 
 private:
-	bool isOrtho;
-	float fov;
-	float nearClip;
-	float farClip;
+	//bool isOrtho;
+	//float fov;
+	//float nearClip;
+	//float farClip;
 	glm::vec2 lensOffset;
 	bool forceAspectRatio;
-	float aspectRatio; // only used when forceAspect=true, = w / h
+	//float aspectRatio; // only used when forceAspect=true, = w / h
 	bool vFlip;
 	std::shared_ptr<ofBaseRenderer> renderer;
 };

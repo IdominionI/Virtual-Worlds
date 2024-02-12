@@ -70,9 +70,9 @@ void scene_node_editor_class::display() {
                                 create_node<hex_surface_node_class>(click_pos);
                             }
 
-                            if (ImGui::MenuItem("Create Cart to Hex suface Node")) {
-                                //create_node<cart_to_hcp_voxel_node_class>(click_pos);
-                            }
+                            //if (ImGui::MenuItem("Create Cart to Hex suface Node")) {
+                            //    //create_node<cart_to_hcp_voxel_node_class>(click_pos);
+                            //}
 
                             if (ImGui::MenuItem("Create Hex suface Automata Node")) {
                                 create_node<hex_surface_automata_node_class>(click_pos);
@@ -142,7 +142,6 @@ void scene_node_editor_class::display() {
             };
 */
             ImGui::EndPopup();
-            //nodes_context.LeftMouseClicked = false;
             GImNodes.LeftMouseClicked = false;
             menu_selection = false;
         }
@@ -160,16 +159,13 @@ void scene_node_editor_class::display() {
                 if (ImGui::BeginMenu("Group Node ...")) {          
                     if (ImGui::MenuItem("Delete group")) {
                         if (current_selected_node_id > -1) {
-                            //delete_group_node(dynamic_cast<node_group_class*>(selected_node));
                             delete_group_node(selected_node);
-                            //graph.delete_node(current_selected_node_id);
                         }
                     }
 
                     if (ImGui::MenuItem("delete group links")) {
                         if (current_selected_node_id > -1) {
                             graph.delete_node_links(current_selected_node_id);
-                            //master_graph.delete_node_links(current_selected_node_id);
                         }
                     }
 
@@ -215,10 +211,6 @@ void scene_node_editor_class::display() {
                         // Not yet implemented    
                     }
 
-                    //if (ImGui::MenuItem("delete node tree")) {
-                    //    node_tree.delete_node_tree(&graph, selected_node);
-                    //}
-
                     ImGui::EndMenu();
                 }
 
@@ -233,14 +225,12 @@ void scene_node_editor_class::display() {
     if (selected_link.link_id != INVALID_ID) {
 
         if (ImGui::BeginPopupContextWindow(0, 1)) {
-        //if (ImGui::BeginPopupContextWindow(0, 1, false)) {
             menu_selection = true;
 
             if (ImGui::BeginMenu("Link ...")) {
                 {
                     if (ImGui::MenuItem("Delete link")) {
                         if (selected_link.link_id > -1) {
-                            //graph.delete_link(selected_link.link_id);
                             delete_link(selected_link.link_id);
                             display_graph_status(this);// testing only
                         }
@@ -351,8 +341,6 @@ void scene_node_editor_class::display() {
         // If edge doesn't start at value, then it's an internal edge, i.e.
         // an edge which links a node's operation to its input. We don't
         // want to render node internals with visible links.
-        //if (graph_.node(edge.from).node_type.function != VALUE)
-        //    continue;
 
         PushColorStyle(ImNodesCol_Link, IM_COL32(0, 139, 139, 255));
         PushColorStyle(ImNodesCol_LinkHovered, IM_COL32(0, 175, 175, 255));
@@ -363,11 +351,8 @@ void scene_node_editor_class::display() {
         PopColorStyle();
     }
 
-    zoom_on = false;// +++++
-
+    zoom_on = false;
 //printf("scene_node_editor_class::display:: 22222\n");
-    //ImNodes::EndNodeEditor();
-
     EndNodeEditor();
 
     // ---------------------------------------------------------------------------------
@@ -380,13 +365,6 @@ void scene_node_editor_class::display() {
 
 
     no_node_element_is_hovered_over = no_element_hovered_over();
-
-    //if (ImNodes::IsNodeHovered(&hover_node_id))
- //   if (IsNodeHovered(&hover_node_id))
- //   {
- //       //node_hovered = node_id;
- ////printf("node hovered over id : %i\n", hover_node_id);
- //   }
 
     if (GImNodes.LeftMouseReleased && inside_editor_canvas(GImNodes.MousePos) && !menu_selection) {
 //printf("Left mouse clicked inside canvas 00 %f : %f \n", nodes_context->MousePos.x, nodes_context->MousePos.y);
@@ -421,7 +399,6 @@ void scene_node_editor_class::display() {
     {
         static std::vector<int> selected_nodes;
         selected_nodes.resize(static_cast<size_t>(num_selected_nodes));
-        //ImNodes::GetSelectedNodes(selected_nodes.data());
         GetSelectedNodes(selected_nodes.data());
         for (const int node_id : selected_nodes)
         {
@@ -469,7 +446,6 @@ void scene_node_editor_class::display() {
             current_selected_link_id = selected_links[selected_links.size() - 1];
 //printf("selected link id : %i : %i\n", link_id, current_selected_link_id);
 //if (log_panel != NULL) log_panel->application_log.AddLog("selected node id : %i: %i\n", node_id, current_selected_node_id);
-
         }
     }
     else {
@@ -479,7 +455,6 @@ void scene_node_editor_class::display() {
     }
 
     if (current_selected_link_id > -1) {
-//if (globalc::get_current_selected_node_id() > -1) {
 //printf("current_selected_link_id : %i  \n", current_selected_link_id);
         link_struct_type link;
         link = graph.links.find_link(current_selected_link_id);
@@ -516,8 +491,6 @@ void scene_node_editor_class::display() {
 }
 
 //----------------------------------------------
-
-//bool scene_node_editor_class::create_group_node(ImVec2 click_pos) {
 node_group_class *scene_node_editor_class::create_group_node(ImVec2 click_pos,bool create_import_group_node) {
     node_group_class *new_node_group = new node_group_class;
     if (new_node_group == nullptr) {
@@ -565,8 +538,6 @@ node_group_class *scene_node_editor_class::create_group_node(ImVec2 click_pos,bo
      }
 
     display_graph_status(this);// testing only
-    // *************************
-
     return new_node_group;
 }
 
@@ -638,18 +609,18 @@ void scene_node_editor_class::delete_link(int link_id) {
 
     bool delete_link_only = true;
     link_struct_type link = graph.links.find_link(link_id);
-std::cout << "scene_node_editor_class::handle_deleted_links() 000 : " << link.link_id << std::endl;
+//std::cout << "scene_node_editor_class::handle_deleted_links() 000 : " << link.link_id << std::endl;
     if (link.link_id != INVALID_ID) { // Just in case to avoid crash
         pin_struct_type  from_pin = graph.pins.find_pin(link.from);
         pin_struct_type  to_pin   = graph.pins.find_pin(link.to);
 
-std::cout << "scene_node_editor_class::handle_deleted_links() 111 : " << from_pin.node_id << ":" << to_pin.node_id << std::endl;
+//std::cout << "scene_node_editor_class::handle_deleted_links() 111 : " << from_pin.node_id << ":" << to_pin.node_id << std::endl;
         if (from_pin.node_id != INVALID_ID) {
             node_basis_class *from_node = graph.nodes.get_node(from_pin.node_id);
             if (from_node) {
-std::cout << "scene_node_editor_class::handle_deleted_links() 222 : " << from_node->node_id << ":" << from_node->ui_node_type.category << ":" << from_node->ui_node_type.node_type << std::endl;
+//std::cout << "scene_node_editor_class::handle_deleted_links() 222 : " << from_node->node_id << ":" << from_node->ui_node_type.category << ":" << from_node->ui_node_type.node_type << std::endl;
                 if (from_node->ui_node_type.category == NODE_CATEGORY_ID_GROUP && from_node->ui_node_type.node_type == NODE_TYPE_ID_GROUP_INPUT) {
-std::cout << "scene_node_editor_class::handle_deleted_links() 222AAA : " << from_node->node_id << ":" << from_node->ui_node_type.category << ":" << from_node->ui_node_type.node_type << std::endl;
+//std::cout << "scene_node_editor_class::handle_deleted_links() 222AAA : " << from_node->node_id << ":" << from_node->ui_node_type.category << ":" << from_node->ui_node_type.node_type << std::endl;
                     delete_group_node_input_pin(from_pin);// Deletes link as well as pin in this function
                     delete_link_only = false;
                 }
@@ -659,9 +630,9 @@ std::cout << "scene_node_editor_class::handle_deleted_links() 222AAA : " << from
         if (to_pin.node_id != INVALID_ID) {
             node_basis_class *to_node = graph.nodes.get_node(to_pin.node_id);
             if (to_node) {
-std::cout << "scene_node_editor_class::handle_deleted_links() 333 : " << to_node->node_id << ":" << to_node->ui_node_type.category << ":" << to_node->ui_node_type.node_type << std::endl;
+//std::cout << "scene_node_editor_class::handle_deleted_links() 333 : " << to_node->node_id << ":" << to_node->ui_node_type.category << ":" << to_node->ui_node_type.node_type << std::endl;
                 if (to_node->ui_node_type.category == NODE_CATEGORY_ID_GROUP && to_node->ui_node_type.node_type == NODE_TYPE_ID_GROUP_OUTPUT) {
-std::cout << "scene_node_editor_class::handle_deleted_links() 333AAAA : " << to_node->node_id << ":" << to_node->ui_node_type.category << ":" << to_node->ui_node_type.node_type << std::endl;
+//std::cout << "scene_node_editor_class::handle_deleted_links() 333AAAA : " << to_node->node_id << ":" << to_node->ui_node_type.category << ":" << to_node->ui_node_type.node_type << std::endl;
                     delete_group_node_output_pin(to_pin);// Deletes link as well as pin in this function
                     delete_link_only = false;
                 }
@@ -676,7 +647,6 @@ std::cout << "scene_node_editor_class::handle_deleted_links() 333AAAA : " << to_
 
 void scene_node_editor_class::display_node_ui(node_basis_class *node) {
     if (!node) return;
-    //node->display_ui();
     node->define_ui();
 }
 
@@ -716,7 +686,6 @@ std::cout << "handle_new_links 1111 "<< start_pin.pin_id << " : " <<end_pin.pin_
 void scene_node_editor_class::handle_deleted_links() {
     // Delete link edges that define existing link input-output pairs
     int link_id;
-    //if (ImNodes::IsLinkDestroyed(&link_id))
     if (IsLinkDestroyed(&link_id))
     {
         graph.links.delete_link(link_id);

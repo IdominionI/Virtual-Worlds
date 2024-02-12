@@ -23,12 +23,12 @@
 
 	bool import_export_hex_surface_automata_rules_class::export_hcp_automata_byte_rules(std::string file_pathname) {
 		if (file_pathname.size() == 0) {
-			//QMessageBox::information(NULL, "", "No file name defined to save data to \n Save voxel automata byte rules aborted", //QMessageBox::Ok);
+//QMessageBox::information(NULL, "", "No file name defined to save data to \n Save voxel automata byte rules aborted", //QMessageBox::Ok);
 			return false;
 		}
 
 		if (!open_file_stream(file_pathname, OVER_WRITE_FUNCTION_FILE)) {
-			//QMessageBox::information(NULL, "", "Unable to open file\n" + file_pathname +"\n to save automata data to.", //QMessageBox::Ok);
+//QMessageBox::information(NULL, "", "Unable to open file\n" + file_pathname +"\n to save automata data to.", //QMessageBox::Ok);
 			return false;
 		}
 
@@ -100,7 +100,6 @@
 		if (!stream)
 			return false;
 		else
-			//if (!file.isOpen()) return false;
 			if (!stream.is_open()) return false;
 
 		return true;
@@ -108,20 +107,15 @@
 
 	bool import_export_hex_surface_automata_rules_class::import_hcp_automata_byte_rules(std::vector <hex_surface_automata_rule_struct_type>  &automata_byte_rules_parameters,std::string file_pathname) {
 		if (file_pathname.size() == 0) {
-			//QMessageBox::information(NULL, "", "No file name defined to import data from \n Import automata byte rules aborted", //QMessageBox::Ok);
+//QMessageBox::information(NULL, "", "No file name defined to import data from \n Import automata byte rules aborted", //QMessageBox::Ok);
 			return false;
 		}
-
-		//if (!open_file_to_read(file_pathname)) {
-		//	//QMessageBox::information(NULL, "", "Unable to open file\n" + file_pathname +"\n to import automata data to.", //QMessageBox::Ok);
-		//	return false;
-		//}
 
 		std::fstream working_model_file(file_pathname, std::ios::in);
 
 		if (!working_model_file) {
-			//std::cout << "Import voxel generation model", "Import voxel generation model ERROR : \n Could not find read Import voxel generation model defined in file \n" +
-			//																 file_pathname, //QMessageBox::Ok);
+//std::cout << "Import voxel generation model", "Import voxel generation model ERROR : \n Could not find read Import voxel generation model defined in file \n" +
+//																 file_pathname, //QMessageBox::Ok);
 			return false;
 		}
 
@@ -133,148 +127,88 @@
 		std::vector<std::string> lines = FW::stringtools::split(working_model_string, '\n');
 		int line_number = 0;
 
-		//read_automata_byte_rules_into_byte_rules_parameters(file_pathname, automata_byte_rules_parameters);
 		read_automata_byte_rules_into_byte_rules_parameters(lines, automata_byte_rules_parameters, line_number);
 
 		stream.close();
 		return true;
 	}
 
-	//bool import_export_hex_surface_automata_rules_class::read_automata_byte_rules_into_byte_rules_parameters(std::string file_pathname,std::vector <hex_surface_automata_rule_struct_type> &generator_parameters) {
 	bool import_export_hex_surface_automata_rules_class::read_automata_byte_rules_into_byte_rules_parameters(std::vector<std::string> lines, std::vector <hex_surface_automata_rule_struct_type>& generator_parameters, int& line_number) {
 		std::string line;
-		//int line_number = 0;
 
 		// First line read must be a START_HEADER_FLAG
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 		std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rules_into_byte_rules_parameters 1111 : " << line_number << ":" << lines[line_number] << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], RULE_DATA_START)) { // There msut allways be at least two nodes. The input and output link nodes
-			//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing START_HEADER_FLAG", //QMessageBox::Ok);
+//std::cout <<"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing START_HEADER_FLAG", //QMessageBox::Ok);
 			return false;
 		}
 
-		// First line read must be a START_HEADER_FLAG
-		//line_number++;
-		//if (!read_file_line_data()) {
-		//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Failed to read data from file at line " + std::string::number(line_number) + " of file \n" +file_pathname, //QMessageBox::Ok);
-		//	return false;
-		//}
-		////QMessageBox::information(NULL,"Import Automata byte rules","Import Automata byte rules 00 :"+input_line+":", //QMessageBox::Ok);
-		//if (input_line.find(RULE_DATA_START) == (std::string::npos)) {
-		//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing START_HEADER_FLAG", //QMessageBox::Ok);
-		//	return false;
-		//}
-
 		line_number++;
-		//if (!read_file_line_data()) {
-		//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname, //QMessageBox::Ok);
-		//	return false;
-		//}
-		////QMessageBox::information(NULL,"Import Automata byte rules01 ",input_line, //QMessageBox::Ok);
 
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rules_into_byte_rules_parameters 2222 : " << line_number << ":" << lines[line_number] << std::endl;
 		while (!FW::stringtools::contains(lines[line_number], RULE_DATA_END)) {
-		//while (input_line.find(RULE_DATA_END) == (std::string::npos) && !stream.eof()) {
-
 			hex_surface_automata_rule_struct_type hex_surface_automata_rule;
-			//if (!read_automata_byte_rule(file_pathname, hex_surface_automata_rule)) return false;
 			if (!read_automata_byte_rule(lines, hex_surface_automata_rule,line_number)) return false;
 
 			generator_parameters.push_back(hex_surface_automata_rule);
 
 			line_number++;
-			//if (!read_file_line_data()) {
-			//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname, //QMessageBox::Ok);
-			//	return false;
-			//}
 		}
 
 		return true;
 	}
 
 	bool import_export_hex_surface_automata_rules_class::read_automata_byte_rule(std::vector<std::string> lines, hex_surface_automata_rule_struct_type &hex_surface_automata_rule, int& line_number) {
-	//bool import_export_hex_surface_automata_rules_class::read_automata_byte_rule(std::string file_pathname, hex_surface_automata_rule_struct_type &hex_surface_automata_rule) {
 		std::string line;
 
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule AAAAAAA : " << line_number << ":" << lines[line_number] << std::endl;
 		// next line read must be a RULE_BLOCK_START flag
-		//if (input_line.find(RULE_BLOCK_START) == (std::string::npos)) {
 		if (!FW::stringtools::contains(lines[line_number], RULE_BLOCK_START)) {
-			//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing RULE_BLOCK_START flag", //QMessageBox::Ok);
+//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing RULE_BLOCK_START flag", //QMessageBox::Ok);
 			return false;
 		}
 
 		//next 5 lines must have rule name,active_rule,voxel_state,start_step,end_step in that order
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule BBBBB : " << line_number << ":" << lines[line_number] << std::endl;
-		//if (!read_file_line_data()) {
-		//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-		//	return false;
-		//}
-		//hex_surface_automata_rule.name = input_line;
+//std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule BBBBB : " << line_number << ":" << lines[line_number] << std::endl;
 		hex_surface_automata_rule.name = line;
 
 		line_number++;
 		line = lines[line_number];
-std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule CCCCC : " << line_number << ":" << lines[line_number] << std::endl;
-		//if (!read_file_line_data()) {
-		//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-		//	return false;
-		//}
-		//if(stoi(input_line) == 0) hex_surface_automata_rule.active_rule = false; else hex_surface_automata_rule.active_rule = true;
+//std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule CCCCC : " << line_number << ":" << lines[line_number] << std::endl;
 		if(stoi(line) == 0) hex_surface_automata_rule.active_rule = false; else hex_surface_automata_rule.active_rule = true;
 
 		line_number++;
 		line = lines[line_number];
-std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule DDDDD : " << line_number << ":" << lines[line_number] << std::endl;
-		//if (!read_file_line_data()) {
-		//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-		//	return false;
-		//}
-		//hex_surface_automata_rule.hex_state = stof(input_line);
+//std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule DDDDD : " << line_number << ":" << lines[line_number] << std::endl;
 		hex_surface_automata_rule.hex_state = stof(line);
 
 		line_number++;
 		line = lines[line_number];
-std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule EEEEE : " << line_number << ":" << lines[line_number] << std::endl;
-		//if (!read_file_line_data()) {
-		//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-		//	return false;
-		//}
-		//hex_surface_automata_rule.start_step = stoi(input_line);
+//std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule EEEEE : " << line_number << ":" << lines[line_number] << std::endl;
 		hex_surface_automata_rule.start_step = stoi(line);
 
 		line_number++;
 		line = lines[line_number];
-std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule FFFFF : " << line_number << ":" << lines[line_number] << std::endl;
-		//if (!read_file_line_data()) {
-		//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-		//	return false;
-		//}
-		//hex_surface_automata_rule.end_step = stoi(input_line);
+//std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule FFFFF : " << line_number << ":" << lines[line_number] << std::endl;
 		hex_surface_automata_rule.end_step = stoi(line);
 
 
 		// next line contains the self rule definitions where each rule defenition is seperated by the deliminator RULE_DELIMINATOR
 		line_number++;
 		line = lines[line_number];
-		//if (!read_file_line_data()) {
-		//	//QMessageBox::information(NULL,"Import Automata byte rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", //QMessageBox::Ok);
-		//	return false;
-		//}
-		//std::stringList rule_list = input_line.split(RULE_DELIMINATOR);
 
 		std::vector<std::string> rule_list;
-		//rule_list = FW::stringtools::split(input_line, RULE_DELIMINATOR);
 		rule_list = FW::stringtools::split(line, RULE_DELIMINATOR);
 
-std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule GGGGG : " << line_number << ":" << lines[line_number] << ": size "<< rule_list.size() << std::endl;
+//std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule GGGGG : " << line_number << ":" << lines[line_number] << ": size "<< rule_list.size() << std::endl;
 
 		if(rule_list.size()<4){
-			//QMessageBox::information(NULL,"Import hex surface Automata rules", "Error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n"+"Incorrect parameters for self rule", QMessageBox::Ok);
+//QMessageBox::information(NULL,"Import hex surface Automata rules", "Error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n"+"Incorrect parameters for self rule", QMessageBox::Ok);
 			return false;
 		}
 
@@ -300,18 +234,14 @@ std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte
 		for (int i = 0; i < NUMBER_HEX_NEIGHBOURS; i++){
 			line_number++;
 			line = lines[line_number];
-std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule HHHHHH : " << line_number << ":" << lines[line_number] << std::endl;
-			//if(!read_file_line_data())  {
-			//	//QMessageBox::information(NULL,"Import hex surface Automata rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", QMessageBox::Ok);
-			//	return false;
-			//}
+//std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule HHHHHH : " << line_number << ":" << lines[line_number] << std::endl;
+
 
 			std::vector<std::string> rule_list;
-			//rule_list = FW::stringtools::split(input_line, RULE_DELIMINATOR);
 			rule_list = FW::stringtools::split(line, RULE_DELIMINATOR);
 
 			if(rule_list.size()<4){
-				//QMessageBox::information(NULL,"Import hex surface Automata rules", "Error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n"+"Incorrect parameters for self rule", QMessageBox::Ok);
+//QMessageBox::information(NULL,"Import hex surface Automata rules", "Error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n"+"Incorrect parameters for self rule", QMessageBox::Ok);
 				return false;
 			}
 
@@ -335,27 +265,13 @@ std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte
 		// next line read must be a RULE_BLOCK_END flag
 		line_number++;
 		line = lines[line_number];
-std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule IIIIIIII : " << line_number << ":" << lines[line_number] << std::endl;
-		//if(!read_file_line_data())  {
-		//	//QMessageBox::information(NULL,"Import hex surface Automata rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\n", QMessageBox::Ok);
-		//	return false;
-		//}
-		
-		
-		//if (input_line.find(RULE_BLOCK_END) == (std::string::npos)) {
+//std::cout << "import_export_hex_surface_automata_rules_class::read_automata_byte_rule IIIIIIII : " << line_number << ":" << lines[line_number] << std::endl;
+
 		if (!FW::stringtools::contains(lines[line_number], RULE_BLOCK_END)) {
-			//QMessageBox::information(NULL,"Import hex surface Automata rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing Rule block end flag", QMessageBox::Ok);
+//QMessageBox::information(NULL,"Import hex surface Automata rules", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing Rule block end flag", QMessageBox::Ok);
 			return false;
 		}
 
 		return true;
 	}
 
-//-------------------------------------------------------------
-	//bool import_export_hex_surface_automata_rules_class::read_file_line_data() {
-	//	if (stream.eof()) return false;
-
-	//	std::getline(stream, input_line);
-
-	//	return true;
-	//}

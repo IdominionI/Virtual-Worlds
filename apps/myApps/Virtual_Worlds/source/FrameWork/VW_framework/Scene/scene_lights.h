@@ -3,12 +3,20 @@
 #include <string>
 #include <vector>
 
-//#include <VW_framework/3D/vw_light.h>
+//#include "scene_global_light.h"
 #include <ofLight.h>
 
 #include "../App/global.h" // Need to check that indeed unique ids are generated and stored
 
 #include "../Widgets/parameter_widget_base.h"
+
+
+// NOTE : CRITICAL :
+// Seems any attept to create a derived class or ones own light class ends up with catastopic
+// failure with the app crashing seeimingly due to a inseperable connection between ofLight
+// and ofGLProgrammableRenderer. If do not use ofLight have an application crash. !!!!!!
+// Because of this need to have any new functionality or modification of ofLight made by
+// modifying ofLight class or to have functions using ofLight class. !!!!!!
 
 class scene_lights_manager_class {
 public:
@@ -26,7 +34,15 @@ public:
 
 		lights.clear();
 		selected_light = NULL;
+		//delete scene_global_light;// ++++++
 	}
+
+	 // NOTE : CRITICAL any derived class or reference to ofLight must be of a pointer type 
+	 // otherwise the application will crash !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	//scene_global_light_class  *scene_global_light; // Cannot use as this will crash app
+
+	ofLight *scene_global_light;
 
 	std::vector<ofLight*>  lights;
 	ofLight *selected_light = NULL;
@@ -134,6 +150,27 @@ public:
 
 	parameter_widget_base_class   parameter_widget;
 	// node_editor_base_class          node_widget;
+
+	// +++++++++++++++++++++++++++++++++++++++++++
+	
+	// Functions that would have desired to be in a derived or in a non
+	// openframeworks class
+	
+	bool define_global_light();
+	void update_global_shader_uniforms(GLint shader_id);
+	//ofLight *get_global_light();
+
+	bool define_default_spot_light();
+	bool define_default_point_light();
+	bool define_default_area_light();
+	bool define_default_directional_light();
+	void define_default_light_common_settings(ofLight *light);
+
+	//void display_light_parameters();
+	//void save_light_parameters();
+	//void import_light_parameters();
+	
+	// +++++++++++++++++++++++++++++++++++++++++++
 
 protected:
 

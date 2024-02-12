@@ -220,26 +220,6 @@ void  node_basis_class::export_mandatory_node_data(std::fstream& stream) {
 
     ImVec2 node_grid_space_pos = graph->node_editor->GetNodeGridSpacePos(node_id);
     stream << node_grid_space_pos.x << ":" << node_grid_space_pos.y << std::endl;
-
-    // Not sure neeed this dispaly data
-    //ImRect node_box      ;
-    //ImVec2 node_dimensions = { 100.0f,5.0f };
-    //ImVec2 node_draw_dimensions = { 100.0f,5.0f };
-    //ImVec2 node_location = { 0.0f,0.0f };
-
-    //// Node Drawing attributes
-    //ImColor          node_header_color = ImColor(0, 139, 139, 255);
-    //ImColor          node_header_hovered_color = ImColor(0, 175, 175, 255);
-    //ImColor          node_header_selected_color = ImColor(0, 255, 255, 255);
-    //ImU32            node_header_label_color = ImColor(255, 255, 255, 255);// ImGui does not have a color function that accepts its own ImColor type for textS
-
-    //ImColor          node_body_color = ImColor(75, 75, 75, 255);
-    //ImColor          node_body_hovered_color = ImColor(100, 100, 100, 255);
-    //ImColor          node_body_selected_color = ImColor(150, 150, 150, 255);
-    //ImColor          node_outline_color = ImColor(50, 50, 50, 255);
-
-
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 
 void node_basis_class::export_node_pin_data(std::fstream& stream) {

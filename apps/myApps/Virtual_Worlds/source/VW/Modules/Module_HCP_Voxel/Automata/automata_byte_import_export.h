@@ -39,10 +39,6 @@ class import_export_byte_automata_rules_class {
 public:
 	std::fstream stream;
 
-	//std::string input_line;
-
-	//int line_number = 0;
-
 	std::vector <voxel_hcp_automata_byte_rule_struct_type>  byte_automata_rules;
 
 	int open_file_stream(std::string filename, int write_mode);
@@ -51,13 +47,9 @@ public:
 	void write_hcp_automata_byte_rules(std::fstream &stream);
 	bool open_file_to_read(std::string filename);
 	bool import_hcp_automata_byte_rules(std::vector <voxel_hcp_automata_byte_rule_struct_type>& automata_byte_rules_parameters, std::string file_pathname);
-	//bool read_automata_byte_rules_into_byte_rules_parameters(std::string file_pathname, std::vector <voxel_hcp_automata_byte_rule_struct_type>& generator_parameters);
 	bool read_automata_byte_rules_into_byte_rules_parameters(std::vector<std::string> lines, std::vector <voxel_hcp_automata_byte_rule_struct_type>& generator_parameters, int& line_number);
-	//bool read_automata_byte_rule(std::string file_pathname, voxel_hcp_automata_byte_rule_struct_type& voxel_hcp_automata_rule);
 	bool read_automata_byte_rule(std::vector<std::string> lines, voxel_hcp_automata_byte_rule_struct_type& voxel_hcp_automata_rule, int& line_number);
 
 
-private:
-	//bool read_file_line_data();
-
+//private:
 };

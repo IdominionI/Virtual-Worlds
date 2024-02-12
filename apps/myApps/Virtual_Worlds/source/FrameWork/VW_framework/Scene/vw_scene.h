@@ -1,5 +1,6 @@
 #pragma once
 
+//#include "scene_settings.h" // +++++ place this include here above #include #include "scene_entities_manager.h" and do not need to include in scene_entities_manager.h or scene_object_categories.h
 #include "scene_entities_manager.h"
 
 struct shadow_settings_struct_type {
@@ -15,18 +16,19 @@ public:
 	vw_scene_class() {}
 	~vw_scene_class() {}
 
+	scene_settings_struct_type   scene_settings;
 	scene_entities_manager_class scene_entities_manager;
 
 	void render_scene() {
-		setup_scene_lights();
-		setup_scene_camera();
-		setup_scene_objects();
+		//setup_scene_lights(); // not yet implemented
+		//setup_scene_camera(); // not yet implemented
+		//setup_scene_objects(); // not yet implemented
 		
 		render_scene_objects();
-		render_scene_overlays();
+		//render_scene_overlays(); // not yet implemented
 
-		exit_scene_cameras();
-		exit_scene_lights();
+		//exit_scene_cameras(); // not yet implemented
+		//exit_scene_lights(); // not yet implemented
 	}
 
 	// !!!!!!!!!!!!!!!!!!!!! Scene render shadow management !!!!!!!!!!!!!!!!!!!!!!!!!
@@ -143,7 +145,7 @@ private:
 	}
 
 	void render_scene_objects() {
-		scene_entities_manager.render_objects();
+		scene_entities_manager.render_objects(scene_settings);
 	}
 
 	void render_scene_overlays(){

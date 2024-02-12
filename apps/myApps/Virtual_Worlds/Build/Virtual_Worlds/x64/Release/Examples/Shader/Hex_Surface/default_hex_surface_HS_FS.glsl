@@ -21,6 +21,6 @@ void main(){
 
    //gl_FragColor = fs_in.varyingColor;
    frag_color = fs_in.varyingColor;
-   
-   
+   //frag_color = vec4(0.0,1.0,0.0,1.0);
+
 }

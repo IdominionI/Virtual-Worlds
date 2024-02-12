@@ -15,7 +15,6 @@
 		}
 
 		const char* invocation_items[] = { "1", "32", "64", "128", "256", "512", "1024" };// This cannot be defined outside this function	
-		//float x_pos = 10.0f, y_pos = 260.0f;
 		float x_pos = 10.0f, y_pos = 180.0f;
 
 		text("Expression : ", x_pos, y_pos);
@@ -151,7 +150,7 @@
 	}
 
 	void voxel_hcp_generation_widget_class::execute_voxel_function(bool notification) {
-std::cout <<"Execute Function button clicked\n";
+//std::cout <<"Execute Function button clicked\n";
 
 		//####### GET  OBJECT DATA THAT HAS PARAMETER DATA AND UPDATE #######
 
@@ -172,9 +171,6 @@ std::cout <<"Execute Function button clicked\n";
 		define_voxel_generation_parameters(); // Only need to define invocation values
 //printf("INFO","Execute Buttton 111 : \n");
 		// set voxel_generation object id to execute funtion data on
-		
-		//voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters = voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters;
-		
 		voxel_generator.cloud      = voxel_hcp_object_to_execute;
 		voxel_generator.cloud_data = &voxel_hcp_object_to_execute->voxel_object_data;
 		voxel_generator.log_panel  = log_panel;
@@ -197,25 +193,25 @@ if (log_panel != NULL) log_panel->application_log.AddLog("INFO : After  voxel_hc
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function 4444\n");
 
 		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
-			shader_class shader;
+		shader_class shader;
 // **** Update voxel hcp shader variable values define  to be used in all voxel hcp shaders as default
-			float vox_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * voxel_scale_value;
+		float vox_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * voxel_scale_value;
 
-			shader.set_f1(shader.getProgram(), vox_size, "voxSize");
+		shader.set_f1(shader.getProgram(), vox_size, "voxSize");
 
-			shader.set_ivec3(shader.getProgram(), voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension, "voxel_matrix_dimension");
+		shader.set_ivec3(shader.getProgram(), voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension, "voxel_matrix_dimension");
 
-			shader.set_vec3(shader.getProgram(), voxel_hcp_object_to_execute->voxel_object_data.matrix_origin, "voxel_origin");
+		shader.set_vec3(shader.getProgram(), voxel_hcp_object_to_execute->voxel_object_data.matrix_origin, "voxel_origin");
 
-			float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0f * sqrt(6.0f) / 3.0f;
-			shader.set_f1(shader.getProgram(), voxel_hcp_z_increment, "voxel_hcp_z_increment");
+		float voxel_hcp_z_increment = voxel_hcp_object_to_execute->voxel_object_data.voxel_size * 2.0f * sqrt(6.0f) / 3.0f;
+		shader.set_f1(shader.getProgram(), voxel_hcp_z_increment, "voxel_hcp_z_increment");
 
-			//voxel surface display data
-			float v_min = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.min_surface_value;
-			shader.set_f1(shader.getProgram(), v_min, "voxel_min_surface_display_value");
+		//voxel surface display data
+		float v_min = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.min_surface_value;
+		shader.set_f1(shader.getProgram(), v_min, "voxel_min_surface_display_value");
 
-			float v_max = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.max_surface_value;
-			shader.set_f1(shader.getProgram(), v_max, "voxel_max_surface_display_value");
+		float v_max = (float)voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.max_surface_value;
+		shader.set_f1(shader.getProgram(), v_max, "voxel_max_surface_display_value");
 
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function 77777\n");
 		if (notification)
@@ -351,9 +347,9 @@ if (log_panel != NULL) log_panel->application_log.AddLog("INFO : After  voxel_hc
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No compute expresion file defined to save voxel generation parameter data to\n");
 			return;
 		} 
-		//else
-			//printf("save_generation_parameters != NULL %s \n", file_pathname);
-			//printf("save_generation_parameters != NULL  \n");
+//else
+//printf("save_generation_parameters != NULL %s \n", file_pathname);
+//printf("save_generation_parameters != NULL  \n");
 
 		switch (invocation) {
 			case 0 : voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.invocation = 1;    break;
@@ -383,8 +379,8 @@ if (log_panel != NULL) log_panel->application_log.AddLog("INFO : After  voxel_hc
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No compute expresion file defined to import voxel generation parameter data from.\n");
 			return;
 		}
-		//else
-		//	printf("load_generation_parameters != NULL  \n");
+//else
+//	printf("load_generation_parameters != NULL  \n");
 
 		voxel_function_import_export.import_voxel_generated_function(voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters, file_pathname);
 
@@ -402,7 +398,7 @@ if (log_panel != NULL) log_panel->application_log.AddLog("INFO : After  voxel_hc
 	}
 
 	void voxel_hcp_generation_widget_class::clear_variables() {
-		//printf("Clear Variables clicked");// replace with clear variables
+//printf("Clear Variables clicked");// replace with clear variables
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.variables.clear();
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.int_variables.clear();
 		voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.bool_variables.clear();

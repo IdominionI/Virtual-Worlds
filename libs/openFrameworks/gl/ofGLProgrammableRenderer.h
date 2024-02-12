@@ -246,6 +246,22 @@ public:
 	//void bind(const ofCamera& camera, const ofRectangle& viewport){
 	//}
 
+	glm::vec3 camera_forward_dir;
+	glm::vec3 camera_up_dir;
+	glm::vec3 camera_right_dir;
+
+	void set_camera_forward_dir(glm::vec3 forward_dir){
+		camera_forward_dir = forward_dir;
+//std::cout << "ofGLprogramableReder::set_camera_forward_dir : " << camera_forward_dir.x << " : " << camera_forward_dir.y << " : " << camera_forward_dir.z << " : " << std::endl;
+	}
+
+	void set_camera_up_dir(glm::vec3 up_dir){
+		camera_up_dir = up_dir;
+	}
+
+	void set_camera_right_dir(glm::vec3 right_dir){
+		camera_up_dir = right_dir;
+	}
 
 	ofMatrixStack get_matrixStack() {
 		return matrixStack;

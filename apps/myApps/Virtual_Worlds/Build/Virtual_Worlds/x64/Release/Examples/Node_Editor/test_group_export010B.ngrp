@@ -113,7 +113,6 @@ b
 ]
 [
 F:/Projects/Git_repository/VW_OFW_0_12/apps/myApps/Virtual_Worlds/Build/Virtual_Worlds/x64/Release/Examples/Shader/HCP_Voxel/new_test_TRD_VS.glsl
-F:/Projects/Git_repository/VW_OFW_0_12/apps/myApps/Virtual_Worlds/Build/Virtual_Worlds/x64/Release/Examples/Shader/HCP_Voxel/default_gen_TRD_PGS.glsl
 F:/Projects/Git_repository/VW_OFW_0_12/apps/myApps/Virtual_Worlds/Build/Virtual_Worlds/x64/Release/Examples/Shader/HCP_Voxel/default_gen_TRD_GS.glsl
 F:/Projects/Git_repository/VW_OFW_0_12/apps/myApps/Virtual_Worlds/Build/Virtual_Worlds/x64/Release/Examples/Shader/HCP_Voxel/default_gen_TRD_FS.glsl
 <
@@ -272,8 +271,7 @@ a
 ]
 [
 F:/Projects/Git_repository/VW_OFW_0_12/apps/myApps/Virtual_Worlds/Build/Virtual_Worlds/x64/Release/Examples/Shader/Hex_Surface/hex_surface_HS_new_VS.glsl
-F:/Projects/Git_repository/VW_OFW_0_12/apps/myApps/Virtual_Worlds/Build/Virtual_Worlds/x64/Release/Examples/Shader/Hex_Surface/hex_surface_HS_PGS.glsl
-...###hsf2
+F:/Projects/Git_repository/VW_OFW_0_12/apps/myApps/Virtual_Worlds/Build/Virtual_Worlds/x64/Release/Examples/Shader/Hex_Surface/hex_surface_HS_GS.glsl
 F:/Projects/Git_repository/VW_OFW_0_12/apps/myApps/Virtual_Worlds/Build/Virtual_Worlds/x64/Release/Examples/Shader/Hex_Surface/default_hex_surface_HS_FS.glsl
 <
 1

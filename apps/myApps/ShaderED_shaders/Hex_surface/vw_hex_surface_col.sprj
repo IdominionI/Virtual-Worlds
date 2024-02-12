@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project version="2">
+	<pipeline>
+		<pass name="Test" type="shader" active="true" patchverts="1">
+			<shader type="vs" path="shaders/vw_hex_surface_col_TestVS.glsl" entry="main" />
+			<shader type="ps" path="shaders/vw_hex_surface_col_TestPS.glsl" entry="main" />
+			<shader used="true" type="gs" path="shaders/vw_hex_surface_col_TestGS.glsl" entry="main" />
+			<inputlayout>
+				<item value="Position" semantic="POSITION" />
+				<item value="Normal" semantic="NORMAL" />
+				<item value="Tangent" semantic="TANGENT" />
+				<item value="Bitangent" semantic="BITANGENT" />
+			</inputlayout>
+			<rendertexture />
+			<items>
+				<item name="girlface" type="model">
+					<filepath>..\..\..\..\..\..\..\Temp\Temp\shaders\shaders\girl_face.ply</filepath>
+					<grouponly>false</grouponly>
+				</item>
+			</items>
+			<itemvalues />
+			<variables>
+				<variable type="float4x4" name="matVP" system="ViewProjection" />
+				<variable type="float4x4" name="matGeo" system="GeometryTransform" />
+				<variable type="float4x4" name="projection" system="Projection" />
+				<variable type="float4x4" name="view" system="View" />
+				<variable type="float4x4" name="model" system="GeometryTransform" />
+				<variable type="float4x4" name="modelViewProjectionMatrix" system="GeometryTransform" />
+			</variables>
+			<macros>
+				<define name="MAGNITUDE" active="true">0.2</define>
+			</macros>
+		</pass>
+	</pipeline>
+	<objects />
+	<cameras />
+	<settings>
+		<entry type="file" name="Test" shader="vs" />
+		<entry type="file" name="Test" shader="ps" />
+		<entry type="file" name="Test" shader="gs" />
+		<entry type="camera" fp="false">
+			<distance>4</distance>
+			<pitch>-45</pitch>
+			<yaw>10</yaw>
+			<roll>360</roll>
+		</entry>
+		<entry type="clearcolor" r="0" g="0" b="0" a="0" />
+		<entry type="usealpha" val="false" />
+	</settings>
+	<plugindata />
+</project>

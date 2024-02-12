@@ -60,6 +60,7 @@
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_automata_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.cpp" />
+    <ClCompile Include="source\FrameWork\VW_framework\Scene\scene_lights.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -85,10 +86,6 @@
     <ClInclude Include="source\FrameWork\VW_framework\GL\opengl_defines.h" />
     <ClInclude Include="source\FrameWork\VW_framework\GL\vw_shader_constructor.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Geometry\vw_point_cloud.h" />
-    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_gui.h" />
-    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_node_editor.h" />
-    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_render.h" />
-    <ClInclude Include="source\VW\Basis_classes\Entity\entity_object_template.h" />
     <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\menus.h" />
     <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\ImGui_utils.h" />
     <ClInclude Include="source\FrameWork\Kernels\imgui-docking\imconfig.h" />
@@ -215,5 +212,14 @@
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Animation\hex_surface_automata_animation.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Object\vw_object_material.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_settings.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\global_light_widget.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\camera_widget.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\App\user_bindings.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Kernal\unicode.h" />
+    <ClInclude Include="source\VW\Editor\Main_Window\Widgets\viewport_properties_widget.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\3D\Overlays\reference_grid.h" />
+    <ClInclude Include="source\FrameWork\Kernels\Umath\u_math_helpers.h" />
   </ItemGroup>
 </Project>

@@ -19,10 +19,7 @@ public:
 		return define_link_node(ui_node_type.node_type);
 	}
 
-	//bool define_link_node(int node_link_type, ImVec2 click_pos, node_id_type  entity_id_) {
 	bool define_link_node(int node_link_type) {
-		//node_link_type = link_type;
-
 		if (node_link_type == NODE_TYPE_ID_GROUP_INPUT) {
 			link_type_text = " inputs";
 
@@ -53,20 +50,6 @@ public:
 		// !!!            POSSIBLE VALUES
 
 		ui_node_type.category = NODE_CATEGORY_ID_GROUP;
-
-		//Define Node display attributes
-		//ImVec2 node_dimensions     = { 100.0f,100.0f };
-		//node_header_color          = ImColor(0, 0, 139, 255);
-		//node_header_hovered_color  = ImColor(0, 175, 175, 255);
-		//node_header_selected_color = ImColor(0, 255, 255, 255);
-		//node_header_label_color    = ImColor(255, 255, 255, 255);// ImGui does not have a color function that accepts its own ImColor type for textS
-
-		//node_body_color            = ImColor(0, 0, 255, 255);
-		//node_body_hovered_color    = ImColor(0, 175, 175, 255);
-		//node_body_selected_color   = IM_COL32(0, 255, 255, 255);
-		//node_outline_color         = IM_COL32(255, 255, 255, 255);
-
-		//graph->node_editor->SetNodeScreenSpacePos(node_id, click_pos);// This creates node in ImNodes editor
 		if (ui_node_type.node_type == NODE_TYPE_ID_GROUP_INPUT) {
 			ui_node_type.node_data_context = NODE_GROUP_INPUT_LINK_DATA_CONTEXT;
 			graph->node_editor->SetNodeGridSpacePos(node_id, { 50.0,100.0 });// This creates node in ImNodes editor
@@ -112,8 +95,6 @@ public:
 	// all evaluated at the same time and thus need to be skipped if no evaluation
 	// in a linked pin of a node is performed.
 	void evaluate_inputs() {
-		//std::vector<link_struct_type > evaluated_nodes_link;
-
 		for (std::pair<int, int> input_link : input_links) {
 			//if (input_link.first == INVALID_ID) continue; // Have not found an input pin in the parent group node : skip to next input link
 
@@ -187,11 +168,4 @@ public:
 		}
 		stream << GRAPH_LINK_NODE_END_DATA_FLAG << std::endl;
 	}
-
-protected:
-
-
-private:
-
-
 };

@@ -27,7 +27,7 @@ public:
 		if (node == NULL) return INVALID_NODE_ID;
 
 		node->node_id = node_id_key.get_available_id_key();
-std::cout << ("graph_class::add_node:: 000 %i \n", node->node_id);
+//std::cout << ("graph_class::add_node:: 000 %i \n", node->node_id);
 		node->graph = this;//*****
 
 		node->define_inputs(pins);
@@ -40,11 +40,11 @@ std::cout << ("graph_class::add_node:: 000 %i \n", node->node_id);
 	}
 
 	int import_node(node_basis_class *node, ImVec2 click_pos, node_id_type entity_id, void *node_misc_data = NULL) {
-std::cout << "graph_class::import_node:: 000 %i \n";
+//std::cout << "graph_class::import_node:: 000 %i \n";
 		if (node == NULL) return INVALID_NODE_ID;
-std::cout << "graph_class::import_node:: 111 : "<< node->node_id << std::endl;
+//std::cout << "graph_class::import_node:: 111 : "<< node->node_id << std::endl;
 		node->node_id = node_id_key.get_available_id_key();
-std::cout << "graph_class::import_node:: 222 : "<< node->node_id << std::endl;
+//std::cout << "graph_class::import_node:: 222 : "<< node->node_id << std::endl;
 		node->graph = this;
 
 		if (!node->define_import_node(click_pos, entity_id, node_misc_data)) {
@@ -76,7 +76,6 @@ std::cout <<"graph_class::delete_node:: AAAAA node == NULL : " << node_id << " :
 		node_id_key.assign_free_id_key(node_id);
 	}
 
-	//*****
 	void delete_node_links(int node_id) {
 		node_basis_class *node = nodes.get_node(node_id);
 		if (node == NULL) {
@@ -86,7 +85,6 @@ std::cout <<"graph_class::delete_node:: AAAAA node == NULL : " << node_id << " :
 		node->delete_node_links(links);
 	}
 
-	//*****
 	bool node_exists(int entity_id, int entity_type_id, int entity_category_id) {
 		for (node_basis_class *node : nodes.nodes) {
 			if (node->node_entity_id          == entity_id          &&
@@ -163,11 +161,6 @@ public:
 //printf("node_tree_class_basis::delete_node_tree 4444\n");
 		return true;
 	}
-
-	//virtual bool save_node_tree(graph_class* graph, node_basis_class* node) {}
-	//virtual bool load_node_tree(graph_class* graph) {}
-
-
 
 private:
 	std::vector<int> tree_inputs;
@@ -254,5 +247,3 @@ private:
 	}
 
 };
-
-// ****************************

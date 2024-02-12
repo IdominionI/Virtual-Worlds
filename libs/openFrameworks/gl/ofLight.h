@@ -38,6 +38,11 @@ const ofFloatColor & ofGetGlobalAmbientColor();
 
 //----------------------------------------
 // Use the public API of ofNode for all transformations
+// --------------- VW CUSTOM NOTICE ----------------
+// NOTE : CRITICAL :::: any derived class or reference to ofLight must be
+// of a pointer type otherwise the application will crash while starting up
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 class ofLight : public ofNode {
 public:
 	ofLight();
@@ -130,8 +135,14 @@ public:
 		*data = light_settings;
 	}
 
+	//std::shared_ptr<Data> get_light_settings() {
+	//	return data;
+	//}
+
 	// SUBSTITUTED END ###########################################
 	// VWCUSTOM ADDED BEGIN +++++++++++++++++++++++++++
+
+	float intensity; // Brightness of light source Why is this missing in ofLight
 
 	// to do or to have performed in vw_scene_lights_class
 	// dependent upon type of light

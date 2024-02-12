@@ -1,6 +1,8 @@
 #include "node_group.h"
 #include "node_editor.h"
 
+// Cannot have define_node function in the node_group.h file as will incur circular
+// referencing errors.
 bool node_group_class::define_node(ImVec2 click_pos, node_id_type  entity_id_) {
     label = "Node Group " + std::to_string(node_id);
 
@@ -31,3 +33,9 @@ bool node_group_class::define_node(ImVec2 click_pos, node_id_type  entity_id_) {
     return true;
 }
 
+bool node_group_class::define_import_node(ImVec2 click_pos, node_id_type  entity_id_, void* node_misc_data) {
+    // Need this function in the node_group.cpp file rather than the node_group.h file otherwise will get linking
+    // errors without compiling the node_group.cpp file seperatly before the whole project.
+    // define_node function needed in a .cpp file to avoid cicular referencing errors with the node_editor.h
+	return define_node(click_pos, entity_id_);
+}

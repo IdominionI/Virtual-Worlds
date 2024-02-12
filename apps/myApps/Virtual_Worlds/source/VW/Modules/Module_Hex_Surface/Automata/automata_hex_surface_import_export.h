@@ -3,8 +3,6 @@
 #include <string>
 #include <vector>
 
-//#include <Source/Editor/Import_Export/vw_import_export_parameters.h>//*****
-
 #include "../Object/DataTypes/dt_hex_surface_automata.h"
 
 #define OVER_WRITE_FUNCTION_FILE    100
@@ -51,14 +49,9 @@ public:
 	void write_hcp_automata_byte_rules(std::fstream& stream);
 	bool open_file_to_read(std::string filename);
 	bool import_hcp_automata_byte_rules(std::vector <hex_surface_automata_rule_struct_type>& automata_byte_rules_parameters, std::string file_pathname);
-	//bool read_automata_byte_rules_into_byte_rules_parameters(std::string file_pathname, std::vector <hex_surface_automata_rule_struct_type>& generator_parameters);
 	bool read_automata_byte_rules_into_byte_rules_parameters(std::vector<std::string> lines,std::vector <hex_surface_automata_rule_struct_type>& generator_parameters, int& line_number);
-	//bool read_automata_byte_rule(std::string file_pathname, hex_surface_automata_rule_struct_type& hex_surface_automata_rule);
 	bool read_automata_byte_rule(std::vector<std::string> lines, hex_surface_automata_rule_struct_type& hex_surface_automata_rule, int& line_number);
 
 
-private:
-	//bool read_file_line_data();
-	//#define endl  '\n'
-
+//private:
 };

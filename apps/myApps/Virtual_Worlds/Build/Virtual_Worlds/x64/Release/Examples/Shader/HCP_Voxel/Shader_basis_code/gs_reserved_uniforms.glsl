@@ -7,6 +7,7 @@
 
 #include "universal_reserved_uniforms.glsl"
 
+//in vec4 position;
 
 uniform float voxSize;
 

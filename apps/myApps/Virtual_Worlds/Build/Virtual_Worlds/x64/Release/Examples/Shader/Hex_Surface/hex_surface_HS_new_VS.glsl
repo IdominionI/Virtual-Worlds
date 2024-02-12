@@ -18,6 +18,8 @@ vec4 light_color     = vec4(1.0,0.0,0.0,1.0);
 //vec4 raw_color       = vec4(1.0,0.0,0.0,1.0);
 vec4 raw_color;
 
+uniform int display_as_points;
+
 // -------------Application dynamicly defined uniorms---------
 // Do not delete next line with DDU as applicatioin defined uniforms are placed here
 // Must exist in every glsl code unless user whishes to manually enter uniforms that
@@ -148,22 +150,18 @@ vec4  map_height_color(){
 void main(){
 
 	// following required as a min
-	//if(display_as_points != 0)
-		//gl_Position = mvpMatrix*(vertex+vec4(0.0,0.0,0.0,1.0)); // required as a min
-		//gl_Position = mvpMatrix*(vec4(vertex.x,vertex.y,vertex.z,1.0)); // required as a min
+	if(display_as_points == 0){ // do not display as points
 		gl_Position = position; // required as a min
-	//else
-	//	gl_Position = vec4(vertex.x,vertex.y,vertex.z,1.0) ; // required as a min
-		//gl_Position = vertex + vec4(a+b,0.0,0.0,0.0); // required as a min
-
-	raw_color = vec4(1.0,0.0,1.0,1.0); // required as a min testing 
+		//gl_Position = vec4(position.x,position.y,position.z,1.0); // required as a min
+		//vs_out.varyingColor = vec4(1.0,0.0,0.0,1.0);
+	}else{// diaplay as points
+		gl_Position = modelViewProjectionMatrix*position; // required as a min
+		//vs_out.varyingColor = vec4(0.0,1.0,0.0,1.0);
+	}
 	
-	//raw_color = map_height_color();// required as a min not working properly for unknown reason need to fix up
+	vertex = position.xyz;
+	raw_color = map_height_color();// required as a min not working properly for unknown reason need to fix up
 	
 	
 	vs_out.varyingColor = raw_color;
-	//vec4 h_color = map_height_color();
-	
-	//raw_color = use_lighting(gl_Position, normal, h_color);
-
 }

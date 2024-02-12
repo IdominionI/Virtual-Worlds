@@ -54,40 +54,17 @@ void voxel_shaders_widget_class::display() {
 	if (ex_button(voxel_shader_parameters->vertex_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 		select_vertex_shader_file();
 
-	//ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
-	//ImGui::SetCursorPosY(y_pos);
-	//ImGui::Checkbox("###sddvsf", &voxel_shader_parameters->use_default_vertex_shader);
-
-	y_pos += 23;
-	text("Point   :", x_pos, y_pos);
-
-	//if (ex_button(voxel_shader_parameters->point_geometry_shader_file_name.c_str(), x_pos + 80, y_pos, 190, 20))
-	if (ex_button(voxel_shader_parameters->point_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
-		select_point_geometry_shader_file();
-
-	//ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
-	//ImGui::SetCursorPosY(y_pos);
-	//ImGui::Checkbox("###sddpsf", &voxel_shader_parameters->use_default_point_shader);
-
 	y_pos += 23;
 	text("Geometry:", x_pos, y_pos);
 
 	if (ex_button(voxel_shader_parameters->geometry_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 		select_geometry_shader_file();
 
-	//ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
-	//ImGui::SetCursorPosY(y_pos);
-	//ImGui::Checkbox("###sddgsf", &voxel_shader_parameters->use_default_geometry_shader);
-
 	y_pos += 23;
 	text("Fragment:", x_pos, y_pos);
 
 	if (ex_button(voxel_shader_parameters->fragment_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 		select_fragment_shader_file();
-
-	//ImGui::SetCursorPosX(x_pos + 120 + 150 + 3);
-	//ImGui::SetCursorPosY(y_pos);
-	//ImGui::Checkbox("###sddfsf", &voxel_shader_parameters->use_default_fragment_shader);
 
 	y_pos += 23;
 	text("Shader Variables", x_pos + 80, y_pos);

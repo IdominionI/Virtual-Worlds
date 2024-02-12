@@ -5,6 +5,8 @@
 #include <VW_framework/Shader/shader_components.h>
 #include "../Widgets/parameter_widget_base.h"
 
+#include "vw_object_material.h"
+
 class vw_object_base_class : public ofNode{
 public:
 	//vw_object_base_class() {}
@@ -15,6 +17,8 @@ public:
 
 	bool display_object = true;
 	bool active_object  = false;
+
+	vw_object_material_struct_type material; // +++++++++++
 
 	// Need to use a void pointer so as to allow objects of same category 
 	// but different data structures to be stored in the same vector array

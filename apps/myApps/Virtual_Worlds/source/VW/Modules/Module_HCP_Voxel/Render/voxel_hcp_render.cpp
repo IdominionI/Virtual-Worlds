@@ -11,57 +11,28 @@
 //std::cout << "VERTEX SOURCE 02\n" << shader_material->vertex_shader_file_pathname << "END VERTEX SOURCE\n";
 //printf("POINT SOURCE \n%s END POINT SOURCE\n", vw_point_geometry_shader.shader_code.c_str());
 
-//std::cout << "voxel_hcp_render_class::define_shader_program 000\n";
+//std::cout << "voxel_hcp_render_class::define_shader_program 000 : " << shader_material->use_point_shader << std::endl;
 
-		// Define which shaders to use and the pathname to the shader snippit  code to define the shader
-		if (shader_material->use_default_vertex_shader)
-			shader_material->glsl_vertex_shader_file_pathname = shader_material->default_vertex_shader_file_pathname;
-		else
-			shader_material->glsl_vertex_shader_file_pathname = shader_material->vertex_shader_file_pathname;
+		shader_material->glsl_vertex_shader_file_pathname = shader_material->vertex_shader_file_pathname;
 
-		if (shader_material->use_point_shader) {
-			if (shader_material->use_default_point_shader)
-				shader_material->glsl_geometry_shader_file_pathname = shader_material->default_point_shader_file_pathname;
-			else
-				shader_material->glsl_geometry_shader_file_pathname = shader_material->point_shader_file_pathname;
-		} else { // Use geometry shader
-			if (shader_material->use_default_geometry_shader)
-				shader_material->glsl_geometry_shader_file_pathname = shader_material->default_geometry_shader_file_pathname;
-			else
-				shader_material->glsl_geometry_shader_file_pathname = shader_material->geometry_shader_file_pathname;
-		}
+		shader_material->glsl_geometry_shader_file_pathname = shader_material->geometry_shader_file_pathname;
 
-		if (shader_material->use_default_fragment_shader)
-			shader_material->glsl_fragment_shader_file_pathname = shader_material->default_fragment_shader_file_pathname;
-		else
-			shader_material->glsl_fragment_shader_file_pathname = shader_material->fragment_shader_file_pathname;
+		shader_material->glsl_fragment_shader_file_pathname = shader_material->fragment_shader_file_pathname;
 
 		// Compile the OpenGL shader and store the id reference to it to be used
-		shaders_loaded = shader->load(shader_material->glsl_vertex_shader_file_pathname, shader_material->glsl_fragment_shader_file_pathname, shader_material->glsl_geometry_shader_file_pathname);
+		if (shader_material->use_point_shader)
+			shaders_loaded = shader->load(shader_material->glsl_vertex_shader_file_pathname, shader_material->glsl_fragment_shader_file_pathname);
+		else
+			shaders_loaded = shader->load(shader_material->glsl_vertex_shader_file_pathname, shader_material->glsl_fragment_shader_file_pathname, shader_material->glsl_geometry_shader_file_pathname);
 
 //std::cout << "voxel_hcp_render_class::define_shader_program 222\n";
 		if (!shaders_loaded) {
 //std::cout << "voxel_hcp_render_class::define_shader_program 333\n";
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR :  Unable to compile shader program\n");
-
-//printf("define_shader_program 22222BBBB \n");
-//if(log_panel == NULL )printf("define_shader_program 22222BBBB log_panel == NULL");
-//printf("define_shader_program 22222CCCC\n");
-
-//if (shader == nullptr) {
-//	std::cout << "voxel_hcp_render_class::define_shader_program : shader == nullptr\n";
-//	return false;
-//} else{
-//	std::cout << "BEGIN COMPILE LOG \n";
-//	std::cout << shader->compile_log;
-//	std::cout << "END COMPILE LOG \n";
-//}
 			log_panel->display_code_errors(shader->compile_log);
-
 //printf("define_shader_program 22222DDDD\n");
 			return false;
 		} else {
-
 //std::cout << "voxel_hcp_render_class::define_shader_program 444 : " << std::endl;
 			shader_material->shader_program_id = shader->getProgram();
 			if (log_panel != NULL) log_panel->application_log.AddLog("INFO : Shader program created of ID : %i\n", shader_material->shader_program_id);
@@ -92,7 +63,6 @@
 //-----------------------------------
 
 	// !!!!!!!!!!!!!!!!!!! This may all need to change !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//bool voxel_hcp_render_class::define_initial_shader_program(scene_node_class <render_object_class>* entity_render_object,voxel_hcp_object_class *voxel_hcp_object, log_panel_class *log_panel) {
 	bool voxel_hcp_render_class::define_initial_shader_program(voxel_hcp_object_class *voxel_hcp_object, log_panel_class *log_panel) {
 		material_struct_type *shader_material = &voxel_hcp_object->voxel_object_data.shader_parameters;
 		ofShader             *shader          = voxel_hcp_object->geometry->shader;// +++++

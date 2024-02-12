@@ -266,12 +266,13 @@ public:
 	// VW_CUSTOM - ADDED END ++++++++++++++++++
 
 	// VW_CUSTOM - MODIFIED BEGIN MMMMMMMMMMMMMM
+	bool bLoaded = false;
 protected:
 	// VW_CUSTOM - MODIFIED END MMMMMMMMMMMMMMMM
 
 //private:// VW_CUSTOM - COMMENTED OUT CCCCC
 	GLuint program = 0; 
-	bool bLoaded = false;
+	//bool bLoaded = false;
 
 	struct Shader{
 		GLuint id;

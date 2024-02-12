@@ -9,8 +9,14 @@
 
 #include "vw_camera_base.h"
 
+#include <VW_framework/App/user_bindings.h>
 
+enum class camera_ailgnment_type_enum {none, xy_plane, xz_plane, yz_plane };
+enum class camera_movement_mode_enum { free, xy_plane, xz_plane, yz_plane, orbital, none };
 
+//struct interaction_keys {
+//	char 
+//};
 
 /// \brief A super simple camera for interacting with objects in 3D space.
 //class ofEasyCam : public ofCamera {
@@ -22,6 +28,88 @@ public:
 
 	/// \brief Create a default camera.
 	vw_camera_class();
+
+	// VWCUSTOM ADD +++++++++++++++++++++++++++++++++
+	
+	camera_movement_mode_enum movement = camera_movement_mode_enum::free;
+
+
+	
+	bool  pitch_rotation   = true;
+	bool  yaw_rotation     = true;
+	bool  roll_rotation    = true;
+	bool  orbital_rotation = true;
+
+	float movement_factor = 1.0f;
+	float rotation_speed  = 1.0f;
+
+	glm::vec3 look_at_location = { 0.0,0.0,0.0 };
+
+	ofRectangle get_camera_viewport_rect() {
+		return viewport;
+	}
+
+	void move_in_global_direction(glm::vec3 direction);
+	void move_in_local_direction(glm::vec3 direction);
+
+	void move_forward();
+	void move_backward();
+	void move_right();   
+	void move_left();    
+	void move_up();      
+	void move_down();
+
+	void align_to_plane(camera_ailgnment_type_enum camera_ailgnment);
+
+	// Add more camera functions to be performed using the keyboard here : TO DO
+	// rotation
+	// first person/orbital rotation mode change
+	// move in a direction using keyboard while while able to look around with mouse
+
+	// Need this so does not revert any camera movements or orientations 
+	// not using the mouse to last location using mouse interaction.
+	void assign_last_mouse_translations() {
+		lastPressAxisX       = getXAxis();
+		lastPressAxisY       = getYAxis();
+		lastPressAxisZ       = getZAxis();
+		lastPressPosition    = getGlobalPosition();
+		lastPressOrientation = getGlobalOrientation();
+	}
+
+	bool keyboard_input_enabled = true;
+
+	void enable_keyboard_input();
+	void disable_keyboard_input();
+
+	// Key interactions structure and implementation has been designed to allow
+	// in the future for the user to change the default key bindings of the key
+	// to the action that the key and any key modifier performs. 
+	// This is a template to externalise or to adapt in other classes for class
+	// functionality or for the entire application. A key_interaction class is
+	// a possible to do to implement functionality to define all key bindings
+	// and modifiy them by the user.
+
+	void add_key_interaction(int interaction_id,ofKeyEventArgs::Type key_event_type, bool enabled, int keycode, int modifier);
+	void remove_key_interaction(ofKeyEventArgs::Type key_event_type, int keycode, int modifier);
+	bool has_key_interaction(ofKeyEventArgs::Type key_event_type, int keycode, int modifier);
+	bool is_key_interaction_enabled(ofKeyEventArgs::Type key_event_type, int keycode, int modifier);
+	void enable_key_interaction(ofKeyEventArgs::Type key_event_type, int keycode, int modifier);
+	void disable_key_interaction(ofKeyEventArgs::Type key_event_type, int keycode, int modifier);
+	int  get_key_interaction_id(ofKeyEventArgs::Type key_event_type, int keycode, int modifier);
+
+	void remove_all_key_interactions();
+	void remove_all_press_key_interactions();
+	void remove_all_release_key_interactions();
+
+	void key_pressed(ofKeyEventArgs &keyEvent);
+	void key_released(ofKeyEventArgs &keyEvent);
+
+	void perform_key_pressed_action(int interaction_id);
+	void perform_key_released_action(int interaction_id);
+	//+++++++++++
+
+	// END VWCUSTOM ADD +++++++++++++++++++++++++++++++++
+
 
 	/// \}
 	/// \name Rendering
@@ -174,11 +262,13 @@ public:
 	ofRectangle getControlArea() const;
 
 	/// Transformation types available for mouse interaction.
-	enum TransformType {
+	//enum TransformType {
+	enum class TransformType {
 		TRANSFORM_NONE,
 		TRANSFORM_ROTATE,
 		TRANSFORM_TRANSLATE_XY,
 		TRANSFORM_TRANSLATE_Z,
+		free, xz_plane, yz_plane, orbital,
 		TRANSFORM_SCALE
 	};
 
@@ -187,8 +277,19 @@ public:
 	bool hasInteraction(TransformType type, int mouseButton, int key = -1);
 	bool hasInteraction(int mouseButton, int key);
 	void removeAllInteractions();
+
+		/// \name On Press cache
+	/// \{
+	/// \brief camera properties when the mouse is pressed.
+	// VW CUSTOM MOVED MMMMMMMMMMMMMMMMMMM
+	//float drag = 0.9f;
+	float sensitivityScroll = 1.0f;
+
+	// END VW CUSTOM MOVED MMMMMMMMMMMMMMMMMMM
+
 protected:
 	virtual void onPositionChanged();
+
 private:
 	void setDistance(float distance, bool save);
 
@@ -220,7 +321,7 @@ private:
 	/// Low Values mean more presicion.
 	glm::vec3 sensitivityTranslate;
 	glm::vec3 sensitivityRot;
-	float     sensitivityScroll = 1.0f;
+	//float     sensitivityScroll = 1.0f;
 
 	/// \brief The previous mouse position.
 	glm::vec2 prevMouse;
@@ -266,6 +367,7 @@ private:
 	ofRectangle controlArea;
 
 	ofEventListeners listeners;
+	ofEventListeners key_listeners; // VWCUSTOMM ADD +++++++
 	ofCoreEvents* events = nullptr;
 
 	bool bRelativeYAxis = false;
@@ -277,11 +379,25 @@ private:
 	TransformType currentTransformType;
 	/// \brief This struct holds the combination of mouse button and key press that will trigger a specific interaction.
 	struct interaction {
-		interaction() :mouseButton(0), key(-1), transformType(TRANSFORM_NONE) {}
+		interaction() :mouseButton(0), key(-1), transformType(TransformType::TRANSFORM_NONE) {}
 		interaction(TransformType type, int _mouseButton, int _key = -1) :mouseButton(_mouseButton), key(_key), transformType(type) {}
 		int mouseButton;
 		int key;
 		TransformType transformType;
 	};
 	std::vector<interaction> interactions;
+
+	// VWCUSTOM ADD +++++++++++++++++++++++++++++++++
+	
+	struct key_interaction_struct_type : public ofKeyEventArgs{
+		bool enabled;
+		int  interaction_id = -1;
+	};
+	std::vector<key_interaction_struct_type> key_interactions;
+
+	float movement_multiplier = 0.05f;
+
+	// END VWCUSTOM ADD +++++++++++++++++++++++++++++++++
+
+
 };

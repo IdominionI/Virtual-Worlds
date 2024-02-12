@@ -16,6 +16,9 @@ uniform float max_height;
 vec3 vertex;
 vec4 light_color     = vec4(1.0,0.0,0.0,1.0);
 
+uniform int display_as_points;
+
+
 // -------------Application dynamicly defined uniorms---------
 // Do not delete next line with DDU as applicatioin defined uniforms are placed here
 // Must exist in every glsl code unless user whishes to manually enter uniforms that
@@ -185,11 +188,18 @@ vec4 get_vertex_raw_color(){
 void main(){
 	vertex = position.xyz;
 	
-	gl_Position = position;        // required as a min
+	//gl_Position = position;        // required as a min
+	
+	// following required as a min
+	if(display_as_points == 0){
+		gl_Position = position; // required as a min
+		//vs_out.varyingColor = vec4(1.0,0.0,0.0,1.0);
+	}else{
+		gl_Position = modelViewProjectionMatrix*position ; // required as a min
+		//vs_out.varyingColor = vec4(0.0,1.0,0.0,1.0);
+	}
 
 	//value = int(position.w);              // required as a min
-
-	//vs_out.varyingColor = vec4(1.0,1.0,0.0,1.0);
 	
 	vs_out.varyingColor = get_vertex_raw_color();
 }

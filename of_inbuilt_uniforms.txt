@@ -1,0 +1,146 @@
+ofShader 
+
+projection uniforms
+
+	uniform mat4 modelMatrix
+	uniform mat4 viewMatrix
+	uniform mat4 projectionMatrix;
+	uniform mat4 modelViewMatrix;
+	uniform mat4 textureMatrix;
+	uniform mat4 modelViewProjectionMatrix;
+
+Misc uniforms : will these ever be used ????
+
+					textureMatrix
+					globalColor
+					usingTexture
+					usingColors
+					bitmapText
+
+vertex input data
+
+	in vec4  position;
+	in vec2  texcoord;
+	in vec4  color;
+	in vec3  normal;
+
+
+==================================================================================
+Camera 
+	uniform vec3 uCameraPos defined in ofMaterial 
+
+	following custom added 
+	uniform vec3 uCamera_forward 
+	uniform vec3 uCamera_up 
+	uniform vec3 uCamera_right 
+
+==================================================================================
+Lights				 offrameworks lights may need a different way 
+	
+	uniform float lights[<n>].enabled   where <n> is the light
+	uniform float lights[<n>].type
+	uniform vec4  lights[<n>].position
+
+if( !isPBR() ) {
+	uniform vec4 lights[<n>].ambient
+	uniform vec4 lights[<n>].specular
+}
+
+	uniform vec4 lights[<n>].diffuse
+
+if(light->lightType!=OF_LIGHT_DIRECTIONAL){
+	// TODO: add in light radius if pbr?
+	uniform float lights[<n>].radius
+	uniform float lights[<n>].constantAttenuation
+	uniform float lights[<n>].linearAttenuation
+	uniform float lights[<n>].quadraticAttenuation
+}
+
+if(light->lightType==OF_LIGHT_SPOT){
+	// PBR light calcs are in world space
+	uniform vec3 lights[<n>].spotDirection
+	uniform float lights[<n>].spotExponent
+	uniform float lights[<n>].spotCutoff
+	uniform float lights[<n>].spotCosCutoff
+
+if(light->lightType==OF_LIGHT_DIRECTIONAL){
+	if( !isPBR() ) {
+		uniform vec3 lights[<n>].halfVector", halfVector);
+	}
+	
+if(light->lightType==OF_LIGHT_AREA){
+	uniform float lights[<n>].width
+	uniform float lights[<n>].height
+	if( !isPBR() ) {
+		uniform vec3 lights[<n>].spotDirection
+	}
+
+	uniform vec3 lights[<n>].right
+	uniform vec3 lights[<n>].up
+
+
+==================================================================================
+Shadows 				 offrameworks shadows may need a different way
+
+	not going to use just yet if at all
+
+
+==================================================================================
+environmental maps 
+
+					not going to use just yet if at all
+
+==================================================================================
+
+ofMaterial texture types
+
+  Material texture type designation						Uniform name
+
+ OF_MATERIAL_TEXTURE_DIFFUSE						 : tex0
+ OF_MATERIAL_TEXTURE_SPECULAR						 : tex_specular
+ OF_MATERIAL_TEXTURE_AMBIENT						 : tex_ambient
+ OF_MATERIAL_TEXTURE_EMISSIVE						 : tex_emissive
+ OF_MATERIAL_TEXTURE_NORMAL							 : tex_normal
+ OF_MATERIAL_TEXTURE_OCCLUSION						 : tex_occlusion
+ OF_MATERIAL_TEXTURE_AO_ROUGHNESS_METALLIC			 : tex_ao_roughness_metallic
+ OF_MATERIAL_TEXTURE_ROUGHNESS_METALLIC				 : tex_roughness_metallic
+ OF_MATERIAL_TEXTURE_ROUGHNESS						 : tex_roughness
+ OF_MATERIAL_TEXTURE_METALLIC						 : tex_metallic
+ OF_MATERIAL_TEXTURE_DISPLACEMENT					 : tex_displacement
+ OF_MATERIAL_TEXTURE_CLEARCOAT						 : tex_clearcoat_intensity
+ OF_MATERIAL_TEXTURE_CLEARCOAT_ROUGHNESS			 : tex_clearcoat_roughness
+ OF_MATERIAL_TEXTURE_CLEARCOAT_INTENSITY_ROUGHNESS	 : tex_clearcoat_intensity_roughness
+ OF_MATERIAL_TEXTURE_CLEARCOAT_NORMAL				 : tex_clearcoat_normal
+
+______________________________________________________________________________________
+
+material settings
+
+material type					data type				uniform name								
+									
+Diffuse Color					uniform vec4			mat_diffuse 
+Ambient Color					uniform vec4			mat_ambient 
+Specular Color					uniform vec4			mat_specular
+Emissive Color					uniform vec4			mat_emissive
+ambient color					uniform vec4			global_ambient
+
+Shininess						uniform float			mat_shininess
+									
+TexCoordScale					uniform vec2			mat_texcoord_scale
+								
+PBR material settings								
+								
+Metallic 						uniform float			mat_metallic
+Roughness						uniform float			mat_roughness
+Reflectance						uniform float			mat_reflectance
+ClearCoatStrength				uniform vec2			mat_clearcoat
+ClearCoatRoughness				uniform vec2			mat_clearcoat
+DisplacementStrength			uniform float			mat_displacement_strength
+DisplacementNormalsStrength		uniform float			mat_displacement_normals_strength
+NormalGeomToNormalMapMix		uniform float			mat_normal_mix
+
+cube map  settings
+
+								uniform float			mat_ibl_exposure
+								uniform float			uCubeMapEnabled
+								uniform float			uEnvMapMaxMips

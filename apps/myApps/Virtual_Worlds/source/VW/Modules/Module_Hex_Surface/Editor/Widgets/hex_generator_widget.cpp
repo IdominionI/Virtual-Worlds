@@ -51,11 +51,9 @@ void hex_surface_generation_widget_class::display() {
 
 		y_pos += 30;
 		text("Min\nSurface\nValue", x_pos, y_pos);
-		//integer_input("###gminsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value, x_pos + 80, y_pos + 15, 50.0f);
 		float_input("###gminsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value, x_pos + 80, y_pos + 15, 50.0f);
 
 		text("Max\nSurface\nValue", x_pos + 150, y_pos);
-		//integer_input("###hgmaxsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value, x_pos + 220, y_pos + 15, 50.0f);
 		float_input("###hgmaxsv", hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.max_surface_value, x_pos + 220, y_pos + 15, 50.0f);
 
 		y_pos += 60;
@@ -128,7 +126,7 @@ void hex_surface_generation_widget_class::display() {
 
 		//####### GET  OBJECT DATA THAT HAS PARAMETER DATA AND UPDATE #######
 
-		//editor_logging_panel.add_log_message("INFO","Execute Buttton 000 : " + voxel_generation_item.current_selected_component_name);
+//editor_logging_panel.add_log_message("INFO","Execute Buttton 000 : " + voxel_generation_item.current_selected_component_name);
 		if (current_selected_entity_id   == -1){
 //printf("hex_surface_generation_widget_class :: current_selected_entity_id   == -1 #####\n");
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not perform voxel generation. No entity selected.\n");
@@ -166,52 +164,31 @@ void hex_surface_generation_widget_class::display() {
 //printf("hex_surface_generation_widget_class :: execute_hex_surface_function 4444\n");
 
 		//####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
-		//scene_node_class <render_object_class> *scene_hex_surface_object = scene_manager->get_render_object(current_selected_entity_id);
-//printf("hex_surface_generation_widget_class :: execute_hex_surface_function 5555\n");
 
-		//if (scene_hex_surface_object == NULL) {
-		//	if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not find hex surface in the scene to update geometry data.\n");
-//printf("scee_hex_surface_object == NULL.\n");
-		//}
-		//else {
-//printf("scee_hex_surface_object != NULL.\n");
+		shader_class shader;
 
-		//	if (!hex_surface_render.update_geometry_vertex_cloud_data(&hex_surface_object_to_execute->point_cloud, scene_hex_surface_object, log_panel)) {
-		//		if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene hex surface object geometry could not be updated.\n");
-//printf("scee_hex_surface_object not updated\n");
-		//		return;
-		//	}
+		// **** Update voxel hcp shader variable values define  to be used in all voxel hcp shaders as default
+		float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
 
-			shader_class shader;
+		shader.set_f1(hex_surface_object_to_execute->geometry->shader->getProgram(), vox_size, "hexSize");
 
-			// **** Update voxel hcp shader variable values define  to be used in all voxel hcp shaders as default
-			float vox_size = hex_surface_object_to_execute->hex_surface_object_data.hex_size * hex_scale_value;
+		glm::vec3 grid_o = { hex_surface_object_to_execute->hex_surface_object_data.grid_origin.x,hex_surface_object_to_execute->hex_surface_object_data.grid_origin.y,0.0 };
 
-			//shader.set_f1(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, vox_size, "hexSize");
-			shader.set_f1(shader.getProgram(), vox_size, "hexSize");
+		shader.set_vec3(hex_surface_object_to_execute->geometry->shader->getProgram(), grid_o, "grid_origin");
 
-			glm::vec3 grid_o = { hex_surface_object_to_execute->hex_surface_object_data.grid_origin.x,hex_surface_object_to_execute->hex_surface_object_data.grid_origin.y,0.0 };
+		//voxel surface display data
+		float v_min = (float)hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value;
 
-			//shader.set_vec3(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, grid_o, "grid_origin");
-			shader.set_vec3(shader.getProgram(), grid_o, "grid_origin");
+		shader.set_f1(hex_surface_object_to_execute->geometry->shader->getProgram(), v_min, "hex_min_surface_display_value");
 
-			//voxel surface display data
-			float v_min = (float)hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value;
+		float v_max = (float)hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value;
 
-			//shader.set_f1(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, v_min, "hex_min_surface_display_value");
-			shader.set_f1(shader.getProgram(), v_min, "hex_min_surface_display_value");
-
-			float v_max = (float)hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.min_surface_value;
-
-			//shader.set_f1(scene_hex_surface_object->scene_graph_object.scene_object_class.shader_material->shader_program_id, v_max, "hex_max_surface_display_value");
-			shader.set_f1(shader.getProgram(), v_max, "hex_max_surface_display_value");
+		shader.set_f1(hex_surface_object_to_execute->geometry->shader->getProgram(), v_max, "hex_max_surface_display_value");
 
 //printf("hex_surface_generation_widget_class :: execute_hex_surface_function 6666\n");
-		//}
 
 		if (notification)
 			if (log_panel != NULL) log_panel->application_log.AddLog("INFO : Voxel Creation From Function Completed.\n");
-
 	}
 
 

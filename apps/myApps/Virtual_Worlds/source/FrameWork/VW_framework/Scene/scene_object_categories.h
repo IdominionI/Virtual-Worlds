@@ -1,8 +1,10 @@
 #pragma once
 
-//#include "../Types/vw_type_definitions.h"
-//#include "../3D/vw_object_base.h"
 #include "../Object/vw_object_base.h"
+
+#include "scene_settings.h" // +++++
+#include "scene_cameras.h"
+#include "scene_lights.h"
 
 #include <FrameWork/Universal_FW/Kernal/id_key_manager.h>
 
@@ -139,13 +141,35 @@ public:
 
 	// -----------------------------------------------------------
 
-	void render_objects() {
+	void render_objects(scene_settings_struct_type scene_settings,scene_cameras_manager_class scene_cameras,scene_lights_manager_class scene_lights) {
+//	void render_objects() {
+		vw_camera_class *selected_camera = scene_cameras.selected_camera;
+
+		if (!selected_camera) { 
+			std::cout <<"Scene_Object_Categories : Selected Camera = NULL\n";
+			return; 
+		}
+//else std::cout <<"Scene_Object_Categories : Selected Camera != NULL\n";
+
 		for (vw_object_base_class *object : category_objects) {
 			if (!object) continue;
 
 			if (object->display_object) {
-				// update universal shader variables : seems internal or default offramework shader variables taken care of by ofShader.begin() function
-				// update additional user universal variables : 
+				// update additional user universal variables :
+				GLint object_shader_id = object->geometry->shader->getProgram();
+
+				scene_settings.update_shader_uniforms(object_shader_id);// ++++++
+				selected_camera->update_shader_uniforms(object_shader_id);// enable camera details to be accessed by glsl code
+//if (!scene_lights.scene_global_light) {
+//std::cout <<"Scene_Object_Categories :!scene_lights.scene_global_light == NULL\n";
+//}
+//else
+//std::cout <<"Scene_Object_Categories :!scene_lights.scene_global_light != NULL\n";
+
+				scene_lights.update_global_shader_uniforms(object_shader_id);
+
+				// require here update object shader for scene lights
+				object->material.update_shader_uniforms(object_shader_id); // ++++++
 				object->update_shader_variables();// ++++++
 				object->geometry->render();
 			}

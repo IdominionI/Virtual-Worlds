@@ -41,10 +41,6 @@ class graph_class; // Forward declaration
 class node_basis_class {
 public:
     //explicit node_basis_class(graph_class *graph_) : graph(graph_) {} This creates a compile error
-    //node_basis_class(){}
-    ~node_basis_class() {
-        //delete_node();
-    }
 
     bool visible   = true;
     //bool evaluated = false;// Flag to give to give indication that the node evaluation has occured or not
@@ -88,15 +84,6 @@ public:
 
     // ****** VW NEXT VERSION ******
     ImVec2 node_graph_coordinate;
-
-
-    // node group parameters
-    //node_basis_class               *parent = nullptr;
-    //std::vector<node_basis_class*>  children;
-    //std::vector<node_basis_class>   group_nodes;
-
-
-    // ****************************
 
     bool has_an_input_link() {
         if (inputs.size() == 0) 
@@ -143,13 +130,7 @@ public:
 
     virtual void delete_node_entity() {};// since destructor creates compilation and other problems, this will need to be included
 
-    // must have 
-    // ImNodes::BeginNode(node.node_id);
-    // < draw node code >
-    // ImNodes::EndNode();
-
     // !!!!!!!!!!!!!!!! NEED A FUNCTION OR LINK TO A FUNCTION HERE TO DISPLAY AND EDIT NODE PARAMETER VALUES HERE !!!!!!!!!!!!!!!!!!!!
-    //virtual void display_ui(scene_manager_class *scene_manager = NULL, log_panel_class* log_panel = NULL, id_type current_selected_object_id = -1) {}
     virtual bool define_ui() { return false; }
     virtual void display_ui(node_id_type current_selected_object_id = -1) {}
     virtual void editor_menu_options() {}
@@ -186,23 +167,19 @@ public:
     }
 
     void  delete_node_pins(pins_class &pins) {
-std::cout << "node_basis_class::delete_node_pins:: 000 : inputs : " << inputs.size()<< std::endl;
+//std::cout << "node_basis_class::delete_node_pins:: 000 : inputs : " << inputs.size()<< std::endl;
         for (int pin_id : inputs) {
             pins.delete_input_pin(pin_id);
         }
-std::cout << "node_basis_class::delete_node_pins::111 : outputs : " << outputs.size()<< std::endl;
+//std::cout << "node_basis_class::delete_node_pins::111 : outputs : " << outputs.size()<< std::endl;
         for (int pin_id : outputs) {
             pins.delete_output_pin(pin_id);
         }
-std::cout << "node_basis_class::delete_node_pins:: 222 \n";
+//std::cout << "node_basis_class::delete_node_pins:: 222 \n";
 
         inputs.clear();
         outputs.clear();
     }
-
-
-    // *********
-
 
 // !!!!!!!!!!!!!!!!!!! DEFINE NODE INPUTS FUNCTIONS !!!!!!!!!!!!!!!!!!!!!!!!!
     int add_node_input_pin(pin_struct_type pin, pins_class& pins){
@@ -312,7 +289,6 @@ protected:
     void export_null_node_pin_data(std::fstream& stream);
 };
 
-//class node_basis_class;
 class nodes_class {
 public:
     std::vector<node_basis_class*> nodes;

@@ -10,6 +10,8 @@ using std::shared_ptr;
 
 #include "ofGLProgrammableRenderer.h" // ++++++++++++++++
 
+#include "../Shader/shader.h"
+
 //----------------------------------------
 vw_camera_base_class::vw_camera_base_class() :
 	isOrtho(false),
@@ -158,6 +160,12 @@ void vw_camera_base_class::begin(const ofRectangle& viewport) {
 	renderer->matrixMode(OF_MATRIX_MODELVIEW);
 	renderer->loadViewMatrix(getModelViewMatrix());
 	renderer->set_current_eye_pos(getPosition());
+	
+//	glm::vec3 camera_forward_direction = get_forward_dir();
+//std::cout << "vw_camera_base::begin : @@@@" << camera_forward_direction.x << " : " << camera_forward_direction.y << " : " << camera_forward_direction.z << " : " << std::endl;
+	renderer->set_camera_forward_dir(get_forward_dir());
+	renderer->set_camera_up_dir(get_up_dir());
+	renderer->set_camera_right_dir(get_right_dir());
 
 	// MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 }
@@ -174,6 +182,37 @@ void vw_camera_base_class::end() {
 	renderer->popView();
 	// MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
 }
+
+// VWCUSTOM ++++++++++++++++++++++++++
+void vw_camera_base_class::update_shader_uniforms(GLint shader_id) {
+//std::cout << "vw_camera_base::update_shader_uniforms : shader_id 0000 " << shader_id << std::endl;
+
+	if (shader_id < 0) {
+		std::cout << "vw_camera_base::update_shader_uniforms : shader_id < 0 " << shader_id << std::endl;
+		return;
+	}
+
+	ofGLProgrammableRenderer *renderer = dynamic_cast<ofGLProgrammableRenderer *>(ofGetCurrentRenderer().get());
+
+	if (!renderer) {
+		std::cout << "vw_camera_base::update_shader_uniforms : !renderer" << std::endl;
+		return;
+	}
+
+	shader_class shader;
+
+	shader.set_vec3(shader_id, renderer->getCurrentEyePosition(), "uCameraPos");
+	shader.set_vec3(shader_id, renderer->camera_forward_dir, "uCamera_forward");
+	shader.set_vec3(shader_id, renderer->camera_up_dir,      "uCamera_up");
+	shader.set_vec3(shader_id, renderer->camera_right_dir,   "uCamera_right");
+
+	// If need other camera paramters to be used by shader glsl code add below 
+	// and define in ofGLProgrammableRenderer if not in this or derived class
+
+//std::cout << "vw_camera_base::update_shader_uniforms 1111 : " << renderer->camera_forward_dir.x << " : " << renderer->camera_forward_dir.y << " : " << renderer->camera_forward_dir.z << " : " << std::endl;
+
+}
+// ++++++++++++++++++++++++++
 
 //----------------------------------------
 glm::mat4 vw_camera_base_class::getProjectionMatrix(const ofRectangle& viewport) const {

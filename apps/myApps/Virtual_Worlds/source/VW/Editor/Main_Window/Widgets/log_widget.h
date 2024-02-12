@@ -1,6 +1,5 @@
 #pragma once
 
-//#include <Universal/ImGui/imgui.h>
 #include <Kernels/imgui-docking/imgui.h>
 
 // This log widget class is a class that utilises the code that is provided by

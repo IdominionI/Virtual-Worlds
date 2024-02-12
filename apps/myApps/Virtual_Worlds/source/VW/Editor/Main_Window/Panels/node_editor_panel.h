@@ -1,6 +1,4 @@
 #pragma once
-
-//#include <VW_framework/Scene/scene_entities_manager.h>
 #include <VW_framework/Scene/vw_scene.h>
 
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
@@ -29,7 +27,6 @@ if(!vw_scene) std::cout << "node_editor_panel_class : show 00 : !vw_scene \n";
 std::string ids = "Scene Node Editor " + std::to_string(scene_node_editor->editor_id);
 			if (scene_node_editor->display_on) {
 				ImGui::Begin(ids.c_str(), NULL, flags);
-					//scene_node_editor->ed
 					scene_node_editor->log_panel = log_panel;
 					scene_node_editor->vw_scene = vw_scene;
 					scene_node_editor->display();

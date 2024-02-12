@@ -40,7 +40,7 @@ public:
         timeline_data.wsize = window->Size;
 //std::cout << "animation_timeline_panel_class : show : current sequencer : " << timeline_data.wsize.x << ":" << timeline_data.wsize.y << std::endl;
 
-        //ImGui::Begin("Animation-timeline");// Remove/comment out this if do not want dockable panel
+        ImGui::Begin("Animation-timeline");// Remove/comment out this if do not want dockable panel
        
         display_timeline_controls();
 
@@ -76,7 +76,7 @@ public:
 
 		perforn_animation();
 
-        //ImGui::End;// Remove/comment out this if do not want dockable panel
+        ImGui::End;// Remove/comment out this if do not want dockable panel
 
 	}
 
@@ -313,25 +313,10 @@ public:
 
 	void setup_play() {
 //std::cout <<"animation_timeline_panel_class:setup_play 000 : setup_play\n";
-
-		//if (!have_objects_to_animate()) return false;
-
-		//if (!setup_animation()) return false;
-
 		animation_stopped = false;
 		animation_paused  = false;
 
 		setup_timeline_data();
-
-		// This seems to work
-		//if (vw_animation_parameters.current_frame <= start_frame) {
-		//	if (!initialise_animation()) {
-		//		if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : editor_animation_widget_class :: Could not initialise animation.\n");
-		//		return false; // Initialise the entity data type objects for animation
-		//	}
-		//}
-
-		//number_animation_frames = end_frame - start_frame;
 	}
 
 	void stop_animation() {

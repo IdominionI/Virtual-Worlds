@@ -8,17 +8,14 @@
 */
 // ********
 
-//#include "objects_category_basis.h"
-
-//#include <VW/Common/definitions.h>
-
 #include <VW/Editor/Main_Window/Panels/log_panel.h>
 
-//#include "../3D/vw_node.h"
 #include "ofNode.h"
 
-#include "scene_cameras.h"
-#include "scene_lights.h"
+//#include "scene_cameras.h"
+//#include "scene_lights.h"
+
+#include "scene_settings.h" // +++++ place this include here above #include "scene_object_categories.h" and do not need to include in scene_object_categories.h
 #include "scene_object_categories.h"
 
 //enum class entity_object_type_enum {camera, light, object};
@@ -213,9 +210,11 @@ public:
 		return -1;
 	}
 
-	void render_objects() {
+	void render_objects(scene_settings_struct_type scene_settings) {
 		for (vw_scene_objects_category_class category_objects : scene_objects) {
-			category_objects.render_objects();
+			category_objects.render_objects(scene_settings,scene_cameras, scene_lights);
+			//category_objects.render_objects(scene_settings,scene_cameras);
+			//category_objects.render_objects();
 		}
 	}
 

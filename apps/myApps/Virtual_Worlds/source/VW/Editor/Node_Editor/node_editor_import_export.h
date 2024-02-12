@@ -335,7 +335,7 @@ display_import_data(new_node_group, node_group_editor);
 		std::pair< node_id_type, node_id_type> old_new_id;
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_group_nodes 000 : " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_nodes 000 : " << line_number << ":" << lines[line_number]  << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], GRAPH_NODE_START_FLAG)) {
 			std::cout << "Import voxel import node group node data ERROR : \n Could not find start of node data block to import node data\n";
 			return false;
@@ -343,22 +343,22 @@ std::cout << "node_editor_import_export_class: import_node_group_nodes 000 : " <
 
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_group_nodes 111 : " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_nodes 111 : " << line_number << ":" << lines[line_number]  << std::endl;
 		while (!FW::stringtools::contains(lines[line_number], GRAPH_NODE_END_FLAG)) {// Have not reached end of node pin data block
 			if (!FW::stringtools::contains(lines[line_number], GRAPH_NODE_START_DATA_FLAG)) { // There msut allways be at least two nodes. The input and output link nodes
 				//error message
 				return false;
 			}
-std::cout << "node_editor_import_export_class: import_node_group_nodes 222 : " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_nodes 222 : " << line_number << ":" << lines[line_number]  << std::endl;
 			node_basis_class _node = get_import_node_basic_attribute_data();
-std::cout << "node_editor_import_export_class: import_node_group_nodes 333 : " << _node.ui_node_type.category << ":"<< _node.ui_node_type.node_type <<":" << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_nodes 333 : " << _node.ui_node_type.category << ":"<< _node.ui_node_type.node_type <<":" << line_number << ":" << lines[line_number]  << std::endl;
 			node_basis_class *new_node = import_new_node_into_editor(_node, node_group_editor);
 			if (!new_node) {
 				std::cout << "node_editor_import_export_class: !new_node "  << line_number << ":" << lines[line_number] << std::endl;
 				return false;
 			}
 
-std::cout << "node_editor_import_export_class: import_node_group_nodes AAA333AAAAA "  << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_nodes AAA333AAAAA "  << line_number << ":" << lines[line_number] << std::endl;
 			define_node_location(new_node,_node.node_location);
 
 			// correlate old node ids to new created node ids
@@ -372,7 +372,7 @@ std::cout << "node_editor_import_export_class: import_node_group_nodes AAA333AAA
 			old_new_id = { _node.node_entity_id ,new_node->node_group_id };
 			old_new_entity_ids.push_back(old_new_id);
 
-std::cout << "node_editor_import_export_class: import_node_group_nodes BBBB333BBBBB "  << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_nodes BBBB333BBBBB "  << line_number << ":" << lines[line_number] << std::endl;
 			if (!import_node_pin_data(new_node,node_group_editor)) {
 				//error message
 				return false;
@@ -380,7 +380,7 @@ std::cout << "node_editor_import_export_class: import_node_group_nodes BBBB333BB
 
 			line_number++;
 			line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_group_nodes 444 : " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_nodes 444 : " << line_number << ":" << lines[line_number]  << std::endl;
 			if (!FW::stringtools::contains(lines[line_number], GRAPH_NODE_END_DATA_FLAG)) { // There msut allways be at least two nodes. The input and output link nodes
 				//error message
 				return false;
@@ -389,7 +389,7 @@ std::cout << "node_editor_import_export_class: import_node_group_nodes 444 : " <
 			line_number++;
 			line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 		}
-std::cout << "node_editor_import_export_class: import_node_group_nodes 555 : " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_nodes 555 : " << line_number << ":" << lines[line_number]  << std::endl;
 		if (FW::stringtools::contains(lines[line_number], GRAPH_NODE_END_FLAG))
 			return true;
 		else
@@ -401,7 +401,7 @@ std::cout << "node_editor_import_export_class: import_node_group_nodes 555 : " <
 
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_group_node_links_data 000 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_group_node_links_data 000 : " << line_number << ":" << lines[line_number] << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_START_FLAG)) {
 			std::cout << "Import voxel import node group node data ERROR : \n Could not find start of nodes links data block to import node data\n";
 			return false;
@@ -409,7 +409,7 @@ std::cout << "node_editor_import_export_class: import_group_node_links_data 000 
 
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_group_node_links_data 111 : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_group_node_links_data 111 : " << line_number << ":" << lines[line_number] << std::endl;
 		while (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_END_FLAG)) {// Have not reached end of node pin data block
 			if (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_START_DATA_FLAG)) { // There msut allways be at least two nodes. The input and output link nodes
 				std::cout << "node_editor_import_export_class: !FW::stringtools::contains(lines[line_number], GRAPH_LINK_START_DATA_FLAG) : " << line_number << ":" << lines[line_number] << std::endl;
@@ -444,17 +444,17 @@ std::cout << "node_editor_import_export_class: import_group_node_links_data 111 
 				return false;
 			}
 
-std::cout << "node_editor_import_export_class: import_group_node_links_data 222 !!!!! : " << line_number << ":" << lines[line_number] << ":" << new_pin_from << ":" << new_pin_to << ":" << node_group_editor->editor_id << std::endl;
+//std::cout << "node_editor_import_export_class: import_group_node_links_data 222 !!!!! : " << line_number << ":" << lines[line_number] << ":" << new_pin_from << ":" << new_pin_to << ":" << node_group_editor->editor_id << std::endl;
 			 // Create a new link with the new from and to pin ids in the editor graph
 			node_group_editor->graph.links.insert(new_pin_from, new_pin_to);
-std::cout << "node_editor_import_export_class: import_group_node_links_data 333 !!!!! : "<< new_pin_from << ":" << new_pin_to << ":" << node_group_editor->graph.links.links.size() << std::endl;
+//std::cout << "node_editor_import_export_class: import_group_node_links_data 333 !!!!! : "<< new_pin_from << ":" << new_pin_to << ":" << node_group_editor->graph.links.links.size() << std::endl;
 
 			line_number++;
 			line = lines[line_number];line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_group_node_links_data 444 !!!!! : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_group_node_links_data 444 !!!!! : " << line_number << ":" << lines[line_number] << std::endl;
 		}
 
-std::cout << "node_editor_import_export_class: import_group_node_links_data 555 !!!!! : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_group_node_links_data 555 !!!!! : " << line_number << ":" << lines[line_number] << std::endl;
 		if (FW::stringtools::contains(lines[line_number], GRAPH_LINK_END_FLAG))
 			return true;
 		else
@@ -462,7 +462,7 @@ std::cout << "node_editor_import_export_class: import_group_node_links_data 555 
 	}
 
 	bool import_node_group_link_node_data(scene_node_editor_class *node_group_editor) {
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 000ABB : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 000ABB : " << line_number << ":" << lines[line_number] << std::endl;
 		node_basis_class *input_link_node  = node_group_editor->graph.nodes.find_node_of_category_and_type(NODE_CATEGORY_ID_GROUP, NODE_TYPE_ID_GROUP_INPUT);
 		node_basis_class *output_link_node = node_group_editor->graph.nodes.find_node_of_category_and_type(NODE_CATEGORY_ID_GROUP, NODE_TYPE_ID_GROUP_OUTPUT);
 
@@ -481,14 +481,14 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 			std::cout << "node_editor_import_export_class: group_basis_node == nullptr  000AEEEE : " << line_number << ":" << lines[line_number] << std::endl;
 			return false;
 		}
-std::cout << "Scene node node_editor_import_export_class : import_node_group_link_node_data 000AFFFF 3333 : " << std::endl;
+//std::cout << "Scene node node_editor_import_export_class : import_node_group_link_node_data 000AFFFF 3333 : " << std::endl;
 		node_group_class *group_node = dynamic_cast<node_group_class*>(group_basis_node);
 		if (group_node == nullptr) {
 			std::cout << "node_editor_import_export_class: group_node == nullptr  000AGGGG : " << line_number << ":" << lines[line_number] << std::endl;
 			return false;
 		}
 
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 000HHHH : " << input_link_node->node_id << ":" << output_link_node->node_id << ":" << group_node->group_input_links.size() << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 000HHHH : " << input_link_node->node_id << ":" << output_link_node->node_id << ":" << group_node->group_input_links.size() << std::endl;
 
 		if (node_group_editor->input_link_node == nullptr) {
 			node_group_editor->input_link_node = dynamic_cast<group_link_node_class*>(input_link_node);
@@ -503,12 +503,12 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 			return false;
 		}
 
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 000DDD : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 000DDD : " << line_number << ":" << lines[line_number] << std::endl;
 		// Read Input node link data
 
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 000A : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 000A : " << line_number << ":" << lines[line_number] << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_INPUT_START_FLAG)) {
 			std::cout << "Import voxel import node group node data ERROR : \n Could not find start of nodes links data block to import node data\n";
 			return false;
@@ -516,7 +516,7 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 111A : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 111A : " << line_number << ":" << lines[line_number] << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_INPUT_END_FLAG)) {// Have not reached end of node pin data block
 			if (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_START_DATA_FLAG)) { // There msut allways be at least two nodes. The input and output link nodes
 				//error message
@@ -531,7 +531,7 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 
 			line_number++;
 			line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 222A : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 222A : " << line_number << ":" << lines[line_number] << std::endl;
 			while (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_END_DATA_FLAG)) { // There msut allways be at least two nodes. The input and output link nodes
 				// read input node links data and allocate to input_link_node
 				if (line.size() > 0) {// Node has output pins
@@ -548,10 +548,10 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 						// Find old to pin id in the old_new_pin_id vector list
 						int node_editor_input_link_output_pin_id = find_new_pin_id_from_old(input_link_output_pin_id);
 						if (node_group_editor->graph.pins.get_output_pin_index(node_editor_input_link_output_pin_id) == INVALID_ID) return false;
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 333A : " << input_link_input_pin_id << ":" << parent_editor_input_link_input_pin_id << "::"<< input_link_output_pin_id <<":" << node_editor_input_link_output_pin_id << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 333A : " << input_link_input_pin_id << ":" << parent_editor_input_link_input_pin_id << "::"<< input_link_output_pin_id <<":" << node_editor_input_link_output_pin_id << std::endl;
 						// create a new input node link with the new input pin and new output pin ids in the editor graph
 						std::pair<int, int> input_link_pin_ids = { parent_editor_input_link_input_pin_id ,node_editor_input_link_output_pin_id };
-if(node_group_editor->input_link_node == nullptr) std::cout << "node_editor_import_export_class: node_group_editor->input_link_node == nullptr 444A : " << std::endl;
+//if(node_group_editor->input_link_node == nullptr) std::cout << "node_editor_import_export_class: node_group_editor->input_link_node == nullptr 444A : " << std::endl;
 						node_group_editor->input_link_node->input_links.push_back(input_link_pin_ids);
 
 						group_node->group_input_links = node_group_editor->input_link_node->input_links;
@@ -561,7 +561,7 @@ if(node_group_editor->input_link_node == nullptr) std::cout << "node_editor_impo
 				line_number++;
 				line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 			}
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 555A : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 555A : " << line_number << ":" << lines[line_number] << std::endl;
 			if (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_END_DATA_FLAG)) { // There msut allways be at least two nodes. The input and output link nodes
 				//error message
 				return false;
@@ -578,7 +578,7 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 666A : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 666A : " << line_number << ":" << lines[line_number] << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_OUTPUT_START_FLAG)) {
 			std::cout << "Import voxel import node group node data ERROR : \n Could not find start of nodes links data block to import node data\n";
 			return false;
@@ -586,7 +586,7 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 777A : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 777A : " << line_number << ":" << lines[line_number] << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_OUTPUT_END_FLAG)) {// Have not reached end of node pin data block
 			if (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_START_DATA_FLAG)) { // There msut allways be at least two nodes. The input and output link nodes
 				//error message
@@ -595,7 +595,7 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 
 			line_number++;
 			line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 888A : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 888A : " << line_number << ":" << lines[line_number] << std::endl;
 			while (!FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_END_DATA_FLAG)) { // There msut allways be at least two nodes. The input and output link nodes
 
 				// read output node links data and allocate to input_link_node
@@ -613,10 +613,10 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 						// Find old to pin id in the old_new_pin_id vector list
 						int node_editor_output_link_output_pin_id = find_new_pin_id_from_old(output_link_output_pin_id);
 						if (node_group_editor->parent_group->graph.pins.get_output_pin_index(node_editor_output_link_output_pin_id) == INVALID_ID) return false;
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 999A : " << output_link_input_pin_id << ":" << parent_editor_output_link_input_pin_id << "::"<< output_link_output_pin_id <<":" << node_editor_output_link_output_pin_id << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 999A : " << output_link_input_pin_id << ":" << parent_editor_output_link_input_pin_id << "::"<< output_link_output_pin_id <<":" << node_editor_output_link_output_pin_id << std::endl;
 						// create a new input node link with the new input pin and new output pin ids in the editor graph
 						std::pair<int, int> output_link_pin_ids = { parent_editor_output_link_input_pin_id ,node_editor_output_link_output_pin_id };
-if(node_group_editor->output_link_node == nullptr) std::cout << "node_editor_import_export_class: node_group_editor->output_link_node == nullptr 1000A : " << std::endl;
+//if(node_group_editor->output_link_node == nullptr) std::cout << "node_editor_import_export_class: node_group_editor->output_link_node == nullptr 1000A : " << std::endl;
 						node_group_editor->output_link_node->output_links.push_back(output_link_pin_ids);
 
 						group_node->group_output_links = node_group_editor->output_link_node->output_links;// !!!!!!!!!! This needs to be tested but should work !!!!!!!!!!!!
@@ -636,7 +636,7 @@ if(node_group_editor->output_link_node == nullptr) std::cout << "node_editor_imp
 			line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 		}		
 
-std::cout << "node_editor_import_export_class: import_node_group_link_node_data 2000A : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_group_link_node_data 2000A : " << line_number << ":" << lines[line_number] << std::endl;
 		if (FW::stringtools::contains(lines[line_number], GRAPH_LINK_NODE_OUTPUT_END_FLAG))
 			return true;
 		else
@@ -748,21 +748,21 @@ std::cout << "node_editor_import_export_class: import_node_group_link_node_data 
 		std::pair< node_id_type, node_id_type> old_new_id;
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_input_pin_data 000 " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_input_pin_data 000 " << line_number << ":" << lines[line_number]  << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], GRAPH_INPUT_PIN_START_FLAG)) {
 			std::cout << "Import voxel import node group pin data ERROR : \n Could not find start of pin data block to import node pin data\n";
 			return false;
 		}
-std::cout << "node_editor_import_export_class: import_node_input_pin_data 111 " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_input_pin_data 111 " << line_number << ":" << lines[line_number]  << std::endl;
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 		while (!FW::stringtools::contains(lines[line_number], GRAPH_INPUT_PIN_END_FLAG)) {// Have not reached end of node pin data block
-std::cout << "node_editor_import_export_class: import_node_input_pin_data 333 " << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_input_pin_data 333 " << std::endl;
 			if (!FW::stringtools::contains(lines[line_number], GRAPH_PIN_START_DATA_FLAG)) { //Must Have pin data to read 
 				std::cout << "Import voxel import node group pin data ERROR : \n Could not find start of pin data to import node pin data\n";
 				return false;
 			}
-std::cout << "node_editor_import_export_class: import_node_input_pin_data 444 " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_input_pin_data 444 " << line_number << ":" << lines[line_number]  << std::endl;
 			pins_class &pins = node_group_editor->graph.pins;
 			pin_struct_type pin;
 
@@ -803,9 +803,9 @@ std::cout << "node_editor_import_export_class: import_node_input_pin_data 444 " 
 			//ImColor          pin_selected_color = IM_COL32(200, 120, 120, 255);
 			//ImNodesPinShape_ pin_shape = ImNodesPinShape_::ImNodesPinShape_QuadFilled;
 
-std::cout << "node_editor_import_export_class: import_node_input_pin_data 555 " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_input_pin_data 555 " << line_number << ":" << lines[line_number]  << std::endl;
 			int new_pin_id = new_node->add_node_input_pin(pin, pins);
-std::cout << "node_editor_import_export_class: import_node_input_pin_data 555AAAA " << old_node_id  << ":" << new_node->node_id << ":" <<  std::endl;
+//std::cout << "node_editor_import_export_class: import_node_input_pin_data 555AAAA " << old_node_id  << ":" << new_node->node_id << ":" <<  std::endl;
 			if (new_pin_id == INVALID_ID) return false;
 			old_new_id = { old_pin_id ,new_pin_id };
 			old_new_pin_ids.push_back(old_new_id);
@@ -815,7 +815,7 @@ std::cout << "node_editor_import_export_class: import_node_input_pin_data 555AAA
 				std::cout << "Import voxel import node group pin data ERROR : \n Could not find end of pin data to import node pin data\n";
 				return false;
 			}
-std::cout << "node_editor_import_export_class: import_node_input_pin_data 666 " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_input_pin_data 666 " << line_number << ":" << lines[line_number]  << std::endl;
 			line_number++;
 			line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 		}
@@ -830,21 +830,21 @@ std::cout << "node_editor_import_export_class: import_node_input_pin_data 666 " 
 		std::pair< node_id_type, node_id_type> old_new_id;
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-std::cout << "node_editor_import_export_class: import_node_output_pin_data 000 " << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_output_pin_data 000 " << line_number << ":" << lines[line_number]  << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], GRAPH_OUTPUT_PIN_START_FLAG)) {
 			std::cout << "Import voxel import node group pin data ERROR : \n Could not find start of pin data block to import node pin data\n";
 			return false;
 		}
-std::cout << "node_editor_import_export_class: import_node_output_pin_data 111" << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_output_pin_data 111" << line_number << ":" << lines[line_number]  << std::endl;
 		line_number++;
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 		while (!FW::stringtools::contains(lines[line_number], GRAPH_OUTPUT_PIN_END_FLAG)) {// Have not reached end of node pin data block
-std::cout << "node_editor_import_export_class: import_node_output_pin_data 333" << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_output_pin_data 333" << std::endl;
 			if (!FW::stringtools::contains(lines[line_number], GRAPH_PIN_START_DATA_FLAG)) { //Must Have pin data to read 
 				std::cout << "Import voxel import node group pin data ERROR : \n Could not find start of pin data to import node pin data\n";
 				return false;
 			}
-std::cout << "node_editor_import_export_class: import_node_output_pin_data 444" << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_output_pin_data 444" << line_number << ":" << lines[line_number]  << std::endl;
 			pins_class &pins = node_group_editor->graph.pins;
 			pin_struct_type pin;
 
@@ -880,7 +880,7 @@ std::cout << "node_editor_import_export_class: import_node_output_pin_data 444" 
 			int pin_shape = stoi(lines[line_number]); line_number++;
 			pin.pin_shape = static_cast<ImNodesPinShape_>(pin_shape);
 
-std::cout << "node_editor_import_export_class: import_node_output_pin_data 555 :" << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_output_pin_data 555 :" << line_number << ":" << lines[line_number]  << std::endl;
 			int new_pin_id = new_node->add_node_output_pin(pin, pins);
 			if (new_pin_id == INVALID_ID) return false;
 			old_new_id = { old_pin_id ,new_pin_id };
@@ -891,7 +891,7 @@ std::cout << "node_editor_import_export_class: import_node_output_pin_data 555 :
 				std::cout << "Import voxel import node group pin data ERROR : \n Could not find end of pin data to import node pin data\n";
 				return false;
 			}
-std::cout << "node_editor_import_export_class: import_node_output_pin_data 666 :" << line_number << ":" << lines[line_number]  << std::endl;
+//std::cout << "node_editor_import_export_class: import_node_output_pin_data 666 :" << line_number << ":" << lines[line_number]  << std::endl;
 			line_number++;
 			line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 		}
@@ -934,28 +934,17 @@ std::cout << "node_editor_import_export_class: import_node_output_pin_data 666 :
 			std::cout << "########### node_editor_import_export_class : import_link_node: node_group_editor->vw_scene == nullptr.\n" << std::endl;
 		}
 
-std::cout << "node_editor_import_export_class: import_link_node ABABABA !!!!! :" << line_number << ":" << lines[line_number] << ":" << group_link_node->ui_node_type.category << std::endl;
+//std::cout << "node_editor_import_export_class: import_link_node ABABABA !!!!! :" << line_number << ":" << lines[line_number] << ":" << group_link_node->ui_node_type.category << std::endl;
 		if (node_group_editor->graph.import_node(group_link_node, click_pos, INVALID_ID, &node_misc_import_data) == INVALID_NODE_ID) {
-std::cout << "node_editor_import_export_class: import_link_node ADADDADDA !!!!! :" << std::endl;
+//std::cout << "node_editor_import_export_class: import_link_node ADADDADDA !!!!! :" << std::endl;
 			delete group_link_node;
 			return nullptr;
 		}// create node in editor that has no pin data
 
-//		if (!group_link_node->import_node(lines, line_number)) {
-//std::cout << "node_editor_import_export_class: import_link_node !new_node->import_node(lines, int& line_number)" << std::endl;
-//			delete group_link_node;
-//			return nullptr;
-//		}
-
-std::cout << "node_editor_import_export_class: import_link_node ACAACACA !!!!! :" << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_link_node ACAACACA !!!!! :" << line_number << ":" << lines[line_number] << std::endl;
 
 		node_group_editor->display_graph_status(node_group_editor);// testing only
-std::cout << "scene_node_editor_class : import_link_node : LINE !!!! : " << line_number << ":" << lines[line_number] << std::endl;
-		
-		//if (group_link_node->ui_node_type.node_type == NODE_TYPE_ID_GROUP_INPUT) 
-		//	group_link_node->ui_node_type.node_data_context = NODE_GROUP_INPUT_LINK_DATA_CONTEXT;
-		//else
-		//	group_link_node->ui_node_type.node_data_context = NODE_GROUP_OUTPUT_LINK_DATA_CONTEXT;
+//std::cout << "scene_node_editor_class : import_link_node : LINE !!!! : " << line_number << ":" << lines[line_number] << std::endl;
 
 		return group_link_node;
 	}
@@ -979,17 +968,17 @@ std::cout << "scene_node_editor_class : import_link_node : LINE !!!! : " << line
 		node_misc_import_data.log_panel = node_group_editor->log_panel;
 		node_misc_import_data.vw_scene  = node_group_editor->vw_scene;
 
-if (node_group_editor->log_panel == nullptr) {
-	std::cout << "########### node_editor_import_export_class : import_node: node_group_editor->log_panel == nullptr.\n";
-}
+//if (node_group_editor->log_panel == nullptr) {
+//	std::cout << "########### node_editor_import_export_class : import_node: node_group_editor->log_panel == nullptr.\n";
+//}
+//
+//if (node_group_editor->vw_scene == nullptr) {
+//	std::cout << "########### node_editor_import_export_class : import_node: node_group_editor->vw_scene == nullptr.\n" << std::endl;
+//}
 
-if (node_group_editor->vw_scene == nullptr) {
-	std::cout << "########### node_editor_import_export_class : import_node: node_group_editor->vw_scene == nullptr.\n" << std::endl;
-}
-
-std::cout << "node_editor_import_export_class: import_node ABABABA !!!!! :" << line_number << ":" << lines[line_number] << ":" << new_node->ui_node_type.category << std::endl;
+//std::cout << "node_editor_import_export_class: import_node ABABABA !!!!! :" << line_number << ":" << lines[line_number] << ":" << new_node->ui_node_type.category << std::endl;
 		if (node_group_editor->graph.import_node(new_node, click_pos, INVALID_ID, &node_misc_import_data) == INVALID_NODE_ID) {
-std::cout << "node_editor_import_export_class: import_node ADADDADDA !!!!! :" << std::endl;
+//std::cout << "node_editor_import_export_class: import_node ADADDADDA !!!!! :" << std::endl;
 			delete new_node;
 			return nullptr;
 		}// create node in editor that has no pin data
@@ -1000,7 +989,7 @@ std::cout << "node_editor_import_export_class: import_node ADADDADDA !!!!! :" <<
 			return nullptr;
 		}
 			
-std::cout << "node_editor_import_export_class: import_node ACAACACA !!!!! :" << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "node_editor_import_export_class: import_node ACAACACA !!!!! :" << line_number << ":" << lines[line_number] << std::endl;
 
 node_group_editor->display_graph_status(node_group_editor);// testing only
 std::cout << "scene_node_editor_class : Total scene graph status : LINE !!!! : " << line_number << ":" << lines[line_number] << std::endl;

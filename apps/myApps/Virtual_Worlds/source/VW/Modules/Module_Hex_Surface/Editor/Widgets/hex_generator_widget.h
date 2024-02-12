@@ -34,7 +34,6 @@ public:
 	
 	id_type                   current_selected_entity_id    = -1;  // entity id of the selected entity to display/modify
 	hex_surface_object_class *hex_surface_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
-	//scene_manager_class      *scene_manager                 = NULL;
 
 	float hex_scale_value = 1.0f;
 

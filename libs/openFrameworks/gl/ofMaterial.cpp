@@ -852,9 +852,23 @@ void ofMaterial::updateMaterial(const ofShader & shader,ofGLProgrammableRenderer
 
 	shader.setUniform4fv("mat_emissive", &data.emissive.r);
 	shader.setUniform2f("mat_texcoord_scale", data.texCoordScale );
+	// VWCUSTOM MODIFIED BEGIN MMMMMMMMMMMMMMMMMMMMMMMMMM
+	// have camera data available for all shaders
+	shader.setUniform3f("uCameraPos", renderer.getCurrentEyePosition());
+//std::cout << "ofMaterial::updateMaterial : " <<  renderer.camera_forward_dir.x << " : " <<  renderer.camera_forward_dir.y << " : " <<  renderer.camera_forward_dir.z << " : " << std::endl;
+if (shader.bLoaded)
+std::cout << "ofMaterial::updateMaterial : shader.bLoaded " << std::endl;
+else
+std::cout << "ofMaterial::updateMaterial : !shader.bLoaded " << std::endl;
+
+	shader.setUniform3f("uCamera_forward", renderer.camera_forward_dir);
+	shader.setUniform3f("uCamera_up", renderer.camera_up_dir);
+	shader.setUniform3f("uCamera_right", renderer.camera_right_dir);
+
+	// MODIFIED END MMMMMMMMMMMMMMMMMMMMMMMMMM
 	
 	if( isPBR() ) {
-		shader.setUniform3f("uCameraPos", renderer.getCurrentEyePosition());
+		//shader.setUniform3f("uCameraPos", renderer.getCurrentEyePosition());// VWCUSTOM MODIFIED
 		shader.setUniform4fv("mat_diffuse", &data.diffuse.r );
 		shader.setUniform1f("mat_roughness", data.roughness );
 		shader.setUniform1f("mat_metallic", data.metallic );

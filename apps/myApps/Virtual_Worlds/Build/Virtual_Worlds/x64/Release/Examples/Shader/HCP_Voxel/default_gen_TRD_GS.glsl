@@ -6,7 +6,7 @@
 
 layout(points) in;
 layout(triangle_strip, max_vertices = 48) out;
-//layout(triangle_strip, max_vertices = 48) out;
+//layout(points, max_vertices = 1) out;// Testing only
 
 #include "shader_basis_code/gs_reserved_uniforms.glsl"
 
@@ -38,6 +38,14 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 	 vec3 light_direction_vector;
 	 
 	 vec3 camera_loc = uCameraPos;
+	 light_color = global_light_color;
+	 lighting_intensity = global_light_intensity;
+	 lighting_direction = global_light_direction;
+ 
+	 if(uCamera_forward.x == 0.0f && uCamera_forward.y == 0.0f && uCamera_forward.z == 0.0f){
+	 //if(uCameraPos.x == 0.0f && uCameraPos.y == 0.0f && uCameraPos.z == 0.0f){
+		gs_out.varyingColor = vec4(1.0,1.0,0.0,1.0);
+	 } else{
 	 
      NdotL   = max(dot(normalize(vertex_normal), normalize(-lighting_direction)), 0.0);
      diffuse = NdotL * light_color;
@@ -51,34 +59,39 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 	 light_intensity = (mat_ambient + diffuse + specular)*lighting_intensity*0.5;//*.25
 
 	 camera_light_intensity = vec4(0.5,0.5,0.5,1.0);
-/*	 if(use_camera_lighting!=0){
-		 if(camera_lighting_type == 0){
-			 vec3 light_camera_relative_x = camera_right_vector *lighting_camera_offset.x;
-			 vec3 light_camera_relative_y = camera_up_vector    *lighting_camera_offset.y;
-			 vec3 light_camera_relative_z = camera_front_vector *lighting_camera_offset.z;
+	 
+	 // Test code
+//	 if(global_light_location.x == 100.1 && global_light_location.y == 900 && global_light_location.z == 1300){
+//		 gs_out.varyingColor = raw_color;
+//	 } else {
+		 if(use_camera_lighting!=0){
+			 if(camera_lighting_type == 0){
+				 vec3 light_camera_relative_x = uCamera_right   *lighting_camera_offset.x;
+				 vec3 light_camera_relative_y = uCamera_up      *lighting_camera_offset.y;
+				 vec3 light_camera_relative_z = uCamera_forward *lighting_camera_offset.z;
+				 
+				 vec3 light_loc =  uCameraPos  + light_camera_relative_x + light_camera_relative_y + light_camera_relative_z;
+				 
+				 light_direction_vector = -(light_loc - vertex.xyz);// spot light from camera pointing dir of camera
+			 } else
+				 light_direction_vector = (uCamera_forward);//  global light pointing in direction of camera : not good
 			 
-			 vec3 light_loc =  camera_loc  + light_camera_relative_x + light_camera_relative_y + light_camera_relative_z;
+			 NdotL   = max(dot(normalize(vertex_normal), normalize(-light_direction_vector)), 0.0);
+			 diffuse = NdotL * light_color;
+
+			 viewDir    = normalize(uCameraPos - vec3(vertex.xyz));
+			 reflectDir = reflect(normalize(-light_direction_vector), normalize(vertex_normal));
+
+			 //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+			 float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
+			 vec4 specular = specular_strength * spec * light_color;
 			 
-			 light_direction_vector = -(light_loc - vertex.xyz);// spot light from camera pointing dir of camera
-		 } else
-			 light_direction_vector = (camera_front_vector);//  global light pointing in direction of camera : not good
-		 
-		 NdotL   = max(dot(normalize(vertex_normal), normalize(-light_direction_vector)), 0.0);
-		 diffuse = NdotL * light_color;
-
-		 viewDir    = normalize(camera_loc - vec3(vertex.xyz));
-		 reflectDir = reflect(normalize(-light_direction_vector), normalize(vertex_normal));
-
-		 //float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-		 float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
-		 vec4 specular = specular_strength * spec * light_color;
-		 
-		 camera_light_intensity = (diffuse + specular)*lighting_intensity; //*.5
-	 }
-*/	 
+			 camera_light_intensity = (diffuse + specular)*lighting_intensity; //*.5
+		 }
      //gs_out.varyingColor = vec4((light_intensity+camera_light_intensity),1.0)* raw_color;
      gs_out.varyingColor = vec4((light_intensity+camera_light_intensity))* raw_color;
-
+	 }
+//	 }
 
 //test
 //	gs_out.varyingColor = vec4(1.0,1.0,1.0,1.0);
@@ -608,8 +621,8 @@ void add_side(vec4 center,int side){
 void main(){
 	mvpMatrix = modelViewProjectionMatrix;
 	
-    //vec4 center = gl_in[0].gl_Position;
     vec4 center = gl_in[0].gl_Position*sf;
+    
 
 	  for(int sector = 0; sector<3;sector++){
 		  add_top_bottom(center,1,sector); // top surface elelment
@@ -622,6 +635,14 @@ void main(){
 	 for(int side = 0; side<6;side++){
 		 add_side(center,side); // side surface elelment
 	 }
+
+
+	//gl_Position = modelViewProjectionMatrix * center;
+	// gl_Position = mvpMatrix * center;
+	// gs_out.varyingColor = gs_in[0].varyingColor;
+	// EmitVertex();
+	// EndPrimitive();
+
 
 /*
 	gl_Position = modelViewProjectionMatrix * vec4(center.x+1.0,center.y,center.z, 1.0);

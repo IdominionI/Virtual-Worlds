@@ -25,8 +25,6 @@ public:
     node_id_type editor_id  = INVALID_ID;// except for root editor, editor id is the same as the group id that the editor is associated with
 
     node_editor_category_manager_class    *node_editor_category_manager;
-    //node_editor_evaluation_functions_class node_editor_evaluation_functions;
-    //node_tree_class_basis node_tree;
 
     scene_node_editor_class               *parent_group = nullptr;
     std::vector<scene_node_editor_class *> child_groups;
@@ -35,7 +33,6 @@ public:
     group_link_node_class *output_link_node = nullptr;
 
     vw_scene_class *vw_scene = NULL;
-    //scene_entities_manager_class *scene_manager = NULL;
     log_panel_class              *log_panel = NULL;
 
     int selected_hover_pin_id = INVALID_ID;
@@ -83,10 +80,8 @@ public:
 
 private:
     bool menu_selection = false;
-    
 
     // !!!!! NODE GROUP FUNCTIONS !!!!!!!!
-
     void get_graph_content_count(scene_node_editor_class *node_editor,int &neditors,int &nnodes,int &ninput_pins ,int &noutput_pins,int &nlinks) {
         if (!node_editor) return;
         for (scene_node_editor_class* child_editor : node_editor->child_groups) {
@@ -136,22 +131,22 @@ public:
 
     void delete_group_node(node_basis_class *selected_node) {
     //void delete_group_node(node_group_class *selected_node) {
-std::cout << "scene_node_editor_class : delete_group_node 000: " << selected_node->node_id << std::endl;
+//std::cout << "scene_node_editor_class : delete_group_node 000: " << selected_node->node_id << std::endl;
         for (int i = 0; i < child_groups.size();i++) {
-std::cout << "scene_node_editor_class : delete_group_node 111: " << child_groups[i]->editor_id << std::endl;
+//std::cout << "scene_node_editor_class : delete_group_node 111: " << child_groups[i]->editor_id << std::endl;
             if (child_groups[i]->editor_id == selected_node->node_id) {
-std::cout << "scene_node_editor_class : delete_group_node 222 : " << selected_node->node_id << std::endl;
+//std::cout << "scene_node_editor_class : delete_group_node 222 : " << selected_node->node_id << std::endl;
                 child_groups[i]->delete_child_group_nodes();
                 child_groups[i]->delete_group_links();
                 child_groups[i]->delete_group_node_graph();// !!!!!
 
-std::cout << "scene_node_editor_class : delete_group_node 222AAA : " << selected_node->node_id << std::endl;
+//std::cout << "scene_node_editor_class : delete_group_node 222AAA : " << selected_node->node_id << std::endl;
                 delete_group_links();// ++++++
-std::cout << "scene_node_editor_class : delete_group_node 222BBBB : " << selected_node->node_id << std::endl;
+//std::cout << "scene_node_editor_class : delete_group_node 222BBBB : " << selected_node->node_id << std::endl;
                 graph.delete_node(selected_node->node_id);
                 delete_node_group_editor(child_groups[i]->editor_id);
                 child_groups.erase(child_groups.begin() + i);
-std::cout << "scene_node_editor_class : delete_group_node 333 : " << selected_node->node_id << std::endl;
+//std::cout << "scene_node_editor_class : delete_group_node 333 : " << selected_node->node_id << std::endl;
                 //master_graph.delete_node(selected_node->node_id);// !!!!!
                 display_graph_status(this);// testing only
                 return;
@@ -360,17 +355,17 @@ private:
     }
 
     void delete_group_node_output_pin(pin_struct_type pin) {
-std::cout << "Scene node editor : delete_group_node_output_pin 1111 : " << std::endl;
+//std::cout << "Scene node editor : delete_group_node_output_pin 1111 : " << std::endl;
         if (parent_group == nullptr) return;// Root scene node editor
-std::cout << "Scene node editor : delete_group_node_output_pin 2222 : " << editor_id << std::endl;
+//std::cout << "Scene node editor : delete_group_node_output_pin 2222 : " << editor_id << std::endl;
         // Find group node to add a pin to in the parent scene node editor
         // Group node and scene editor linked to group node have the same id
         node_basis_class *group_basis_node = parent_group->graph.nodes.get_node(editor_id);
         if (group_basis_node == nullptr) return;
-std::cout << "Scene node editor : delete_group_node_output_pin 3333 : " << std::endl;
+//std::cout << "Scene node editor : delete_group_node_output_pin 3333 : " << std::endl;
         node_group_class *group_node = dynamic_cast<node_group_class*>(group_basis_node);
         if(group_node == nullptr || output_link_node == nullptr) return;
-std::cout << "Scene node editor : delete_group_node_output_pin 3333AAA : " << std::endl;
+//std::cout << "Scene node editor : delete_group_node_output_pin 3333AAA : " << std::endl;
 
         // Find node pin data to delete
         int group_output_pin_link_index = group_node->find_link_input_index(pin.pin_id);
@@ -379,9 +374,9 @@ std::cout << "Scene node editor : delete_group_node_output_pin 3333AAA : " << st
             return;
         }
 
-std::cout << "Scene node editor : delete_group_node_output_pin 44444 : "<< group_output_pin_link_index << std::endl;
+//std::cout << "Scene node editor : delete_group_node_output_pin 44444 : "<< group_output_pin_link_index << std::endl;
         std::pair<int, int> group_output_pin_link = group_node->group_output_links[group_output_pin_link_index];
-std::cout << "Scene node editor : delete_group_node_output_pin 44444AAAA : "<< group_output_pin_link.first << " : " << group_output_pin_link.second << std::endl;
+//std::cout << "Scene node editor : delete_group_node_output_pin 44444AAAA : "<< group_output_pin_link.first << " : " << group_output_pin_link.second << std::endl;
 
         // If have any links to group nodes in the parent editor where the goup node exits delete the links
         if (parent_group->graph.links.start_pin_has_link(group_output_pin_link.second)) {// !!!!!!!!!!!!!
@@ -401,7 +396,7 @@ std::cout << "Scene node editor : delete_group_node_output_pin 44444AAAA : "<< g
         group_node->delete_group_output_link(group_output_pin_link_index);
 
         output_link_node->output_links = group_node->group_output_links;
-std::cout << "Scene node editor : delete_group_node_output_pin : 6666 : " << group_node->group_output_links.size() << " : " << std::endl;
+//std::cout << "Scene node editor : delete_group_node_output_pin : 6666 : " << group_node->group_output_links.size() << " : " << std::endl;
         display_graph_status(this);// testing only
     }
 
@@ -421,7 +416,6 @@ std::cout << "Scene node editor : delete_group_node_output_pin : 6666 : " << gro
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     template <class T>
-    //void create_node(int category, int node_type, int node_data_context, ImVec2 click_pos);
     void create_node(ImVec2 click_pos);
     void delete_node(node_basis_class *selected_node);
     void delete_node_group_links(node_basis_class *selected_node);

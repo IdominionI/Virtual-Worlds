@@ -4,11 +4,6 @@
 #include <string>
 #include <vector>
 
-//#include <Universal/Framework/FWstring_tools.h>
-//#include <Universal/Framework/FWfile_tools.h>
-//
-//#include <Source/Graphics_Engine/Shader/shader_components.h>
-
 #include <FrameWork/Universal_FW/Kernal/FWstring_tools.h>
 #include <FrameWork/Universal_FW/Kernal/FWfile_tools.h>
 
@@ -29,8 +24,7 @@
 #define BOOL_SHADER_BLOCK_START "("
 #define BOOL_SHADER_BLOCK_END   ")"
 
-//#define ENDL Qt::endl // endl depreciated in QT6
-#define ENDL '\n' // endl depreciated in QT6
+#define ENDL '\n'
 
 /*
 				SHADER PARAMETER IMPORT EXPORT
@@ -75,12 +69,6 @@ public:
 
 	bool save_working_generated_function(std::string file_pathname) {
 ////QMessageBox::information(NULL, "", "in save_working_generated_function", //QMessageBox::Ok);
-		//QFileDialog file_dialog;
-		//std::string file_pathname;
-
-		//file_pathname = file_dialog.getSaveFileName(NULL, "Save Static Generated Function", "./", "Texture working model (*.twm)");
-////QMessageBox::information(NULL, "", file_pathname, //QMessageBox::Ok);
-
 		if (file_pathname.size() == 0) {
 //QMessageBox::information(NULL, "", "No file name defined to save data to \n Save Static Generated Function aborted", //QMessageBox::Ok);
 			return false;
@@ -101,16 +89,9 @@ public:
 		stream << SHADER_BLOCK_START << ENDL;
 
 		stream << shader_parameters.vertex_shader_file_pathname.string()   << ENDL;
-		stream << shader_parameters.point_shader_file_pathname.string()    << ENDL;
+		//stream << shader_parameters.point_shader_file_pathname.string()    << ENDL;
 		stream << shader_parameters.geometry_shader_file_pathname.string() << ENDL;
 		stream << shader_parameters.fragment_shader_file_pathname.string() << ENDL;
-		//stream << shader_parameters.default_vertex_shader_file_pathname.string()   << ENDL;
-		//stream << shader_parameters.default_point_shader_file_pathname.string()    << ENDL;
-		//stream << shader_parameters.default_geometry_shader_file_pathname.string() << ENDL;
-		//stream << shader_parameters.default_fragment_shader_file_pathname.string() << ENDL;
-
-		//stream << SHADER_BLOCK_END << ENDL;
-		// ***************************
 
 		stream << FLOAT_SHADER_BLOCK_START << ENDL;
 
@@ -193,21 +174,12 @@ public:
 
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 		texture_parameters->vertex_shader_file_pathname = line; line_number++;
-		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		texture_parameters->point_shader_file_pathname = line; line_number++;
+		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
+		//texture_parameters->point_shader_file_pathname = line; line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 		texture_parameters->geometry_shader_file_pathname = line; line_number++;
 		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 		texture_parameters->fragment_shader_file_pathname = line; line_number++;
-
-		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//texture_parameters->default_vertex_shader_file_pathname = line; line_number++;
-		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//texture_parameters->default_point_shader_file_pathname = line; line_number++;
-		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//texture_parameters->default_geometry_shader_file_pathname = line; line_number++;
-		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
-		//texture_parameters->default_fragment_shader_file_pathname = line; line_number++;
 
         line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 std::cout << "voxel_texture_import_export_class: read_expression_into_shader_parameters 2222 : " << line_number << ":" << lines[line_number] << std::endl;

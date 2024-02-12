@@ -1,23 +1,43 @@
 
 uniform mat4 modelViewProjectionMatrix;//model-view-projection matrix
-//uniform mat4 mvpMatrix; //model-view-projection matrix
 mat4 mvpMatrix; //model-view-projection matrix
 
 //uniform mat4 model;
 //uniform mat4 view;
 //uniform mat4 projection;
 
-uniform vec3 uCameraPos;// OpenFrameWorks
-
 // Uncomment following as needed when not testing
-/*
-// Camera data
-uniform vec3  camera_loc;         // Camera location
 
-uniform vec3  camera_front_vector;
-uniform vec3  camera_up_vector;
-uniform vec3  camera_right_vector;
-*/
+// Camera data
+uniform vec3 uCameraPos;// OpenFrameWorks
+uniform vec3 uCamera_forward;
+uniform vec3 uCamera_up;
+uniform vec3 uCamera_right;
+
+//Global settings
+// +++++++++++
+//uniform vec4  global_light_location; // Not needed as global light is directional only
+uniform vec3  global_light_direction;
+
+uniform vec4  global_light_color;
+uniform float global_light_intensity;
+// ++++++++++++++++++++++++++++++++++++
+
+// uniform vec4  global_ambient_color;
+// uniform float global_ambience;
+
+// Object material settings
+uniform vec4 mat_color;
+uniform vec4 mat_diffuse;
+uniform vec4 mat_ambient;
+uniform vec4 mat_specular;
+uniform vec4 mat_emissive;
+
+uniform float mat_shinines;
+uniform float mat_metallic;
+uniform float mat_roughness;
+uniform float mat_reflectance;
+
 // reserved light variables
 // uniform vec4  light_color;
 // uniform vec3  lighting_direction;
@@ -25,10 +45,6 @@ uniform vec3  camera_right_vector;
 // uniform float ambience;
 // uniform float specular_strength;
 // uniform float lighting_intensity;
-
-uniform float mat_ambient;
-uniform float mat_specular;
-
 
 // reserved camera light variables
 //uniform int   camera_lighting_type;
@@ -38,12 +54,15 @@ uniform float mat_specular;
 //uniform int   t_frame;
 
 // Testing only comment out or delete when no needed
-int   use_camera_lighting = 0;
+// Need to have as uniforms
+int   camera_lighting_type = 1;
+int   use_camera_lighting = 1;
+vec3  lighting_camera_offset = vec3(0.0,0.0,0.0);
 
 vec4  light_color = vec4(1.0,1.0,1.0,1.0);
 vec3  lighting_direction = vec3(0.0,0.0,1.0);
-//float ambience = .5;
-//float specular_strength =.5;
+float ambience = .5;
+float specular_strength =.5;
 float lighting_intensity =.5;
 // **************************************
 struct Material {

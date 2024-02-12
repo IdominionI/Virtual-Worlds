@@ -51,9 +51,10 @@ public:
 
 	// virtual node basis functions to implement group node functions
 	bool define_node(ImVec2 click_pos, node_id_type  entity_id_);
-	bool define_import_node(ImVec2 click_pos, node_id_type  entity_id_, void* node_misc_data = NULL) {
-		return define_node(click_pos, entity_id_);
-	}
+	bool define_import_node(ImVec2 click_pos, node_id_type  entity_id_, void* node_misc_data = NULL);
+	//{
+	//	return define_node(click_pos, entity_id_);
+	//}
 
 	void evaluate(std::vector<pin_struct_type> &input_pins) {
 		evaluate();

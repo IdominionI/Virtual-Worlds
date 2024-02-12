@@ -128,9 +128,6 @@ public:
         output_pins.erase(output_pins.begin() + i);
         return true;
     }
-
-protected:
-
-private:
+//private:
     //id_key_manager_class<unsigned int> pin_id_key;
 };
