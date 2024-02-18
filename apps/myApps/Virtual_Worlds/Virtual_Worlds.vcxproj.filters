@@ -61,6 +61,10 @@
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.cpp" />
     <ClCompile Include="source\FrameWork\VW_framework\Scene\scene_lights.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\Modifiers\translation_node.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\Operators\interaction_node.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Modifiers\translation.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Operators\interaction_node.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -221,5 +225,15 @@
     <ClInclude Include="source\VW\Editor\Main_Window\Widgets\viewport_properties_widget.h" />
     <ClInclude Include="source\FrameWork\VW_framework\3D\Overlays\reference_grid.h" />
     <ClInclude Include="source\FrameWork\Kernels\Umath\u_math_helpers.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\Modifiers\translation_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\Modifiers\Animation\hcp_voxel_translation_animation.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\Operators\interaction_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\Operators\Animation\hcp_voxel_interaction_animation.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Modifiers\translation_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Modifiers\Animation\hex_surface_translation_animation.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Operators\interaction_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Functions\hex_surface_interactions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Functions\voxel_interactions.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Operators\Animation\hex_surface_interaction_animation.h" />
   </ItemGroup>
 </Project>

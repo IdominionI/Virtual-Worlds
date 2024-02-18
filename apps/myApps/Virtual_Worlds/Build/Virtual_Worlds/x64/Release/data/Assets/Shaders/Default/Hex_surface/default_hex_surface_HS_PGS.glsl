@@ -29,7 +29,7 @@ void main(){
 	vec4 center = gl_in[0].gl_Position;
 	
 	gs_out.varyingColor = gs_in[0].varyingColor;
-	gl_Position = mvpMatrix*(center + point_0);
+	gl_Position = modelViewProjectionMatrix*center;
 	EmitVertex();
 	EndPrimitive();
 	

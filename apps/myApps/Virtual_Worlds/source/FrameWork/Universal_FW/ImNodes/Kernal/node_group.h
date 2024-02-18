@@ -11,6 +11,8 @@ public:
 	std::vector<std::pair<int, int>> group_input_links;  // input::output pair of parent group node input pin_id and group input node output pin_id
 	std::vector<std::pair<int, int>> group_output_links; // input::output pair of parent group output node input pin_id and group node output pin_id 
 
+	//void *get_node_data();// required so as not to compile .cpp file so as not to get linking errors 
+
 	std::pair<int, int> find_input_link(int input_link_id) {
 		for (std::pair<int, int> group_input_link : group_input_links) {
 			if (group_input_link.second == input_link_id) {

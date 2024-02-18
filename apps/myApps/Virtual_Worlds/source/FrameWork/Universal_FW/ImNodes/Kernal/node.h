@@ -60,6 +60,8 @@ public:
     node_id_type node_entity_category_id = INVALID_ID;
     node_id_type node_entity_type_id     = INVALID_ID;
 
+    virtual void* get_node_data();// { return nullptr; }// Node data to be accessed by other nodes// +++++++++++++++++++
+
     std::vector<int> inputs;
     std::vector<int> outputs;
 
@@ -123,10 +125,10 @@ public:
                                    // it seems that creating a vector of classes to store
                                    // the node ui_node data crashes the program.
 
-    virtual bool define_node(ImVec2 click_pos, node_id_type  entity_id_) { return false; };
-    virtual bool define_import_node(ImVec2 click_pos, node_id_type  entity_id_,void* node_misc_data = NULL) { return false; };
-    virtual bool define_inputs(pins_class  &pins) { return false; };
-    virtual bool define_outputs(pins_class &pins) { return false; };
+    virtual bool define_node(ImVec2 click_pos, node_id_type  entity_id_) { return false; }
+    virtual bool define_import_node(ImVec2 click_pos, node_id_type  entity_id_,void* node_misc_data = NULL) { return false; }
+    virtual bool define_inputs(pins_class  &pins) { return false; }
+    virtual bool define_outputs(pins_class &pins) { return false; }
 
     virtual void delete_node_entity() {};// since destructor creates compilation and other problems, this will need to be included
 

@@ -27,7 +27,7 @@ public:
 		if (node == NULL) return INVALID_NODE_ID;
 
 		node->node_id = node_id_key.get_available_id_key();
-//std::cout << ("graph_class::add_node:: 000 %i \n", node->node_id);
+//std::cout << "graph_class::add_node:: 000 :" << node->node_id << std::endl;
 		node->graph = this;//*****
 
 		node->define_inputs(pins);
@@ -61,7 +61,7 @@ public:
 	void delete_node(int node_id) {
 		node_basis_class *node = nodes.get_node(node_id);
 		if (node == NULL) {
-std::cout <<"graph_class::delete_node:: AAAAA node == NULL : " << node_id << " : " << nodes.nodes.size() << std::endl;
+//std::cout <<"graph_class::delete_node:: AAAAA node == NULL : " << node_id << " : " << nodes.nodes.size() << std::endl;
 			return;
 		}
 //std::cout <<"graph_class::delete_node:: 000 : " << node->node_id << std::endl;
@@ -113,9 +113,25 @@ std::cout <<"graph_class::delete_node:: AAAAA node == NULL : " << node_id << " :
 	}
 
 	void clear_graph() {
-		for (node_basis_class *node : nodes.nodes) {
-			delete_node(node->node_id);
+		// The following is wrong method to delete the contents
+		// of a dynamic vector array.
+		//for (node_basis_class *node : nodes.nodes) {
+		//	delete_node(node->node_id);
+		//}
+
+		// NOTE : CRITICAL : When clearing a list or vector of
+		// elements are being deleted do not use a for each loop
+		// because as each element is being deleted the list or array
+		// of data decreases and it seems this for each loop advances
+		// beyond the index of the next data element to be queried to
+		// be deleted. To delete any list start from the last element
+		// and work down to ensure all elelemts are referenced using
+		// far a vector the size() function.
+
+		for (int i = nodes.nodes.size() - 1; i > -1; i--) {
+			delete_node(nodes.nodes[i]->node_id);
 		}
+			
 	}
 
 protected:

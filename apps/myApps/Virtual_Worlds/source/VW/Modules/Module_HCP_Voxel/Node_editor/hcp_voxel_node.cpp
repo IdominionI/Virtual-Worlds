@@ -35,7 +35,8 @@ bool hcp_voxel_node_class::define_node(ImVec2 click_pos, node_id_type entity_id_
     node_entity_category_id = hcp_voxel->object_category_id;
     node_entity_type_id     = hcp_voxel->object_type_id;
 
-    label = "HCP VOXEL " + std::to_string(hcp_voxel->id);
+    label = "HCP VOXEL " + std::to_string(node_id) + ":"+std::to_string(hcp_voxel->id);
+    //label = "HCP VOXEL " + std::to_string(hcp_voxel->id);
     hcp_voxel->name = "HCP_VOXEL_" + std::to_string(hcp_voxel->id);
 
     node_header_color          = ImColor(0, 139, 139, 255);
@@ -188,6 +189,8 @@ void  hcp_voxel_node_class::delete_node_entity() {
     if (!hcp_voxel || !vw_scene) return;
 //std::cout << "hcp_voxel_node_class:create_hcp_voxel: delete_node_entity : 0000" << std::endl;
     delete_hcp_timeline_link();// +++++++
+
+std::cout<< "hcp_voxel_node_class:delete_node_entity !!!! " << node_entity_id << ":" << node_entity_category_id << std::endl;
     vw_scene->scene_entities_manager.delete_object(node_entity_id, node_entity_category_id);
 //std::cout << "hcp_voxel_node_class:create_hcp_voxel: delete_node_entity : 1111" << std::endl;
    // delete hcp_voxel; // Not to be used as this is called by the process of vw_scene->scene_entities_manager.delete_object(node_entity_id, node_entity_category_id);

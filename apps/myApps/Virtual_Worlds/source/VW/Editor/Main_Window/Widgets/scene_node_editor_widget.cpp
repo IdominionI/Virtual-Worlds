@@ -8,10 +8,19 @@
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/hcp_voxel_node.h>
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/cart_to_hcp_voxel_node.h>
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/hcp_voxel_automata_node.h>
+// hcp Voxel modifiers
+#include <VW/Modules/Module_HCP_Voxel/Node_editor/Modifiers/translation_node.h>
+// hcp Voxel operators
+#include <VW/Modules/Module_HCP_Voxel/Node_editor/Operators/interaction_node.h>
+
 
 // hex suface nodes
 #include <VW/Modules/Module_Hex_Surface/Node_editor/hex_surface_node.h>
 #include <VW/Modules/Module_Hex_Surface/Node_editor/hex_surface_automata_node.h>
+//hex surface modifiers
+#include <VW/Modules/Module_Hex_Surface/Node_editor/Modifiers/translation_node.h>
+//hex surface operators
+#include <VW/Modules/Module_Hex_Surface/Node_editor/Operators/interaction_node.h>
 
 // Critical these includes are placed here in this order
 #include "../../Node_Editor/node_editor_extras.h"
@@ -62,6 +71,14 @@ void scene_node_editor_class::display() {
                                 create_node<hcp_voxel_automata_node_class>(click_pos);
                             }
 
+                            if (ImGui::MenuItem("Create HCP Voxel Translation Node")) {
+                                create_node<hcp_voxel_translation_node_class>(click_pos);
+                            }
+
+                            if (ImGui::MenuItem("Create HCP Voxel Interaction Node")) {
+                                create_node<hcp_voxel_interaction_node_class>(click_pos);
+                            }
+
                             ImGui::EndMenu();
                         }
 
@@ -73,6 +90,14 @@ void scene_node_editor_class::display() {
                             //if (ImGui::MenuItem("Create Cart to Hex suface Node")) {
                             //    //create_node<cart_to_hcp_voxel_node_class>(click_pos);
                             //}
+
+                            if (ImGui::MenuItem("Create Hex suface Translation Node")) {
+                                create_node<hex_surface_translation_node_class>(click_pos);
+                            }
+
+                            if (ImGui::MenuItem("Create Hex suface Interaction Node")) {
+                                create_node<hex_surface_interaction_node_class>(click_pos);
+                            }
 
                             if (ImGui::MenuItem("Create Hex suface Automata Node")) {
                                 create_node<hex_surface_automata_node_class>(click_pos);

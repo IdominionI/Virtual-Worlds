@@ -8,8 +8,9 @@
 class hcp_voxel_interactions_class {
 public:
 
-    scene_manager_class *scene_manager = NULL;
-    log_panel_class     *log_panel     = NULL;
+    //scene_manager_class *scene_manager = NULL;
+    vw_scene_class      *scene_manager = nullptr;
+    log_panel_class     *log_panel     = nullptr;
 
     static bool voxel_intersection(voxel_hcp_object_class *voxel_hcp_object_A, voxel_hcp_object_class *voxel_hcp_object_B) {
         bool x_intersection = false, y_intersection = false, z_intersection = false;
@@ -150,33 +151,18 @@ public:
         // !!!!!!!! FOLLOWING UPDATE CODE NEEDS TO BE PUT INTO A GENERAL UPDATE VOXEL VERTICES FUNCTION !!!!!!!!!!!!!!
     void update_voxel_verticies(voxel_hcp_object_class *voxel_hcp_object) {
 //printf("hcp_voxel_interactions_class:update_voxel_verticies 0000\n");        
-        voxel_hcp_object->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);
-
-        //####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
-        scene_node_class <render_object_class>* scene_voxel_object = scene_manager->get_render_object(voxel_hcp_object->object_id);
-//printf("hcp_voxel_interactions_class:update_voxel_verticies 11111: %i : %i \n", scene_voxel_object->scene_node_entity_id, voxel_hcp_object->object_id);
-
-        if (scene_voxel_object != NULL) {
-            if (!voxel_hcp_render.update_geometry_vertex_cloud_data(&voxel_hcp_object->point_cloud, scene_voxel_object, log_panel)) {
-                if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene voxel object geometry could not be updated.\n");
-//printf("hcp_voxel_interactions_class action : scene_voxel_object not updated\n");
-                return;
-            }
-//printf("hcp_voxel_interactions_class:update_voxel_verticies 22222 \n");
- //           application_default_shader_uniform_variables_struct_type uniform_variable;
- //           uniform_variable.type = application_default_shader_variable_type_enum::Floatv3; uniform_variable.name = "voxel_origin"; uniform_variable.value0 = &voxel_hcp_object->voxel_object_data.matrix_origin;
-  //          scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-        }
-
-//if (scene_voxel_object == NULL) {
-//printf("hcp_interaction_node_class:update_voxel_verticies 33333 scene_voxel_object == NULL \n");       
-//}
+        //voxel_hcp_object->define_vbo_vertices(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);
+        voxel_hcp_object->set_voxel_value_range(MIN_VOXEL_VALUE, MAX_VOXEL_VALUE);// This is to be changed to a user defined input in a future update
+        voxel_hcp_object->define_geometry_data();// need to define values for min/max voxel value range or have incorrect to misleading display
     }
 
-    voxel_hcp_object_class *create_interaction_object(voxel_hcp_object_class* voxel_hcp_object_A, voxel_hcp_object_class* voxel_hcp_object_B,int &entity_id) {
+    //voxel_hcp_object_class *create_interaction_object(voxel_hcp_object_class* voxel_hcp_object_A, voxel_hcp_object_class* voxel_hcp_object_B,int &entity_id) {
+    voxel_hcp_object_class *create_interaction_object(voxel_hcp_object_class* voxel_hcp_object_A, voxel_hcp_object_class* voxel_hcp_object_B) {
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!! THIS NEEDS REVISION !!!!!!!!!!!!!!!!!!!!!!!!!!
+
         glm::vec3 boundary_min, boundary_max;
        
-        if (scene_manager == NULL) return NULL;
+        if (!scene_manager || !voxel_hcp_object_A || !voxel_hcp_object_B) return NULL;
 
 //printf("hcp_interaction_node_class:create_interaction_object 0000 %\n");
         if (!align_voxel_matricies(voxel_hcp_object_A, voxel_hcp_object_B), false) return NULL;
@@ -185,19 +171,68 @@ public:
 //printf("hcp_interaction_node_class:create_interaction_object 2222 min : %f : %f : %f \n", boundary_min.x, boundary_min.y, boundary_min.z);
 //printf("hcp_interaction_node_class:create_interaction_object 2222 max : %f : %f : %f \n", boundary_max.x, boundary_max.y, boundary_max.z);
 
-        if (entity_id == INVALID_ID) {
-            entity_id = globalc::get_available_entity_id();
-            if (!scene_manager->add_entity(entity_id, ENTITY_CATEGORY_HCP_VOXEL)) {
-                entity_id = INVALID_ID;
-                return NULL;
-            }
-        }
+        //if (entity_id == INVALID_ID) {
+        //    entity_id = globalc::get_available_entity_id();
+        //    //if (!scene_manager->add_entity(entity_id, ENTITY_CATEGORY_HCP_VOXEL)) {
+        //    if (!scene_manager->scene_entities_manager.add_object(entity_id, ENTITY_CATEGORY_HCP_VOXEL)) {
+        //        entity_id = INVALID_ID;
+        //        return NULL;
+        //    }
+        //}
 
-        //voxel_hcp_object_class* interaction_object = scene_manager->entities_manager.get_voxel_hcp_entity_object(entity_id);
-        voxel_hcp_object_class* interaction_object = (voxel_hcp_object_class*)scene_manager->entities_manager.get_entity_of_category(entity_id, ENTITY_CATEGORY_HCP_VOXEL);
+        //voxel_hcp_object_class* interaction_object = (voxel_hcp_object_class*)scene_manager->entities_manager.get_entity_of_category(entity_id, ENTITY_CATEGORY_HCP_VOXEL);
+        // +++++++++++++++
+        voxel_hcp_object_class *interaction_object = new voxel_hcp_object_class;
+
+        int object_category_id = scene_manager->scene_entities_manager.get_objects_category_index(SCENE_CATEGORY_HCP_VOXEL);
+        if (object_category_id == -1){
+std::cout << "hcp_voxel_node_class:create_interaction_object :  object_category_id == -1 \n"; 
+            interaction_object->object_category_id = scene_manager->scene_entities_manager.define_new_entity_category(SCENE_CATEGORY_HCP_VOXEL);
+        } else
+            interaction_object->object_category_id = object_category_id;
+
+        interaction_object->gizmo_display = node_gizmo_display_enum::none;
+        interaction_object->axis_size     = 100.0;
+
+        scene_manager->scene_entities_manager.add_object(interaction_object,interaction_object->object_category_id);
 
         if (interaction_object == NULL) return NULL;
 
+        interaction_object->object_type_id = ENTITY_TYPE_OBJECT;
+
+        interaction_object->define_initial_shader_program();
+
+
+        if (interaction_object->geometry->shader) {
+            if (ofIsGLProgrammableRenderer()) {
+std::cout << "hcp_interaction_node_class::create_interaction_object: ofIsGLProgrammableRenderer() : " << std::endl;
+            }
+            else {
+std::cout << "hcp_interaction_node_class::create_interaction_object:!!!!ofIsGLProgrammableRenderer() : " << std::endl;
+                int i = scene_manager->scene_entities_manager.get_objects_category_index("HCP_Voxel");// SCENE_CATEGORY_HCP_VOXEL does not work ?????
+                if (i > -1) {
+                    scene_manager->scene_entities_manager.delete_object(interaction_object->id, scene_manager->scene_entities_manager.scene_objects[i].objects_category_id);
+                }
+                return false;
+            }
+
+            if (!interaction_object->geometry->shader->shader_compile_successful) {
+std::cout << "hcp_interaction_node_class::create_interaction_object: hcp_voxel Shaders not loaded !!!!! : " << std::endl;
+//std::string s = "jjjj\n";
+//cout << s << std::endl;
+std::cout << interaction_object->geometry->shader->compile_log << std::endl;
+std::cout << "hcp_interaction_node_class::create_interaction_object: hcp_voxel Shaders not loaded !!!!! END : " << std::endl;
+            }
+            else {
+//cout << " Shaders loaded ^^^^^ : " << shader.getProgram() << " : " << std::endl;
+                std::cout << "hcp_interaction_node_class::create_interaction_object: hcp_voxel Shaders loaded ^^^^^ : " << std::endl;
+//cout << entity_object03->geometry->shader->compile_log << std::endl;
+            }
+        }
+        else
+std::cout << "hcp_interaction_node_class::create_interaction_object: hcp_voxel Shader not created : " << std::endl;
+
+        // +++++++++++++++
         interaction_object->voxel_object_data.matrix_origin = boundary_min;
         interaction_object->voxel_object_data.voxel_size = voxel_hcp_object_A->voxel_object_data.voxel_size;
 
@@ -238,6 +273,8 @@ public:
         // ########### END CREATE EMPTY VOXEL CLOUD MATRIX #################
 
         return interaction_object;
+
+        //return nullptr;
     }
 
     void deterime_interaction_matrix_start_values(voxel_hcp_object_class *voxel_hcp_object_A,

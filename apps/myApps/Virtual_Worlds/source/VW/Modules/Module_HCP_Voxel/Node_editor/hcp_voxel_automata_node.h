@@ -37,6 +37,10 @@ public:
     bool define_node(ImVec2 click_pos, node_id_type entity_id_);
     bool define_import_node(ImVec2 click_pos, node_id_type entity_id_, void* node_misc_data = NULL);
 
+    void *get_node_data() {
+        return get_voxel_hcp_object_to_execute();
+    }
+
     void delete_node_entity() {
         delete_hcp_automata_timeline_link();
     }

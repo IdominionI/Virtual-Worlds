@@ -1,15 +1,11 @@
 #pragma once
-#include <Source/Editor/Common/global.h>
-
-#include "../hex_surface_object/hex_surface_object.h"
-#include "../Render/hex_surface_render.h"
-#include "../Hex_surface_object/hex_surface_parameters.h"
+#include "../Object/hex_surface_object.h"
+#include "../Object/hex_surface_parameters.h"
 
 class hex_surface_interactions_class {
 public:
-
-    scene_manager_class *scene_manager = NULL;
-    log_panel_class     *log_panel     = NULL;
+    vw_scene_class   *scene_manager = nullptr;
+    log_panel_class  *log_panel     = nullptr;
 
     static bool voxel_intersection(hex_surface_object_class *hex_surface_object_A, hex_surface_object_class *hex_surface_object_B) {
         bool x_intersection = false, y_intersection = false, z_intersection = false;
@@ -119,30 +115,10 @@ public:
         // !!!!!!!! FOLLOWING UPDATE CODE NEEDS TO BE PUT INTO A GENERAL UPDATE VOXEL VERTICES FUNCTION !!!!!!!!!!!!!!
     void update_voxel_verticies(hex_surface_object_class *hex_surface_object) {
 //printf("hcp_voxel_interactions_class:update_voxel_verticies 0000\n");        
-        hex_surface_object->define_vbo_vertices(MIN_HEX_VALUE, MAX_HEX_VALUE);
-
-        //####### GET RENDER OBJECT THAT HAS GEOMETRY DATA AND UPDATE #######
-        scene_node_class <render_object_class>* scene_hex_surface_object = scene_manager->get_render_object(hex_surface_object->object_id);
-//printf("hcp_voxel_interactions_class:update_voxel_verticies 11111: %i : %i \n", scene_voxel_object->scene_node_entity_id, voxel_hcp_object->object_id);
-
-        if (scene_hex_surface_object != NULL) {
-            if (!hex_surface_render.update_geometry_vertex_cloud_data(&hex_surface_object->point_cloud, scene_hex_surface_object, log_panel)) {
-                if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : scene voxel object geometry could not be updated.\n");
-//printf("hcp_voxel_interactions_class action : scene_voxel_object not updated\n");
-                return;
-            }
-//printf("hcp_voxel_interactions_class:update_voxel_verticies 22222 \n");
- //           application_default_shader_uniform_variables_struct_type uniform_variable;
- //           uniform_variable.type = application_default_shader_variable_type_enum::Floatv3; uniform_variable.name = "voxel_origin"; uniform_variable.value0 = &voxel_hcp_object->hex_surface_object_data.grid_origin;
-  //          scene_voxel_object->scene_graph_object.scene_object_class.shader_material.update_shader_variable(uniform_variable);
-        }
-
-//if (scene_voxel_object == NULL) {
-//printf("hcp_interaction_node_class:update_voxel_verticies 33333 scene_voxel_object == NULL \n");       
-//}
+         hex_surface_object->define_geometry_data();// need to define values for min/max voxel value range or have incorrect to misleading display
     }
 
-    hex_surface_object_class *create_interaction_object(hex_surface_object_class* hex_surface_object_A, hex_surface_object_class* hex_surface_object_B,int &entity_id) {
+    hex_surface_object_class *create_interaction_object(hex_surface_object_class* hex_surface_object_A, hex_surface_object_class* hex_surface_object_B) {
         glm::vec3 boundary_min, boundary_max;
        
         if (scene_manager == NULL) return NULL;
@@ -154,18 +130,61 @@ public:
 //printf("hcp_interaction_node_class:create_interaction_object 2222 min : %f : %f \n", boundary_min.x, boundary_min.y);
 //printf("hcp_interaction_node_class:create_interaction_object 3333 max : %f : %f\n", boundary_max.x, boundary_max.y);
 
-        if (entity_id == INVALID_ID) {
-            entity_id = globalc::get_available_entity_id();
-            if (!scene_manager->add_entity(entity_id, ENTITY_CATEGORY_HEX_SURF)) {
-                entity_id = INVALID_ID;
-                return NULL;
-            }
-        }
+        //+++++++++++++++++
+        hex_surface_object_class *interaction_object = new hex_surface_object_class;
 
-        //hex_surface_object_class *interaction_object = scene_manager->entities_manager.get_hex_surface_entity_object(entity_id);
-        hex_surface_object_class *interaction_object = (hex_surface_object_class*)scene_manager->entities_manager.get_entity_of_category(entity_id, ENTITY_CATEGORY_HEX_SURF);
+        int object_category_id = scene_manager->scene_entities_manager.get_objects_category_index(SCENE_CATEGORY_HEX_SURFACE);
+        if (object_category_id == -1) {
+//std::cout << "hcp_interaction_node_class:create_interaction_object 4444 :  object_category_id == -1  111111111111 \n";
+             interaction_object->object_category_id = scene_manager->scene_entities_manager.define_new_entity_category(SCENE_CATEGORY_HEX_SURFACE);
+        }
+        else
+            interaction_object->object_category_id = object_category_id;
+
+        interaction_object->gizmo_display = node_gizmo_display_enum::none;
+        interaction_object->axis_size = 100.0;
+
+//std::cout << "hcp_interaction_node_class:create_interaction_object 55555 \n";
+        scene_manager->scene_entities_manager.add_object(interaction_object,interaction_object->object_category_id);
+        
         if (interaction_object == NULL) return NULL;
 
+        interaction_object->object_type_id = ENTITY_TYPE_OBJECT;
+
+        interaction_object->define_initial_shader_program();
+
+        if (interaction_object->geometry->shader) {
+            if (ofIsGLProgrammableRenderer()) {
+//std::cout << "hex_surface_interactions_class::create_interaction_object: ofIsGLProgrammableRenderer() : " << std::endl;
+            }
+            else {
+//std::cout << "hex_surface_interactions_class::create_interaction_object:!!!!ofIsGLProgrammableRenderer() : " << std::endl;
+                int i = scene_manager->scene_entities_manager.get_objects_category_index("Hex_Surface");// SCENE_CATEGORY_HEX_SURFACE does not work ?????
+                if (i > -1) {
+                    scene_manager->scene_entities_manager.delete_object(interaction_object->id, scene_manager->scene_entities_manager.scene_objects[i].objects_category_id);
+                }
+                return false;
+            }
+
+            if (!interaction_object->geometry->shader->shader_compile_successful) {
+//std::cout << "hcp_interaction_hex_surface_interactions_classnode_class::create_interaction_object: hcp_voxel Shaders not loaded !!!!! : " << std::endl;
+//std::string s = "jjjj\n";
+//cout << s << std::endl;
+//std::cout << interaction_object->geometry->shader->compile_log << std::endl;
+//std::cout << "hex_surface_interactions_class::create_interaction_object: hcp_voxel Shaders not loaded !!!!! END : " << std::endl;
+            }
+            else {
+//cout << " Shaders loaded ^^^^^ : " << shader.getProgram() << " : " << std::endl;
+                std::cout << "hex_surface_interactions_class::create_interaction_object: hcp_voxel Shaders loaded ^^^^^ : " << std::endl;
+//cout << entity_object03->geometry->shader->compile_log << std::endl;
+            }
+        }
+        else
+//std::cout << "hex_surface_interactions_class::create_interaction_object: hcp_voxel Shader not created : " << std::endl;
+         //+++++++++++++++++
+ 
+         if (interaction_object == NULL) return NULL;
+//std::cout << "hcp_interaction_node_class:create_interaction_object 6666 \n";
         interaction_object->hex_surface_object_data.grid_origin = boundary_min;
         interaction_object->hex_surface_object_data.hex_size = hex_surface_object_A->hex_surface_object_data.hex_size;
 
@@ -189,11 +208,11 @@ public:
             data_set_y_size = (int)(y_size / y_res_step);
 
         interaction_object->hex_surface_object_data.grid_dimension = { data_set_x_size,data_set_y_size,0};
-//printf("hcp_interaction_node_class:create_interaction_object 4444 dim :  %i : %i : %i \n", interaction_object->hex_surface_object_data.grid_dimension.x, interaction_object->hex_surface_object_data.grid_dimension.y);
+//printf("hcp_interaction_node_class:create_interaction_object 7777 dim :  %i : %i : %i \n", interaction_object->hex_surface_object_data.grid_dimension.x, interaction_object->hex_surface_object_data.grid_dimension.y);
         interaction_object->hex_surface_object_data.create_empty_surface_cubic(interaction_object->hex_surface_object_data.grid_dimension.x,
                                                                                interaction_object->hex_surface_object_data.grid_dimension.y);
 
-//printf("hcp_interaction_node_class:create_interaction_object 55555 size : %i \n", interaction_object->hex_surface_object_data.hex_surface_matrix_data.size());
+//printf("hcp_interaction_node_class:create_interaction_object 8888 size : %i \n", interaction_object->hex_surface_object_data.hex_surface_matrix_data.size());
         // ########### END CREATE EMPTY VOXEL CLOUD MATRIX #################
 
         return interaction_object;

@@ -3,6 +3,8 @@
 #include "graph.h"
 #include "node_editor.h"
 
+void* node_basis_class::get_node_data() { return nullptr; }// Node data to be accessed by other nodes// +++++++++++++++++++
+
 // !!!!!!!!!!!!!!!!!!! DRAW NODE FUNCTIONS !!!!!!!!!!!!!!!!!!!
 
 bool node_basis_class::draw_node(pins_class pins, float scale) {

@@ -107,11 +107,13 @@ voxel_hcp_object_class *hcp_voxel_automata_node_class::get_voxel_hcp_object_to_e
             node_basis_class* node = graph->nodes.get_node(link_from_pin.node_id);
 
             if (node) {
-                vw_object_base_class* hcp_voxel_base_object = vw_scene->scene_entities_manager.get_object_of_category(node->node_entity_id, node->node_entity_category_id);
-                if (hcp_voxel_base_object) {
-                    //std::cout << "hcp_voxel_automata_node_class::display_ui : hcp_voxel_base_object != NULL\n";
-                    voxel_hcp_object_to_execute = dynamic_cast<voxel_hcp_object_class*>(hcp_voxel_base_object);
-                }
+                //vw_object_base_class* hcp_voxel_base_object = vw_scene->scene_entities_manager.get_object_of_category(node->node_entity_id, node->node_entity_category_id);
+                //if (hcp_voxel_base_object) {
+                //    //std::cout << "hcp_voxel_automata_node_class::display_ui : hcp_voxel_base_object != NULL\n";
+                //    voxel_hcp_object_to_execute = dynamic_cast<voxel_hcp_object_class*>(hcp_voxel_base_object);
+                //}
+
+                voxel_hcp_object_to_execute = (voxel_hcp_object_class*) node->get_node_data();
             }
         }
     }
@@ -171,7 +173,6 @@ void hcp_voxel_automata_node_class::display_ui(node_id_type current_selected_obj
 //std::cout << "hcp_voxel_automata_node_class::display_ui\n";
 
     // Best to perform this code block only when connecting or diconnecting node input link
-    //if (!vw_scene || !node_hcp_object) {
     if (!vw_scene ) {
         // error message
         return;

@@ -86,6 +86,12 @@ public:
      
     bool define_ui();
 
+    // ++++++++++++++++
+    void* get_node_data() {
+        return hcp_voxel;
+    }
+    // ++++++++++++++++
+
     void export_node(std::fstream &stream) {
         if (!hcp_voxel) {
             //error message

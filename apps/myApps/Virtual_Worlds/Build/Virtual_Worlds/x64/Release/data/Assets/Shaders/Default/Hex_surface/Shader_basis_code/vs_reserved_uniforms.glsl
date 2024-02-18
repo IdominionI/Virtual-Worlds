@@ -1,20 +1,28 @@
+uniform mat4 modelViewProjectionMatrix;  // ++++++
 
-in vec3 vertex;        //vertex that the shader is processing
-in vec3 normal;        //vertex that the shader is processing
+in vec4 position; // ++++++
 
-#include "universal_reserved_uniforms.glsl"
 
-// hex surface parameter data
-uniform vec2  grid_origin;
+// //in vec4 vertex;        //vertex that the shader is processing
+// //in vec3 normal;        //vertex that the shader is processing
 
-//in float hex_size;
-//flat out float hexSize; 
-uniform float hexSize; 
+// layout(location = 0) in vec3 vertex; //******
+// layout(location = 1) in vec3 normal; //******
 
-//hex surface display data
-uniform float hex_min_surface_display_value;
-uniform float hex_max_surface_display_value;
+// #include "universal_reserved_uniforms.glsl"
 
+// // hex surface parameter data
+// uniform vec2  grid_origin;
+
+// //in float hex_size;
+// //flat out float hexSize; 
+// uniform float hexSize; 
+
+// //hex surface display data
+// uniform float hex_min_surface_display_value;
+// uniform float hex_max_surface_display_value;
+
+// vec4 raw_color;
 
 // Cannot use same variable name for in and out variables 
 // use Input and output interface blocks to solve this
@@ -26,8 +34,7 @@ out VertexData
   vec4 varyingColor;
 } vs_out;
 
-vec4 raw_color;
-
+/*
 // ******* BEGIN TESTING PARAMETER TRANSFER
 in int shader_parameters_frame;
 
@@ -38,7 +45,7 @@ uniform int display_as_points;
  //color of vertex that shader is processing
 uniform vec4  color;			       
 uniform int  display_native_vertex_colors;
-
+*/
 // ************************************************************
 
 

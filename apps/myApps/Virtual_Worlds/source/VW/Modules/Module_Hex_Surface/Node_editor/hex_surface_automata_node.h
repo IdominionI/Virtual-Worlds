@@ -28,7 +28,7 @@ public:
 
     // ++++++++++++++++++++++
     hex_surface_automata_animation_object_class *hex_animation_object = nullptr;
-    hex_surface_object_class* get_voxel_hcp_object_to_execute();
+    hex_surface_object_class *get_hex_surface_object_to_execute();
     unsigned int                                 timeline_interval_track_id = UINT_MAX;
     // future added tracks id variables go here
     // ++++++++++++++++++++++
@@ -36,6 +36,10 @@ public:
     // node_basis_class functions
     bool define_node(ImVec2 click_pos, node_id_type entity_id_);
     bool define_import_node(ImVec2 click_pos, node_id_type entity_id_, void* node_misc_data = NULL);
+
+    void *get_node_data() {
+        return get_hex_surface_object_to_execute();
+    }
 
     void delete_node_entity() {
         delete_hcp_automata_timeline_link();

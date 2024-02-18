@@ -7,7 +7,7 @@
 #include "../Editor/Widgets/hex_generator_widget.h"
 #include "../Editor/Widgets/hex_automata_widget.h"
 
-#define TIMELINE_OBJECT_DATA_TYPE_ID_HEX_SURFACE_AUTOMATA 1004
+#define TIMELINE_OBJECT_DATA_TYPE_ID_HEX_SURFACE_AUTOMATA 1201
 
 class hex_surface_automata_animation_object_class : public animation_object_basis_class {
 public:

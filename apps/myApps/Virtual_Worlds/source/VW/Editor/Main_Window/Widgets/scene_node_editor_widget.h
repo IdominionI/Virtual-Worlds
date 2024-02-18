@@ -135,7 +135,7 @@ public:
         for (int i = 0; i < child_groups.size();i++) {
 //std::cout << "scene_node_editor_class : delete_group_node 111: " << child_groups[i]->editor_id << std::endl;
             if (child_groups[i]->editor_id == selected_node->node_id) {
-//std::cout << "scene_node_editor_class : delete_group_node 222 : " << selected_node->node_id << std::endl;
+//std::cout << "scene_node_editor_class : delete_group_node 222 : " << selected_node->node_id << ":" << child_groups[i]->graph.nodes.nodes.size() <<  std::endl;
                 child_groups[i]->delete_child_group_nodes();
                 child_groups[i]->delete_group_links();
                 child_groups[i]->delete_group_node_graph();// !!!!!
@@ -195,7 +195,7 @@ private:
         // need to delete all nodes from a master graph that holds a complete graph of all nodes for proccessing ??????
         // or does a master graph be constructed from all root and all group graphs each time a process is performed ???
         //master_graph.delete_sub_graph_nodes(graph);// !!!!!
-//std::cout << "scene_node_editor_class : delete_group_node_graph 111: " <<  std::endl;
+//std::cout << "scene_node_editor_class : delete_group_node_graph 111: " <<graph.nodes.nodes.size() <<  std::endl;
         graph.clear_graph();
     }
 

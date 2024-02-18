@@ -88,7 +88,7 @@ bool hex_surface_automata_node_class::create_hcp_automata_timeline_link() {
     return true;
 }
 
-hex_surface_object_class* hex_surface_automata_node_class::get_voxel_hcp_object_to_execute() {
+hex_surface_object_class* hex_surface_automata_node_class::get_hex_surface_object_to_execute() {
     if (!vw_scene) {
         // error message
         return nullptr;
@@ -174,7 +174,7 @@ void hex_surface_automata_node_class::display_ui(node_id_type current_selected_o
         return;
     }
 
-    hex_surface_object_class* voxel_hcp_object_to_execute = get_voxel_hcp_object_to_execute();
+    hex_surface_object_class* voxel_hcp_object_to_execute = get_hex_surface_object_to_execute();
     display_voxel_automata_widget(voxel_hcp_object_to_execute);
 }
 

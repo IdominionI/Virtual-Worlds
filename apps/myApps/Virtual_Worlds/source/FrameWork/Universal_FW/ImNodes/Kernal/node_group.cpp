@@ -39,3 +39,5 @@ bool node_group_class::define_import_node(ImVec2 click_pos, node_id_type  entity
     // define_node function needed in a .cpp file to avoid cicular referencing errors with the node_editor.h
 	return define_node(click_pos, entity_id_);
 }
+
+//void *node_group_class::get_node_data() { return nullptr; }//required so as not to compile .cpp file so as not to get linking errors 

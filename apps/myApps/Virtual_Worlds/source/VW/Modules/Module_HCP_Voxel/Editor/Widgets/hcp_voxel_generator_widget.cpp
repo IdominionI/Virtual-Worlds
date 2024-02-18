@@ -167,6 +167,9 @@
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Could not perform voxel generation. No entity selected.\n");
 			return;
 		}
+
+		voxel_hcp_object_to_execute->voxel_object_data.voxel_size = voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.resolution_step;// +++++
+
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function 1111\n");
 		define_voxel_generation_parameters(); // Only need to define invocation values
 //printf("INFO","Execute Buttton 111 : \n");
@@ -175,8 +178,6 @@
 		voxel_generator.cloud_data = &voxel_hcp_object_to_execute->voxel_object_data;
 		voxel_generator.log_panel  = log_panel;
 //printf("voxel_hcp_generation_widget_class :: execute_voxel_function %s 2222\n", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_pathname.c_str());
-
-
 
 		if (!voxel_generator.generate_voxel_function()) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Create Voxel function of %s failed.\n", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_name.c_str());

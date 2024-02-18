@@ -70,6 +70,7 @@ typedef std::string pathname_type;
 #define NODE_CATEGORY_ID_GROUP     5100
 #define NODE_CATEGORY_ID_GENERATOR 5110
 #define NODE_CATEGORY_ID_MODIFIER  5111
+#define NODE_CATEGORY_ID_OPERATOR  5112
 
 #define NODE_DATA_CONTEXT                   100
 #define NODE_GROUP_DATA_CONTEXT             101

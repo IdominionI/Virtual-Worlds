@@ -19,16 +19,12 @@ public:
 
 	bool setup_animation_data(animation_data_struct_type animation_settings) {
 //std::cout << "hcp_animation_object_class:setup_animation_data : in setup_animation_data\n";
-		//if (!voxel_hcp_object || !voxel_hcp_automata_byte_rules) {
 		if (!voxel_hcp_automata_widget) {
 //std::cout << "hcp_voxel_automata_animation_object_class:setup_animation_data : !voxel_hcp_object\n";
 			return false;
 		}
 
 		animation_data = animation_settings;
-
-		//voxel_hcp_automata_widget.voxel_hcp_object_to_execute = voxel_hcp_object;
-		//voxel_hcp_automata_widget.entity_id  = voxel_hcp_object->id;
 
 		return true;
 	}
@@ -55,6 +51,5 @@ public:
 	}
 
 private:
-	//voxel_hcp_automata_widget_class voxel_hcp_automata_widget; 
 	animation_data_struct_type      animation_data;
 };

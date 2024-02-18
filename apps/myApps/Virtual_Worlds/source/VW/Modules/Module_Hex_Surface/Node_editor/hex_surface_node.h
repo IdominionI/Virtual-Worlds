@@ -82,6 +82,11 @@ public:
 
     bool define_ui();
 
+    // ++++++++++++++++
+    void* get_node_data() {
+        return hex_surface;
+    }
+    // ++++++++++++++++
     // ----------- Export Node parameter data --------------
     void export_node(std::fstream& stream) {
         if (!hex_surface) {
