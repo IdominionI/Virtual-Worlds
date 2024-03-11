@@ -118,17 +118,17 @@ struct shader_parameters_struct_type {
 
 	string_type  vertex_shader_file_name = "";
 	string_type  geometry_shader_file_name = "";
-	string_type  point_geometry_shader_file_name = "";
+	//string_type  point_geometry_shader_file_name = "";
 	string_type  fragment_shader_file_name = "";
 
 	string_type default_vertex_shader_file_pathname = "";
 	string_type default_geometry_shader_file_pathname = "";
-	string_type default_point_shader_file_pathname = "";
+	//string_type default_point_shader_file_pathname = "";
 	string_type default_fragment_shader_file_pathname = "";
 
 	string_type vertex_shader_file_pathname = "";
 	string_type geometry_shader_file_pathname = "";
-	string_type point_shader_file_pathname = "";
+	//string_type point_shader_file_pathname = "";
 	string_type fragment_shader_file_pathname = "";
 
 	bool use_default_vertex_shader = true;

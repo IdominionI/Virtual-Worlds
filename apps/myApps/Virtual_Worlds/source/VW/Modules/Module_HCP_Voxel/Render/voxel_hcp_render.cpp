@@ -70,8 +70,6 @@
 
 		shader_material->vertex_shader_file_pathname           = (default_shader_file_directory + voxel_hcp_default_vertex_file).c_str();
 		shader_material->default_vertex_shader_file_pathname   = (default_shader_file_directory + voxel_hcp_default_vertex_file).c_str();
-		shader_material->point_shader_file_pathname		       = (default_shader_file_directory + voxel_hcp_default_point_file).c_str();
-		shader_material->default_point_shader_file_pathname    = (default_shader_file_directory + voxel_hcp_default_point_file).c_str();
 		shader_material->geometry_shader_file_pathname         = (default_shader_file_directory + voxel_hcp_default_geometry_file).c_str();
 		shader_material->default_geometry_shader_file_pathname = (default_shader_file_directory + voxel_hcp_default_geometry_file).c_str();
 		shader_material->fragment_shader_file_pathname		   = (default_shader_file_directory + voxel_hcp_default_fragment_file).c_str();
@@ -102,17 +100,10 @@
 
 		voxel_hcp_object->geometry->init();// Critical to have this function initialted or nothing will be displayed using a geometry shader.
 
-		if (voxel_hcp_object->voxel_object_data.shader_parameters.use_point_shader) {
-			shader_material->glsl_vertex_shader_file_pathname   = shader_material->default_vertex_shader_file_pathname;
-			shader_material->glsl_geometry_shader_file_pathname = shader_material->default_geometry_shader_file_pathname;
-			shader_material->glsl_fragment_shader_file_pathname = shader_material->default_fragment_shader_file_pathname;
-		} else {
-			shader_material->glsl_vertex_shader_file_pathname   = shader_material->default_vertex_shader_file_pathname;
-			shader_material->glsl_geometry_shader_file_pathname = shader_material->default_geometry_shader_file_pathname;
-			shader_material->glsl_fragment_shader_file_pathname = shader_material->default_fragment_shader_file_pathname;
-		}
+		shader_material->glsl_vertex_shader_file_pathname   = shader_material->default_vertex_shader_file_pathname;
+		shader_material->glsl_geometry_shader_file_pathname = shader_material->default_geometry_shader_file_pathname;
+		shader_material->glsl_fragment_shader_file_pathname = shader_material->default_fragment_shader_file_pathname;
 
-		shader_material->glsl_geometry_shader_file_pathname = shader_material->default_point_shader_file_pathname;// Testing only comment out or delete when testing complete
 		shaders_loaded = shader->load(shader_material->glsl_vertex_shader_file_pathname, shader_material->glsl_fragment_shader_file_pathname, shader_material->glsl_geometry_shader_file_pathname);
 //shaders_loaded = shader->load(shader_material->glsl_vertex_shader_file_pathname, shader_material->glsl_fragment_shader_file_pathname);// Testing only  comment out or delete when testing complete
 

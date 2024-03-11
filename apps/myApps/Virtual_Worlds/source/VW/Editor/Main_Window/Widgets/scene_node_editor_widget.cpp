@@ -716,12 +716,16 @@ void scene_node_editor_class::handle_deleted_links() {
         graph.links.delete_link(link_id);
     }
 
+    // Following incomplete and need to match menu deletions of links and nodes
+    // Dangeous as can be initiated in from ImGui widget and should be avoided at all costs
+    // until find a way to only valid within the node editor. Same with all ImGui shortcuts
+/*
     {
 
         // Delete link definitions
         //const int num_selected_links = ImNodes::NumSelectedLinks();
         const int num_selected_links = NumSelectedLinks();
-        if (num_selected_links > 0 && ImGui::IsKeyReleased(ImGuiKey_X))
+        if (num_selected_links > 0 && ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyDown(ImGuiKey_X))
         {
             static std::vector<int> selected_links;
             selected_links.resize(static_cast<size_t>(num_selected_links));
@@ -742,7 +746,8 @@ void scene_node_editor_class::handle_deleted_links() {
         // Delete node definitions
         //const int num_selected_links = ImNodes::NumSelectedNodes();
         const int num_selected_links = NumSelectedNodes();
-        if (num_selected_links > 0 && ImGui::IsKeyReleased(ImGuiKey_X))
+        //if (num_selected_links > 0 && ImGui::IsKeyReleased(ImGuiKey_X))
+        if (num_selected_links > 0 && ImGui::IsKeyDown(ImGuiKey_LeftCtrl) && ImGui::IsKeyDown(ImGuiKey_X))
         {
             static std::vector<int> selected_nodes;
             selected_nodes.resize(static_cast<size_t>(num_selected_links));
@@ -758,6 +763,7 @@ void scene_node_editor_class::handle_deleted_links() {
                                  // still defined that do not exist and will cause a crash 
         }
     }
+*/
 }
 
 // +++++

@@ -112,6 +112,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\Timeline\timeline_interval.cpp" />
     <ClCompile Include="source\FrameWork\VW_framework\Scene\scene_lights.cpp" />
+    <ClCompile Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Automata\automata_bye_import_export.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Automata\voxel_automata_functions.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Menus\hcp_voxel_menu_functions.cpp" />
@@ -134,7 +135,6 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="source\FrameWork\Universal_FW\ImNodes\Kernal\node_group.h" />
     <ClCompile Include="source\FrameWork\Universal_FW\tinyFileDialog\tinyfiledialogs.c" />
     <ClCompile Include="source\FrameWork\VW_framework\3D\vw_camera.cpp" />
-    <ClCompile Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\FrameWork\VW_framework\3D\vw_camera_base.cpp" />
     <ClCompile Include="source\VW\Editor\Main_Window\Widgets\scene_node_editor_widget.cpp" />
@@ -195,6 +195,8 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\FrameWork\VW_framework\App\user_bindings.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Object\vw_object_material.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Scene\scene_settings.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_manager.h" />
+    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.h" />
     <ClInclude Include="source\VW\Editor\Import_Export\vw_import_export_parameters.h" />
     <ClInclude Include="source\VW\Editor\Main_Window\Panels\animation_timeline_panel.h" />
     <ClInclude Include="source\VW\Editor\Main_Window\Widgets\camera_widget.h" />
@@ -258,9 +260,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\FrameWork\VW_framework\Shader\shader.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_components.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_format.h" />
-    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_manager.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_parameters.h" />
-    <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Widgets\parameter_widget_base.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Geometry\vw_point_cloud.h" />
     <ClInclude Include="source\FrameWork\VW_framework\GL\opengl_defines.h" />

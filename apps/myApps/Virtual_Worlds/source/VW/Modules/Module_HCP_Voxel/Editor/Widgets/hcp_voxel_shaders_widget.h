@@ -27,8 +27,6 @@ public:
 	hcp_voxel_generation_basis_widget_class    *hcp_voxel_generation_widget;
 	log_panel_class							   *log_panel = NULL;
 
-	//bool animate_shaders             = false;
-
 	id_type                  current_selected_entity_id = -1;   // entity id of the selected entity to display/modify
 	voxel_hcp_object_class  *voxel_hcp_object_to_execute = NULL; // Pointer to the hcp voxel entity data stored in the Virtual Worlds scene data model
 
@@ -47,9 +45,7 @@ private:
 	void save_shader_parameters();
 	void load_shader_parameters();
 	void select_vertex_shader_file();
-	void select_point_geometry_shader_file();
 	void select_geometry_shader_file();
 	void select_fragment_shader_file();
 	void clear_variables();
-
 };

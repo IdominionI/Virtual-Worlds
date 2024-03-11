@@ -3,8 +3,8 @@
 #include "shader_format.h"
 #include "shader_manager.h"
 
-struct material_basis_struct_type : public shader_format_class {
-	shader_db_manager_class shader_manager;
+struct material_base_struct_type : public shader_format_class {
+	shader_db_manager_class shader_manager; // Need to substitute this with shader_class !!!!!!!!!!!
 
 	virtual void define_shader_uniforms() {};
 	virtual bool update_shader_variables_value_increment(int frame_increment) { return false; };
@@ -12,7 +12,7 @@ struct material_basis_struct_type : public shader_format_class {
 
 };
 
-struct material_struct_type : public material_basis_struct_type {
+struct material_struct_type : public material_base_struct_type {
 	~material_struct_type() { //*****
 		variables.clear();
 		variables.shrink_to_fit();
@@ -33,17 +33,14 @@ struct material_struct_type : public material_basis_struct_type {
 		clear_uniforms();
 
 		for (shader_parameter_variable_struct_type float_variable : variables) {
-			//if (!uniform_exists(float_variable.variable_name)) float_uniforms.add_uniform(float_variable.variable_name, float_variable.value);
 			if (!uniform_exists(float_variable.variable_name) && float_variable.active_variable) add_uniform(float_variable.variable_name, application_default_shader_variable_type_enum::Float1);
 		}
 
 		for (shader_parameter_int_variable_struct_type int_variable : int_variables) {
-			//if (!uniform_exists(int_variable.variable_name)) int_uniforms.add_uniform(int_variable.variable_name, int_variable.value);
 			if (!uniform_exists(int_variable.variable_name) && int_variable.active_variable) add_uniform(int_variable.variable_name, application_default_shader_variable_type_enum::Int1);
 		}
 
 		for (shader_parameter_bool_variable_struct_type bool_variable : bool_variables) {
-			//if (!uniform_exists(bool_variable.variable_name)) bool_uniforms.add_uniform(bool_variable.variable_name, bool_variable.value);
 			if (!uniform_exists(bool_variable.variable_name) && bool_variable.active_variable) add_uniform(bool_variable.variable_name, application_default_shader_variable_type_enum::Bool);
 		}
 
@@ -96,10 +93,4 @@ printf("update_shader_variables :: uniform_variable %s : %f : \n", uniform_varia
 */
 		return true;
 	}
-
-	//shader_db_manager_class shader_manager;
-
-private:
-	//shader_db_manager_class shader_manager;
-
 };

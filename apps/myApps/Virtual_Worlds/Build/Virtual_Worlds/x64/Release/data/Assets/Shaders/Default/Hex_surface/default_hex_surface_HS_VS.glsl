@@ -8,6 +8,9 @@
 
 // -------------- User Defined Uniforms ----------------------
 
+uniform int display_as_points;
+vec4 raw_color;
+
 // -------------Application dynamicly defined uniorms---------
 // Do not delete next line with DDU as applicatioin defined uniforms are placed here
 // Must exist in every glsl code unless user whishes to manually enter uniforms that

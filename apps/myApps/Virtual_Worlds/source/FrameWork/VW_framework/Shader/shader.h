@@ -444,7 +444,10 @@ public:
 	void set_b1(GLuint shader_program_id, bool v, const std::string& name) {
 		GLint myLoc = glGetUniformLocation(shader_program_id, name.c_str());
 //printf("shader::set_b1 : %i : %i  : %i  : %s \n", shader_program_id, v,myLoc, name.c_str());
-		glProgramUniform1i(shader_program_id, myLoc, v);
+		if(!v)
+			glProgramUniform1i(shader_program_id, myLoc, 0);
+		else
+			glProgramUniform1i(shader_program_id, myLoc, 1);
 	}
 
 	// ------------ Floats

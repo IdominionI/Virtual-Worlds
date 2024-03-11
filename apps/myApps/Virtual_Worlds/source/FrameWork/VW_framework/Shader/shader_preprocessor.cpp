@@ -21,6 +21,11 @@
  POSSIBILITY OF SUCH DAMAGE.
 */
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// THIS CLASS IS NO LONGER USED AS openFramWorks HAS A FUNCTIONALITY TO PERFORM THE SAME TASKS EVEN IF NOT AS GOOD
+// THIS CODE IS TO BE ARCHIVED FOR POSSIBLE FUTURE USE
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 #include "shader_preprocessor.h"
 
 #include <string>

@@ -19,13 +19,6 @@ void voxel_shaders_widget_class::display() {
 
 	title("Voxel  Shaders ");
 
-	//y_pos += 30;
-	//text("Animate Shaders : ", x_pos + 80, y_pos);
-
-	//ImGui::SetCursorPosX(x_pos + 220);
-	//ImGui::SetCursorPosY(y_pos);
-	//ImGui::Checkbox("###sdisplas", &voxel_shader_parameters->animate_shaders);
-
 	y_pos += 30;
 	text("Display Bounding Volume : ", x_pos + 80, y_pos);
 
@@ -49,8 +42,6 @@ void voxel_shaders_widget_class::display() {
 	y_pos += 20;
 	text("Vertex  :", x_pos, y_pos);
 
-	//std::cout <<"voxel_shaders_widget_class 0000 %s.\n", voxel_shader_parameters.vertex_shader_file_name.c_str());// replace with get file pathname tool;
-			//if (ex_button(voxel_shader_parameters->vertex_shader_file_name.c_str(), x_pos + 80, y_pos, 190, 20))
 	if (ex_button(voxel_shader_parameters->vertex_shader_file_pathname.filename().string().c_str(), x_pos + 80, y_pos, 190, 20))
 		select_vertex_shader_file();
 
@@ -114,15 +105,12 @@ void voxel_shaders_widget_class::perform_decrement_variables(float frame_interva
 	for (shader_parameter_variable_struct_type& variable : voxel_shader_parameters->variables) {
 		float var_step = variable.variable_step * frame_interval;
 		if (variable.active_variable_step) {
-			//if (variable.variable_step > 0.0 && variable.value - variable.variable_step < variable.slider_min)
 			if (variable.variable_step > 0.0 && variable.value - var_step < variable.slider_min)
 				variable.value = variable.slider_min;
 			else
-				//if (variable.variable_step < 0.0 && variable.value - variable.variable_step > variable.slider_max)
 				if (variable.variable_step < 0.0 && variable.value - var_step > variable.slider_max)
 					variable.value = variable.slider_max;
 				else
-					//variable.value -= variable.variable_step;
 					variable.value -= var_step;
 		}
 	}
@@ -130,15 +118,12 @@ void voxel_shaders_widget_class::perform_decrement_variables(float frame_interva
 	for (shader_parameter_int_variable_struct_type& int_variable : voxel_shader_parameters->int_variables) {
 		int var_step = int(float(int_variable.variable_step) * frame_interval);
 		if (int_variable.active_variable_step) {
-			//if (int_variable.variable_step > 0 && int_variable.value - int_variable.variable_step < int_variable.slider_min)
 			if (int_variable.variable_step > 0 && int_variable.value - var_step < int_variable.slider_min)
 				int_variable.value = int_variable.slider_min;
 			else
-				//if (int_variable.variable_step < 0 && int_variable.value - int_variable.variable_step > int_variable.slider_max)
 				if (int_variable.variable_step < 0 && int_variable.value - var_step > int_variable.slider_max)
 					int_variable.value = int_variable.slider_max;
 				else
-					//int_variable.value -= int_variable.variable_step;
 					int_variable.value -= var_step;
 		}
 	}
@@ -151,15 +136,12 @@ void voxel_shaders_widget_class::perform_increment_variables(float frame_interva
 	for (shader_parameter_variable_struct_type& variable : voxel_shader_parameters->variables) {
 		float var_step = variable.variable_step * frame_interval;
 		if (variable.active_variable_step) {
-			//if (variable.variable_step < 0.0 && variable.value + variable.variable_step < variable.slider_min)
 			if (variable.variable_step < 0.0 && variable.value + var_step < variable.slider_min)
 				variable.value = variable.slider_min;
 			else
-				//if (variable.variable_step > 0.0 && variable.value + variable.variable_step > variable.slider_max)
 				if (variable.variable_step > 0.0 && variable.value + var_step > variable.slider_max)
 					variable.value = variable.slider_max;
 				else
-					//variable.value += variable.variable_step;
 					variable.value += var_step;
 		}
 	}
@@ -167,15 +149,12 @@ void voxel_shaders_widget_class::perform_increment_variables(float frame_interva
 	for (shader_parameter_int_variable_struct_type& int_variable : voxel_shader_parameters->int_variables) {
 		int var_step = int(float(int_variable.variable_step) * frame_interval);
 		if (int_variable.active_variable_step) {
-			//if (int_variable.variable_step < 0 && int_variable.value + int_variable.variable_step < int_variable.slider_min)
 			if (int_variable.variable_step < 0 && int_variable.value + var_step < int_variable.slider_min)
 				int_variable.value = int_variable.slider_min;
 			else
-				//if (int_variable.variable_step > 0 && int_variable.value + int_variable.variable_step > int_variable.slider_max)
 				if (int_variable.variable_step > 0 && int_variable.value + var_step > int_variable.slider_max)
 					int_variable.value = int_variable.slider_max;
 				else
-					//int_variable.value += int_variable.variable_step;
 					int_variable.value += var_step;
 		}
 	}
@@ -231,16 +210,10 @@ std::cout << "voxel_shaders_widget_class::update_voxel_shaders111\n";
 	// ########         which uses identical data class and code.
 
 	shader_material->vertex_shader_file_pathname   = voxel_shader_parameters->vertex_shader_file_pathname;
-	shader_material->point_shader_file_pathname    = voxel_shader_parameters->point_shader_file_pathname;
 	shader_material->geometry_shader_file_pathname = voxel_shader_parameters->geometry_shader_file_pathname;
 	shader_material->fragment_shader_file_pathname = voxel_shader_parameters->fragment_shader_file_pathname;
 
 	shader_material->animate_shaders = voxel_shader_parameters->animate_shaders;
-
-	//shader_material->use_default_vertex_shader   = voxel_shader_parameters->use_default_vertex_shader;
-	//shader_material->use_default_point_shader    = voxel_shader_parameters->use_default_point_shader;
-	//shader_material->use_default_geometry_shader = voxel_shader_parameters->use_default_geometry_shader;
-	//shader_material->use_default_fragment_shader = voxel_shader_parameters->use_default_fragment_shader;
 
 	shader_material->use_default_vertex_shader   = false;
 	shader_material->use_default_point_shader    = false;
@@ -278,9 +251,6 @@ bool voxel_shaders_widget_class::initialise_parameters() {
 
 	if ((voxel_shader_parameters->vertex_shader_file_pathname == ""))
 		voxel_shader_parameters->vertex_shader_file_pathname = "...###vsf";
-
-	if ((voxel_shader_parameters->point_shader_file_pathname == ""))
-		voxel_shader_parameters->point_shader_file_pathname = "...###vsf";
 
 	if ((voxel_shader_parameters->geometry_shader_file_pathname == ""))
 		voxel_shader_parameters->geometry_shader_file_pathname = "...###vsf";
@@ -359,22 +329,6 @@ bool voxel_shaders_widget_class::initialise_parameters() {
 		std::string s = FW::stringtools::replace(file_pathname, "\\", "/");
 		voxel_shader_parameters->vertex_shader_file_pathname = s;
 //std::cout <<"select_vertex_shader_file 111111111 : %s:\n",s.c_str());
-	}
-
-	void voxel_shaders_widget_class::select_point_geometry_shader_file() {
-//std::cout <<"select_point_geometry_shader_file button pressed.\n";// replace with get file pathname tool
-		char const* patterns[] = { "*_PGS.glsl" };
-		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
-
-		if (file_pathname == nullptr) {
-			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No point geometry shader file selected.\n");
-			return;
-		}
-//		else
-//std::cout <<"point_geometry_shader_file_pathname != NULL %s:\n", file_pathname);
-
-		std::string s = FW::stringtools::replace(file_pathname, "\\", "/");
-		voxel_shader_parameters->point_shader_file_pathname = s;
 	}
 
 	void voxel_shaders_widget_class::select_geometry_shader_file() {

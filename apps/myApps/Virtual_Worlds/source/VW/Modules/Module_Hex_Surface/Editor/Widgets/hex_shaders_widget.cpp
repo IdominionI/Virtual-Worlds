@@ -89,15 +89,12 @@
 		for (shader_parameter_variable_struct_type &variable : hex_surface_shader_parameters->variables) {
 			float var_step = variable.variable_step * frame_interval;
 			if (variable.active_variable_step) {
-				//if (variable.variable_step > 0.0 && variable.value - variable.variable_step < variable.slider_min)
 				if (variable.variable_step > 0.0 && variable.value - var_step < variable.slider_min)
 					variable.value = variable.slider_min;
 				else
-					//if (variable.variable_step < 0.0 && variable.value - variable.variable_step > variable.slider_max)
 					if (variable.variable_step < 0.0 && variable.value - var_step > variable.slider_max)
 						variable.value = variable.slider_max;
 					else
-						//variable.value -= variable.variable_step * frame_interval;
 						variable.value -= var_step;
 			}
 		}
@@ -105,15 +102,12 @@
 		for (shader_parameter_int_variable_struct_type &int_variable : hex_surface_shader_parameters->int_variables) {
 			int var_step = int(float(int_variable.variable_step) * frame_interval);
 			if (int_variable.active_variable_step) {
-				//if (int_variable.variable_step > 0 && int_variable.value - int_variable.variable_step < int_variable.slider_min)
 				if (int_variable.variable_step > 0 && int_variable.value - var_step < int_variable.slider_min)
 					int_variable.value = int_variable.slider_min;
 				else
-					//if (int_variable.variable_step < 0 && int_variable.value - int_variable.variable_step > int_variable.slider_max)
 					if (int_variable.variable_step < 0 && int_variable.value - var_step > int_variable.slider_max)
 						int_variable.value = int_variable.slider_max;
 					else
-						//int_variable.value -= int_variable.variable_step;
 						int_variable.value -= var_step;
 			}
 		}
@@ -126,15 +120,12 @@
 		for (shader_parameter_variable_struct_type &variable : hex_surface_shader_parameters->variables) {
 			float var_step = variable.variable_step * frame_interval;
 			if (variable.active_variable_step) {
-					//if (variable.variable_step < 0.0 && variable.value + variable.variable_step < variable.slider_min)
 					if (variable.variable_step < 0.0 && variable.value + var_step < variable.slider_min)
 						variable.value = variable.slider_min;
 					else
-						//if (variable.variable_step > 0.0 && variable.value + variable.variable_step > variable.slider_max)
 						if (variable.variable_step > 0.0 && variable.value + var_step > variable.slider_max)
 							variable.value = variable.slider_max;
 						else
-							//variable.value += variable.variable_step * frame_interval;
 							variable.value += var_step;
 			}
 		}
@@ -142,15 +133,12 @@
 		for (shader_parameter_int_variable_struct_type &int_variable : hex_surface_shader_parameters->int_variables) {
 			int var_step = int(float(int_variable.variable_step) * frame_interval);
 			if (int_variable.active_variable_step) {
-				//if (int_variable.variable_step < 0 && int_variable.value + int_variable.variable_step < int_variable.slider_min)
 				if (int_variable.variable_step < 0 && int_variable.value + var_step < int_variable.slider_min)
 					int_variable.value = int_variable.slider_min;
 				else
-					//if (int_variable.variable_step > 0 && int_variable.value + int_variable.variable_step > int_variable.slider_max)
 					if (int_variable.variable_step > 0 && int_variable.value + var_step > int_variable.slider_max)
 						int_variable.value = int_variable.slider_max;
 					else
-						//int_variable.value += int_variable.variable_step;
 						int_variable.value += var_step;
 			}
 		}
@@ -198,17 +186,10 @@ void hex_surface_shaders_widget_class::update_hex_shaders(bool notification) {
 //printf("voxel_shaders_widget_class::initialise_parameters : YYYYY %s:\n", hex_surface_shader_parameters->point_shader_file_pathname.c_str());
 
 	shader_material->vertex_shader_file_pathname = hex_surface_shader_parameters->vertex_shader_file_pathname;
-
-	shader_material->point_shader_file_pathname    = hex_surface_shader_parameters->point_shader_file_pathname;
 	shader_material->geometry_shader_file_pathname = hex_surface_shader_parameters->geometry_shader_file_pathname;
 	shader_material->fragment_shader_file_pathname = hex_surface_shader_parameters->fragment_shader_file_pathname;
 
 	shader_material->animate_shaders  = hex_surface_shader_parameters->animate_shaders;
-
-	//shader_material->use_default_vertex_shader   = hex_surface_shader_parameters->use_default_vertex_shader;
-	//shader_material->use_default_point_shader    = hex_surface_shader_parameters->use_default_point_shader;
-	//shader_material->use_default_geometry_shader = hex_surface_shader_parameters->use_default_geometry_shader;
-	//shader_material->use_default_fragment_shader = hex_surface_shader_parameters->use_default_fragment_shader;
 
 	shader_material->use_default_vertex_shader   = false;
 	shader_material->use_default_point_shader    = false;
@@ -226,7 +207,6 @@ void hex_surface_shaders_widget_class::update_hex_shaders(bool notification) {
 	hex_surface_generation_widget->change_hex_display();
 }
 
-//bool initialise_parameters(shader_parameters_struct_type *hex_surface_shader_parameters) {
 bool hex_surface_shaders_widget_class::initialise_parameters() {
 	if (hex_surface_object_to_execute == NULL) {
 //printf("voxel_shaders_widget_class :: initialise_parameters :hex_surface_object_to_execute == NULL\n");
@@ -239,9 +219,6 @@ bool hex_surface_shaders_widget_class::initialise_parameters() {
 
 	if((hex_surface_shader_parameters->vertex_shader_file_pathname == "")) 
 		hex_surface_shader_parameters->vertex_shader_file_pathname = "...###hsf";
-
-	if ((hex_surface_shader_parameters->point_shader_file_pathname == ""))
-		hex_surface_shader_parameters->point_shader_file_pathname = "...###hsf1";
 
 	if ((hex_surface_shader_parameters->geometry_shader_file_pathname == ""))
 		hex_surface_shader_parameters->geometry_shader_file_pathname = "...###hsf2";
@@ -297,7 +274,6 @@ bool hex_surface_shaders_widget_class::initialise_parameters() {
 	}
 
 	void hex_surface_shaders_widget_class::select_vertex_shader_file() {
-		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
 //printf("select_vertex_shader_file button pressed.\n");// replace with get file pathname tool
 		char const* patterns[] = {"*_VS.glsl"};
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
@@ -313,14 +289,11 @@ bool hex_surface_shaders_widget_class::initialise_parameters() {
 		std::string s                                        = FW::stringtools::replace(file_pathname, "\\", "/");
 		hex_surface_shader_parameters->vertex_shader_file_pathname = s;
 //printf("select_vertex_shader_file 111111111 : %s:\n",s.c_str());
-		//hex_surface_shader_parameters->vertex_shader_file_name     = vwDialogs::get_filename(s, "/");
 	}
 
 	void hex_surface_shaders_widget_class::select_point_geometry_shader_file() {
-		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
-
 //printf("select_point_geometry_shader_file button pressed.\n");// replace with get file pathname tool
-		char const* patterns[] = { "*_GS.glsl" };
+		char const* patterns[] = { "*_GS.glsl","*_PGS.glsl" };
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
 
 		if (file_pathname == nullptr) {
@@ -329,10 +302,7 @@ bool hex_surface_shaders_widget_class::initialise_parameters() {
 		}
 
 //printf("hex_surface_shaders_widget_class::select_point_geometry_shader_file : 00000 point_geometry_shader_file_pathname != NULL %s:\n", file_pathname);
-
-		//hex_surface_shader_parameters->point_shader_file_pathname = file_pathname;
 		std::string s                                            = FW::stringtools::replace(std::string(file_pathname), "\\", "/");
-		//hex_surface_shader_parameters->point_shader_file_pathname      = s;
 //printf("hex_surface_shaders_widget_class::select_point_geometry_shader_file : 11111 %s:\n", s.c_str());
 		hex_surface_shader_parameters->geometry_shader_file_pathname = s;
 //printf("hex_surface_shaders_widget_class::select_point_geometry_shader_file : 22222 %s:\n", s.c_str());
@@ -340,8 +310,6 @@ bool hex_surface_shaders_widget_class::initialise_parameters() {
 	}
 
 	void hex_surface_shaders_widget_class::select_fragment_shader_file() {
-		//if (log_panel != NULL) log_panel->application_log.AddLog("INFO : select_vertex_shader_file button pressed.");
-
 //printf("select_fragment_shader_file button pressed.\n");// replace with get file pathname tool
 		char const* patterns[] = { "*_FS.glsl" };
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);

@@ -30,12 +30,12 @@ public:
 	std::string shader_file_directory           = "Assets/Shaders/Default/Voxel/";
 
 	std::string voxel_hcp_default_vertex_file   = "default_gen_TRD_VS.glsl";
-	std::string voxel_hcp_default_point_file    = "default_gen_TRD_PGS.glsl";
+	//std::string voxel_hcp_default_point_file    = "default_gen_TRD_PGS.glsl";
 	std::string voxel_hcp_default_geometry_file = "default_gen_TRD_GS.glsl";
 	std::string voxel_hcp_default_fragment_file = "default_gen_TRD_FS.glsl";
 
 	std::string voxel_hcp_vertex_file           = "default_gen_TRD_VS.glsl";
-	std::string voxel_hcp_point_file            = "default_gen_TRD_PGS.glsl";
+	//std::string voxel_hcp_point_file            = "default_gen_TRD_PGS.glsl";
 	std::string voxel_hcp_geometry_file         = "default_gen_TRD_GS.glsl";
 	std::string voxel_hcp_fragment_file         = "default_gen_TRD_FS.glsl";
 

@@ -52,6 +52,12 @@
 //!
 //! Adding #define statements are also supported, and you can set the #version via `setVersion( int )`. If
 //! you are on OpenGL ES, then `" es"` will be appended to the version string.
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// THIS CLASS IS NO LONGER USED AS openFramWorks HAS A FUNCTIONALITY TO PERFORM THE SAME TASKS EVEN IF NOT AS GOOD
+// THIS CODE IS TO BE ARCHIVED FOR POSSIBLE FUTURE USE
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 class  ShaderPreprocessor {
 public:
 	//ShaderPreprocessor();

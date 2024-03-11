@@ -13,6 +13,9 @@
 
 out vec3 positionFromVertex;
 
+uniform int display_as_points;
+vec4 raw_color;
+
 // -------------Application dynamicly defined uniorms---------
 // Do not delete next line with DDU as application defined uniforms are placed here
 // Must exist in every glsl code unless user wishes to manually enter uniforms that
@@ -24,12 +27,17 @@ out vec3 positionFromVertex;
 // -------------- User Defined Functions -------------------
 
 void main(){
-	positionFromVertex = position.xyz;
-	
-	gl_Position = position;        // required as a min
-
 	//value = int(position.w);              // required as a min
+	
+	// following required as a min
+	if(display_as_points == 0){ // do not display as points
+		gl_Position = position; // required as a min
+	}else{// diaplay as points
+		gl_Position = modelViewProjectionMatrix*position; // required as a min
+	}
+	
+	raw_color = vec4(1.0,1.0,0.0,1.0);
 
-	vs_out.varyingColor = vec4(1.0,1.0,0.0,1.0);
+	vs_out.varyingColor = raw_color;
 
 }

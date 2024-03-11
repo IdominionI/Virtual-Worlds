@@ -11,7 +11,9 @@
 	shader programs information and shader
 	programs.
 
-
+	This class is considered as obsolote as all the
+	functionality can be handled and executed by the
+	openFrameWorks framework system. 
 
 */
 

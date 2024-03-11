@@ -7,7 +7,6 @@
 
 #include "voxel_data_storage.h"
 
-//#include "../Editor/Widgets/hcp_voxel_parameters_widget.h"
 #include "../Render/voxel_hcp_render.h"
 
 #define SCENE_CATEGORY_HCP_VOXEL "HCP_Voxel"
@@ -26,7 +25,7 @@ public:
 	}
 
 	~voxel_hcp_object_class() {
-		delete_object();// ++++
+		delete_object();
 	}
 
 	log_panel_class        *log_panel   = nullptr;

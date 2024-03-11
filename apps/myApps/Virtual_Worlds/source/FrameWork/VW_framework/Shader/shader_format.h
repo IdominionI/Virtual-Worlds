@@ -75,12 +75,10 @@ struct shader_format_class {
 
 	std::filesystem::path vertex_shader_file_pathname   = "";
 	std::filesystem::path geometry_shader_file_pathname = "";
-	std::filesystem::path point_shader_file_pathname    = "";
 	std::filesystem::path fragment_shader_file_pathname = "";
 	//???? are the following needed ???????
 	std::filesystem::path default_vertex_shader_file_pathname   = "";
 	std::filesystem::path default_geometry_shader_file_pathname = "";
-	std::filesystem::path default_point_shader_file_pathname    = "";
 	std::filesystem::path default_fragment_shader_file_pathname = "";
 
 	bool use_default_vertex_shader   = true;
@@ -114,9 +112,6 @@ struct shader_format_class {
 
 		vertex_shader_file_pathname.clear();
 		default_vertex_shader_file_pathname.clear();
-
-		point_shader_file_pathname.clear();
-		default_point_shader_file_pathname.clear();
 
 		geometry_shader_file_pathname.clear();
 		default_geometry_shader_file_pathname.clear();
