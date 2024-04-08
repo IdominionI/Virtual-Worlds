@@ -110,6 +110,15 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
   <ItemGroup>
     <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_internal.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\color_conversions.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\extra_widgets.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Gradient.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\GradientWidget.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\HoverChecker.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\imgui_draw.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\maybe_disabled.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\RelativePosition.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_range_widget.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\Timeline\timeline_interval.cpp" />
     <ClCompile Include="source\FrameWork\VW_framework\Scene\scene_lights.cpp" />
     <ClCompile Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.cpp" />
@@ -145,11 +154,17 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shaders_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_shader_variables_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Kernal\voxel_function_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_editor_node.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_node.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\Modifiers\translation_node.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\Operators\interaction_node.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Render\voxel_hcp_render.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\Timeline\timeline.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_editor_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_editing_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_parameters_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_generation_editor_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_generator_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Automata\hex_surface_automata_functions.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.cpp" />
@@ -183,10 +198,31 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\ImGui_vec_operators.h" />
     <ClInclude Include="source\FrameWork\Kernels\Umath\u_math_helpers.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Animation\animation.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_internal.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\im-neo-sequencer\imgui_neo_sequencer.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\include\imgui_gradient\imgui_gradient.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\ColorRGBA.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\color_conversions.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\extra_widgets.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Flags.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Gradient.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\GradientWidget.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\HoverChecker.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\imgui_draw.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\imgui_internal.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\internal.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Interpolation.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Mark.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\MarkId.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\maybe_disabled.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\RelativePosition.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Settings.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Utils.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\WrapMode.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_range_widget.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Kernal\unicode.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_interval.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_parameters.h" />
@@ -206,6 +242,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\hcp_voxel_animation.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\hcp_voxel_automata_animation.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Functions\voxel_interactions.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_editor_node.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\Modifiers\Animation\hcp_voxel_translation_animation.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\automata_byte_import_export.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Automata\voxel_automata_functions.h" />
@@ -309,6 +346,13 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Scene\voxel_hcp_scene_objects.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Render\voxel_hcp_render.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_brush.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_editor_import_export_.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_analysis_shader.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_editing_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_parameters_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_generation_editor_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_generator_widget.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Animation\hex_surface_animation.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Animation\hex_surface_automata_animation.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Automata\automata_hex_surface_import_export.h" />

@@ -7,6 +7,8 @@
 
 #include "vw_definitions.h"
 
+#include "ofVboMesh.h"
+
 /*
 	Vetex class type T can be of vec2,vec3,or vec4
 */
@@ -163,7 +165,8 @@ private:
 // geometry data defined here as a template of type glm::vec2 and glm::vec4 as well as glm::vec3
 //template <typename VT = ofDefaultVertexType, typename NT = ofDefaultNormalType, typename CT = ofDefaultColorType, typename TT =  ofDefaultTexCoordType>// not yet used
 //class base_geometry_class : public ofMesh_<VT,NT,CT,TT> {
-class base_geometry_class : public ofMesh {
+
+class base_geometry_class : public ofVboMesh {
 public:
 	std::string             geometry_name = "";
 	std::string             geometry_description = "";
@@ -299,6 +302,8 @@ public:
 
 		return true;
 	}
+
+	// End Custom Virtual Worlds Add +++++++++++++++
 
 protected:
 

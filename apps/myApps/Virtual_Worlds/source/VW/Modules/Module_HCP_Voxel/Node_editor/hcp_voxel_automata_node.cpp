@@ -24,15 +24,15 @@ std::cout << "hcp_voxel_node_class :: define_node 111  : " << std::endl;
 
     label = "HCP AUTOMATA " + std::to_string(node_id);
 
-    node_header_color = ImColor(0, 139, 139, 255);
-    node_header_hovered_color = ImColor(0, 175, 175, 255);
-    node_header_selected_color = ImColor(0, 255, 255, 255);
-    node_header_label_color = ImColor(255, 255, 255, 255);// ImGui does not have a color function that accepts its own ImColor type for textS
+    node_draw_data.node_header_color          = ImColor(20, 20, 70, 255);
+    node_draw_data.node_header_hovered_color  = ImColor(65, 65, 155, 255);
+    node_draw_data.node_header_selected_color = ImColor(100, 105, 145, 255);
+    node_draw_data.node_header_label_color    = ImColor(255, 255, 255, 255);// ImGui does not have a color function that accepts its own ImColor type for textS
 
-    node_body_color = ImColor(75, 75, 75, 255);
-    node_body_hovered_color = ImColor(100, 100, 100, 255);
-    node_body_selected_color = ImColor(150, 150, 150, 255);
-    node_outline_color = ImColor(50, 50, 50, 255);
+    node_draw_data.node_body_color            = NODE_HCP_DRAW_BODY_COLOR          ;
+    node_draw_data.node_body_hovered_color    = NODE_HCP_DRAW_BODY_HOVERED_COLOR  ;
+    node_draw_data.node_body_selected_color   = NODE_HCP_DRAW_BODY_SELECTED_COLOR ;
+    node_draw_data.node_outline_color         = NODE_HCP_DRAW_OUTLINE_COLOR       ;
 
     graph->node_editor->SetNodeScreenSpacePos(node_id, click_pos);
     return true;

@@ -152,7 +152,8 @@ public:
 
 		if (display_crosshairs) {
 			y_pos += 40;
-			checkbox("###vxhair", "X Hair", x_pos, y_pos, 100, 0, *display_crosshairs, imgui_text_location_enum::left);
+			checkbox("###vxhair", "X Hair", x_pos+100, y_pos, 100, 0, *display_crosshairs);
+			//checkbox("###vxhair", "X Hair", x_pos, y_pos, 100, 0, *display_crosshairs, imgui_text_location_enum::left);
 			ImGui::PushStyleColor(ImGuiCol_Button, xhair_color);// Chanage all the buttons to the grid color until a ImGui::PopStyleColor
 			if (ex_button("###plcxh", x_pos + 170, y_pos, 75, 20)) {
 				ImGui::OpenPopup("X-Hairs###plcpuxh");
@@ -171,25 +172,27 @@ public:
 			}
 		}
 		
-		x_pos += 100;
+		//x_pos += 100;
 		if (display_camera_info) {
 			y_pos += 25;
-			checkbox("###vcaminfo", "Camera Info", x_pos, y_pos, 0, 0, *display_camera_info, imgui_text_location_enum::left);
+			checkbox("###vcaminfo", "Camera Info", x_pos+100, y_pos, 100, 0, *display_camera_info);
+			//checkbox("###vcaminfo", "Camera Info", x_pos, y_pos, 0, 0, *display_camera_info, imgui_text_location_enum::left);
 		}
 
 		if (display_gimbal) {
 			y_pos += 25;
-			checkbox("###gimbal", "Gimbal", x_pos, y_pos, 0, 0, *display_gimbal, imgui_text_location_enum::left);
+			checkbox("###gimbal", "Gimbal", x_pos+100, y_pos, 100, 0, *display_gimbal);
+			//checkbox("###gimbal", "Gimbal", x_pos, y_pos, 0, 0, *display_gimbal, imgui_text_location_enum::left);
 		}
 
 		y_pos += 50;
 		x_pos -= 20;
-		text("Viewer Background Color",x_pos,y_pos);
+		text("Viewer Background Color",x_pos+100,y_pos);
 
 		y_pos += 25;
 		x_pos -= 20;
 
-		ImGui::SetCursorPosX(x_pos);
+		ImGui::SetCursorPosX(x_pos+100);
 		ImGui::SetCursorPosY(y_pos);
 		ImGuiColorEditFlags flags = misc_flags;
 		flags |= ImGuiColorEditFlags_NoAlpha; flags |= ImGuiColorEditFlags_NoSidePreview; flags |= ImGuiColorEditFlags_PickerHueWheel;

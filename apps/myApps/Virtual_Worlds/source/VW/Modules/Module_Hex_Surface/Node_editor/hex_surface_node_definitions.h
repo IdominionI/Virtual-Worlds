@@ -1,5 +1,9 @@
 #pragma once
 
+#define NODE_HEX_DRAW_BODY_COLOR            ImColor(75, 75, 105, 255);
+#define NODE_HEX_DRAW_BODY_HOVERED_COLOR    ImColor(100, 100, 130, 255);
+#define NODE_HEX_DRAW_BODY_SELECTED_COLOR   ImColor(150, 150, 175, 255);
+#define NODE_HEX_DRAW_OUTLINE_COLOR         ImColor(175, 175, 200, 255);
 
 // Voxel context id
 //#define NODE_CATEGORY_ID_GENERATOR 10000

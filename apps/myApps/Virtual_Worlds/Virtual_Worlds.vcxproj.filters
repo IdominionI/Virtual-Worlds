@@ -65,6 +65,21 @@
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Modifiers\translation.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Operators\interaction_node.cpp" />
     <ClCompile Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_editor_node.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_parameters_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_generation_editor_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_generator_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_editor_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_editing_widget.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_range_widget.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\color_conversions.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\extra_widgets.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Gradient.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\GradientWidget.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\HoverChecker.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\imgui_draw.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\maybe_disabled.cpp" />
+    <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\RelativePosition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -235,5 +250,34 @@
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Operators\Animation\hex_surface_interaction_animation.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_manager.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Shader\shader_preprocessor.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Node_editor\hcp_voxel_editor_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_parameters_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_generation_editor_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_generator_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_editor_import_export_.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_editing_widget.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_range_widget.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\include\imgui_gradient\imgui_gradient.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\color_conversions.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\ColorRGBA.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\extra_widgets.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Flags.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Gradient.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\GradientWidget.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\HoverChecker.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\imgui_draw.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\imgui_internal.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\internal.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Interpolation.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Mark.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\MarkId.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\maybe_disabled.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\RelativePosition.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Settings.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\Utils.hpp" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\WrapMode.hpp" />
+    <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\ImGui_vec_operators.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_brush.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_analysis_shader.h" />
   </ItemGroup>
 </Project>

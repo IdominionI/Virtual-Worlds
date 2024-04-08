@@ -12,18 +12,18 @@ bool node_basis_class::draw_node(pins_class pins, float scale) {
 
     if (!visible) return false;
     // Define titlebare colors
-    graph->node_editor->PushColorStyle(ImNodesCol_TitleBar, node_header_color);
-    graph->node_editor->PushColorStyle(ImNodesCol_TitleBarHovered, node_header_hovered_color);
-    graph->node_editor->PushColorStyle(ImNodesCol_TitleBarSelected, node_header_selected_color);
+    graph->node_editor->PushColorStyle(ImNodesCol_TitleBar, node_draw_data.node_header_color);
+    graph->node_editor->PushColorStyle(ImNodesCol_TitleBarHovered, node_draw_data.node_header_hovered_color);
+    graph->node_editor->PushColorStyle(ImNodesCol_TitleBarSelected, node_draw_data.node_header_selected_color);
 
-    graph->node_editor->PushColorStyle(ImNodesCol_NodeBackground, node_body_color);
-    graph->node_editor->PushColorStyle(ImNodesCol_NodeBackgroundHovered, node_body_hovered_color);
-    graph->node_editor->PushColorStyle(ImNodesCol_NodeBackgroundSelected, node_body_selected_color);
-    graph->node_editor->PushColorStyle(ImNodesCol_NodeOutline, node_outline_color);
+    graph->node_editor->PushColorStyle(ImNodesCol_NodeBackground, node_draw_data.node_body_color);
+    graph->node_editor->PushColorStyle(ImNodesCol_NodeBackgroundHovered, node_draw_data.node_body_hovered_color);
+    graph->node_editor->PushColorStyle(ImNodesCol_NodeBackgroundSelected, node_draw_data.node_body_selected_color);
+    graph->node_editor->PushColorStyle(ImNodesCol_NodeOutline, node_draw_data.node_outline_color);
 
     graph->node_editor->BeginNode(node_id);
 //printf("hcp_voxel_node_class::draw_node:: 000\n");
-    ImGui::PushStyleColor(ImGuiCol_Text, node_header_label_color);// Node header text color
+    ImGui::PushStyleColor(ImGuiCol_Text, node_draw_data.node_header_label_color);// Node header text color
     draw_node_header(scale);
     ImGui::PopStyleColor();
 //std::cout <<"hcp_voxel_node_class::draw_node:: 7777 " <<  offset.x << " : " << offset.y << std::endl;);

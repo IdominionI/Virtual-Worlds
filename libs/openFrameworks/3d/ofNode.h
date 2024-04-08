@@ -839,7 +839,9 @@ public:
 //std::cout << "in onPositionChanged 02A: " << eo_translation.x << " : " << eo_translation.y << " : " << eo_translation.z << std::endl;
 
 		for (size_t i = 0; i < geometry->get_number_of_vertices(); i++) {
-			geometry->setVertex(i, geometry->getVertex(i) + eo_translation);
+			//geometry->setVertex(i, geometry->getVertex(i) + eo_translation);
+			glm::vec4 v = { eo_translation,0.0f };//+++++++++++++++++++
+			geometry->setVertex(i, geometry->getVertex(i) + v);
 		}
 
 		geometry->update_geometry();
@@ -859,7 +861,9 @@ public:
 			if (child != NULL) {
 				for (size_t i = 0; i < child->geometry->get_number_of_vertices(); i++) {
 //child->geometry->setVertex(i, child->origin_location + child->geometry->getVertex(i) + eo_translation);
-					child->geometry->setVertex(i, child->geometry->getVertex(i) + eo_translation);
+					//child->geometry->setVertex(i, child->geometry->getVertex(i) + eo_translation);
+					glm::vec4 v = { eo_translation,0.0f };//+++++++++++++++++++
+					child->geometry->setVertex(i, child->geometry->getVertex(i) + v);//+++++++++++++++++++
 				}
 
 				child->geometry->update_geometry();

@@ -8,6 +8,7 @@
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/hcp_voxel_node.h>
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/cart_to_hcp_voxel_node.h>
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/hcp_voxel_automata_node.h>
+#include <VW/Modules/Module_HCP_Voxel/Node_editor/hcp_voxel_editor_node.h>
 // hcp Voxel modifiers
 #include <VW/Modules/Module_HCP_Voxel/Node_editor/Modifiers/translation_node.h>
 // hcp Voxel operators
@@ -61,6 +62,10 @@ void scene_node_editor_class::display() {
                         if (ImGui::BeginMenu("HCP Voxel ...")){
                             if (ImGui::MenuItem("Create HCP Voxel Node")) {
                                 create_node<hcp_voxel_node_class>( click_pos);
+                            }
+
+                            if (ImGui::MenuItem("Create HCP Voxel Editor Node")) {
+                                create_node<hcp_voxel_editor_node_class>(click_pos);
                             }
 
                             if (ImGui::MenuItem("Create Cart to HCP Voxel Node")) {

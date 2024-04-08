@@ -37,28 +37,29 @@
 			shader_material->shader_program_id = shader->getProgram();
 			if (log_panel != NULL) log_panel->application_log.AddLog("INFO : Shader program created of ID : %i\n", shader_material->shader_program_id);
 //printf("define_shader_program 44444 %i\n", entity_render_object->scene_graph_object.scene_object_class.shader_material.shader_program_id);
+
+			// +++++++++++++++++++++++++++++++++
+			// open Frameworks only has ability to set attributes with a float value.
+			// So need until a custom integer attribute with a different data type is
+			// created, need to copy integer values into a float vector array.
+			// Inefficient and a disapointing neglet from openFrameworks.!!!!!
+			// Need to corrent.
+
+			int attLoc = shader->getAttributeLocation("voxel_values");
+			if (attLoc >= 0) {
+				voxel_hcp_object->geometry->getVbo().setAttributeData(attLoc, voxel_hcp_object->point_cloud->values.data(), 1, voxel_hcp_object->point_cloud->values.size(), GL_DYNAMIC_DRAW, sizeof(float));
+//std::cout << "voxel_hcp_render_class::define_shader_program : " << vv.size() << " : " << vv[0] << std::endl;
+			}
+	
+			// +++++++++++++++++++++++++++++++++
+		
+		
 		}//shader program created
 
 
 //std::cout << "voxel_hcp_render_class::define_shader_program 555 : " << std::endl;
 		return true;
 	}
-
-
-	//void voxel_hcp_render_class::define_shader_variables(scene_node_class <render_object_class> *entity_render_object) {
-		// TO DO 
-		/*
-
-
-				shader_parameter_variable_struct_type v1, v2, v3;
-				v1.variable_name = "roughness"; v1.value = 0.2f;
-				v2.variable_name = "metallic"; v2.value = 0.1f;
-				v3.variable_name = "ao"; v3.value = 1.0f;
-				test_mesh->scene_graph_object.scene_object_class.shader_material.variables.push_back(v1);
-				test_mesh->scene_graph_object.scene_object_class.shader_material.variables.push_back(v2);
-				test_mesh->scene_graph_object.scene_object_class.shader_material.variables.push_back(v3);
-		*/
-	//}
 
 //-----------------------------------
 

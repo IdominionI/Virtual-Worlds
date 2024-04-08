@@ -40,7 +40,8 @@ public:
 	bool  display_voxel_object_as_points = false;
 	bool  animate_automata = false;
 
-	bool update_buffer = false;
+	bool update_buffer  = false;
+	bool object_changed = false;
 
 	float min_surface_display_value, max_surface_display_value;
 
@@ -89,7 +90,6 @@ public:
 		return is_within_animation_frame;
 	}
 
-
 	void set_voxel_value_range(int _min_voxel_value, int  _max_voxel_value) {
 		min_voxel_value = _min_voxel_value;
 		max_voxel_value = _max_voxel_value;
@@ -104,12 +104,13 @@ public:
 		voxel_data_type         volume_data;
 		voxel_element_data_type volume_data_value;
 
-		glm::vec4  vertex;
+		glm::vec3  vertex;
 
 		if (min_voxel_value == max_voxel_value) return false;
 
 		//point_cloud.vertices.delete_geometry(); // +++
 		point_cloud->delete_geometry();
+		point_cloud->delete_values();
 
 //printf("voxel_hcp_object_class : define_vbo_vertices 000 : %i\n", voxel_data.voxel_matrix_data.size());
 //printf("voxel_hcp_object_class : define_vbo_vertices 111 : %f %f %f\n", voxel_object_data.matrix_origin.x, voxel_object_data.matrix_origin.y, voxel_object_data.matrix_origin.z);
@@ -178,10 +179,11 @@ public:
 						if (n < MAX_VOXEL_VERTICES && volume_data_value >= lower_range && volume_data_value <= upper_range) {
 
 							//vertex.mPos   = { x,y,z,(float)volume_data };// volume data passed as a float value stored in a vec4 .w variable
-							vertex = { x,y,z,(float)volume_data };// volume data passed as a float value stored in a vec4 .w variable // ******
+							//vertex = { x,y,z,(float)volume_data };// volume data passed as a float value stored in a vec4 .w variable // ******
+							vertex = {x,y,z};// volume data passed as a float value stored in a vec4 .w variable // ******
 
 //printf("define_vbo_vertices : define_vbo_vertices 2222 %f : %f : % f :: %i\n", x,y,z, volume_data_value);
-							point_cloud->add_vertex(vertex);
+							point_cloud->add_vertex(vertex,volume_data);
 							n++;
 						}
 					}

@@ -1,5 +1,10 @@
 #pragma once
 
+#define NODE_HCP_DRAW_BODY_COLOR          ImColor(75, 75, 75, 255);
+#define NODE_HCP_DRAW_BODY_HOVERED_COLOR  ImColor(100, 100, 100, 255);
+#define NODE_HCP_DRAW_BODY_SELECTED_COLOR ImColor(150, 150, 150, 255);
+#define NODE_HCP_DRAW_OUTLINE_COLOR       ImColor(175, 175, 175, 255);
+
 // Voxel context id
 //#define NODE_CATEGORY_ID_GENERATOR 10000
 #define NODE_TYPE_ID_HCP_VOXEL             10000

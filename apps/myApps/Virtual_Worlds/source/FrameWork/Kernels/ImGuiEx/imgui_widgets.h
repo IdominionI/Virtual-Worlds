@@ -95,11 +95,11 @@ static void float_input_step(std::string id_prefix, float& value, float& step, b
 	ImGui::SameLine(); w_id = id_prefix + "3"; ImGui::Checkbox(w_id.c_str(), &active);
 }
 
-static void integer_input(std::string id_string, int& value, float x_pos, float y_pos, float width) {
+static bool integer_input(std::string id_string, int& value, float x_pos, float y_pos, float width) {
 	ImGui::SetCursorPosX(x_pos);
 	ImGui::SetCursorPosY(y_pos);
 	ImGui::SetNextItemWidth(width);
-	ImGui::InputInt(id_string.c_str(), &value, 0);
+	return ImGui::InputInt(id_string.c_str(), &value, 0);
 }
 
 // Folowing needs to have the increment and decrement button names defined by te user as found
@@ -192,21 +192,26 @@ static bool float_min_max_slider(std::string id_string, float x_pos, float y_pos
 // xxxxxxxxxxxxx Checkbox Widget xxxxxxxxxxxxxxxxxxxxxxxx
 
 //static void checkbox(std::string id_string, std::string description, float x_pos, float y_pos, float x_offset, float y_offset, bool &value, imgui_text_location_enum imgui_text_location) {
-static bool checkbox(std::string id_string, std::string description, float x_pos, float y_pos, float x_offset, float y_offset, bool& value, imgui_text_location_enum imgui_text_location) {
+static bool checkbox(std::string id_string, std::string description, float x_pos, float y_pos, float x_offset, float y_offset, bool& value) {
 	float box_x = 0.0, box_y = 0.0;
 
-	switch (imgui_text_location) {
-	case imgui_text_location_enum::left: box_x = x_pos + x_offset; break;
-	case imgui_text_location_enum::right: box_x = 0.0; break;
-	case imgui_text_location_enum::above: box_y = y_pos + y_offset; break;
-	case imgui_text_location_enum::below: box_y = y_pos - x_offset; break;
-	}
+	//switch (imgui_text_location) {
+	//	case imgui_text_location_enum::left: { box_x = x_pos + x_offset; box_y = y_pos + y_offset; } break;
+	//	case imgui_text_location_enum::right: {box_x  =  x_offset;box_y = y_pos+ y_offset; } break;
+	//	case imgui_text_location_enum::above: { box_x = x_pos+ x_offset; box_y = y_pos + y_offset; }break;
+	//	case imgui_text_location_enum::below: { box_x = x_pos+ x_offset; box_y = y_pos - x_offset; } break;
+	//}
+
+	box_x = x_pos + x_offset; 
+	box_y = y_pos + y_offset;
 
 	ImGui::SetCursorPosX(x_pos);
 	ImGui::SetCursorPosY(y_pos);
 	ImGui::Text(description.c_str());
-	ImGui::SetCursorPosX(x_pos + box_x);
-	ImGui::SetCursorPosY(y_pos + box_y);
+	ImGui::SetCursorPosX(box_x);
+	ImGui::SetCursorPosY(box_y);
+	//ImGui::SetCursorPosX(x_pos + box_x);
+	//ImGui::SetCursorPosY(y_pos + box_y);
 	//ImGui::Checkbox(id_string.c_str(), &value);
 	return ImGui::Checkbox(id_string.c_str(), &value);
 }

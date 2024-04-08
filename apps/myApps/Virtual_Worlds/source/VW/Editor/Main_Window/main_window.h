@@ -17,6 +17,8 @@
 
 #include <VW_framework/Scene/vw_scene.h>
 
+inline vw_camera_class *current_cam = NULL; // ++++++++
+
 class main_window_class : public ofBaseApp {
 public:
     //main_window_class() : mIsRunning(true), GLFW_window_ptr(nullptr) {
@@ -134,6 +136,7 @@ cout << "setup here ZZZZZZ: " << std::endl;
 
         reference_grid = new reference_grid_class;
         parameter_panel.viewport_properties_widget.reference_grid = reference_grid;
+
     }
 
     void update() {
@@ -166,12 +169,14 @@ cout << "setup here ZZZZZZ: " << std::endl;
 
 
         parameter_panel.camera_poperties_widget.camera = current_camera;// move to update
+        globalc::set_current_selected_camera(current_camera); // ++++++++
+        globalc::set_current_mouseXY({mouseX,mouseY}); // ++++++++
 
         parameter_panel.show();
         node_editor_panel.show();
         animation_timeline_panel.show();
 
-
+        
         // Following uncommented when investigating ImGui widget examples
         //ImGui::Begin;
         //bool show_demo_window = true;

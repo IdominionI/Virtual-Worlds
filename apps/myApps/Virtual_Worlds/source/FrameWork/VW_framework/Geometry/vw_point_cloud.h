@@ -27,6 +27,7 @@ public:
     virtual ~point_cloud3D_class() {}
 
     ofMaterialSettings material_settings;
+    std::vector<float> values;// +++
 
     bool init() {
         geometry_type = geometry_type_enum::points;
@@ -52,9 +53,9 @@ public:
         glm::vec3 vertex;
         glm::vec3 normal;
 
-        geometry_attribute_type_struct vertex_attribute_data;
-        vertex_attribute_data.attribute_name = "test_attr_data";
-        vertex_attribute_data.attribute_description = "test attribute data";
+        //geometry_attribute_type_struct vertex_attribute_data;
+        //vertex_attribute_data.attribute_name        = "test_attr_data";
+        //vertex_attribute_data.attribute_description = "test attribute data";
 
         //for (float i = -0.5f; i < 0.5f; i += 0.1f) {
         //    for (float j = -0.5f; j < 0.5f; j += 0.1f) {
@@ -76,12 +77,12 @@ public:
 
                     add_vertex(vertex);
                     add_normal(normal);
-                    vertex_attribute_data.attribute_values.push_back(att_test);
+                    values.push_back(att_test);
                 }
             }
         }
 
-        vertex_attributes.attributes.push_back(vertex_attribute_data);
+        //vertex_attributes.attributes.push_back(vertex_attribute_data);
 
         //return update_geometry();
         return true;
@@ -102,8 +103,24 @@ public:
         addVertex(vertex);
     }
 
+    void add_vertex(const glm::vec3& vertex,int value) {
+        addVertex(vertex);
+        add_value(float(value));
+    }
+
     void add_normal(const glm::vec3& normal) {
         addNormal(normal);
+    }
+
+    // As been unable to get shader attributes to work and not defining vertex colors
+    // this is the only work around that is viable until once again editing the openframeworks
+    // code to include a vertex or other attribute values 
+    void add_value(float value) {
+        values.push_back(value);
+    }
+
+    void delete_values() {
+        values.clear();
     }
 
     //void render() {
@@ -166,6 +183,7 @@ public:
 
 private:
     void render_geometry() {
+        GLint attLoc = shader->getAttributeLocation("voxel_values");
         if (internal_shader) {
             if (shader){
                 update_material();
@@ -176,6 +194,18 @@ private:
                     // Have no idea how this is so, and took over two days to figure
                     // out 
                     //drawVertices();
+
+		            // open Frameworks only has ability to set attributes with a float value.
+		            // So until a custom integer attribute with a different data type is
+		            // created, need to copy integer values into a float vector array.
+		            // Inefficient and a disapointing neglet from openFrameworks.!!!!!
+		            // Need to corrent.
+                    //GLint attLoc = shader->getAttributeLocation("voxel_values");// not recognised here ?????
+			        if (attLoc >= 0){
+				        getVbo().setAttributeData(attLoc, values.data(), 1, values.size(), GL_DYNAMIC_DRAW, sizeof(float));
+
+//std::cout << "voxel_hcp_render_class::define_shader_program : " << vv.size() << " : " << vv[0] << std::endl;
+			        }
 
                     draw(); //Mesh draw 
                     //vertex_buffer.draw(GL_POINTS, 0, getNumVertices());

@@ -186,8 +186,8 @@ void voxel_shaders_widget_class::update_shader_variables() { // not sure this is
 }
 
 void voxel_shaders_widget_class::update_voxel_shaders(bool notification) {
-std::cout << "execute_shader_function button clicked\n";
-std::cout << "voxel_shaders_widget_class::update_voxel_shaders000\n";
+//std::cout << "execute_shader_function button clicked\n";
+//std::cout << "voxel_shaders_widget_class::update_voxel_shaders000\n";
 
 	if (voxel_shader_parameters == NULL) {
 		if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Voxel shader parameter data is undefined. Cannot update voxel shaders\n");
@@ -201,7 +201,7 @@ std::cout << "voxel_shaders_widget_class::update_voxel_shaders000\n";
 		return;
 	}
 
-std::cout << "voxel_shaders_widget_class::update_voxel_shaders111\n";
+//std::cout << "voxel_shaders_widget_class::update_voxel_shaders111\n";
 
 	material_struct_type *shader_material = dynamic_cast<material_struct_type*>(&voxel_hcp_object_to_execute->voxel_object_data.shader_parameters); // Get the pointer to the shader properties fpr the render process
 
@@ -235,7 +235,7 @@ std::cout << "voxel_shaders_widget_class::update_voxel_shaders111\n";
 //std::cout <<"voxel_shaders_widget_class::initialise_parameters : YYYYY %i:\n", voxel_shader_parameters->variables.size());
 
 	// Following required as generating a new shader program also needs to up date default shader variables
-	// that are defined in the Hex Generation widget
+	// that are defined in the hcp Generation widget
 	hcp_voxel_generation_widget->change_voxels_display();
 }
 

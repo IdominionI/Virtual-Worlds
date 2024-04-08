@@ -34,6 +34,20 @@ struct node_type_struct {
     int node_type         = INVALID_ID;
 };
 
+// This structure created for possible future feature for user to be able to 
+// change node appearance as a part to customise application
+struct node_draw_data_struct_type {
+    ImColor node_header_color          = ImColor(0, 139, 139, 255);
+    ImColor node_header_hovered_color  = ImColor(0, 175, 175, 255);
+    ImColor node_header_selected_color = ImColor(0, 255, 255, 255);
+    ImU32   node_header_label_color    = ImColor(255, 255, 255, 255);// ImGui does not have a color function that accepts its own ImColor type for textS
+    
+    ImColor node_body_color            = ImColor(75, 75, 75, 255);
+    ImColor node_body_hovered_color    = ImColor(100, 100, 100, 255);
+    ImColor node_body_selected_color   = ImColor(150, 150, 150, 255);
+    ImColor node_outline_color         = ImColor(175, 175,175, 255);
+};
+
 #define MIN_NODE_WIDTH  30  
 #define MIN_NODE_HEIGHT 20
 
@@ -73,16 +87,11 @@ public:
     ImVec2 node_location        = { 0.0f,0.0f };
 
 
-    // Node Drawing attributes
-    ImColor          node_header_color          = ImColor(0, 139, 139, 255);
-    ImColor          node_header_hovered_color  = ImColor(0, 175, 175, 255);
-    ImColor          node_header_selected_color = ImColor(0, 255, 255, 255);
-    ImU32            node_header_label_color    = ImColor(255, 255, 255, 255);// ImGui does not have a color function that accepts its own ImColor type for textS
-    
-    ImColor          node_body_color            = ImColor(75, 75, 75, 255);
-    ImColor          node_body_hovered_color    = ImColor(100, 100, 100, 255);
-    ImColor          node_body_selected_color   = ImColor(150, 150, 150, 255);
-    ImColor          node_outline_color         = ImColor(50, 50, 50, 255);
+    node_draw_data_struct_type node_draw_data;
+
+    void change_node_draw_data(node_draw_data_struct_type _node_draw_data) {
+        node_draw_data = _node_draw_data;
+    }
 
     // ****** VW NEXT VERSION ******
     ImVec2 node_graph_coordinate;

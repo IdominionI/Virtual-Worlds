@@ -44,5 +44,5 @@ public:
 	bool define_initial_shader_program(voxel_hcp_object_class *voxel_hcp_object, log_panel_class* log_panel);
 
 private:
-
+	//std::vector<float> vv;
 };

@@ -6,6 +6,8 @@
 
 #include <Universal_FW/ImNodes/Kernal/node.h>
 
+#include "../3D/vw_camera.h" // ++++++++
+
 // Singleton class to store global variables and functions
 // to be used through out the application
 
@@ -32,6 +34,12 @@ public:
 		static globalc instance;
 		return instance;
 	}
+
+	static vw_camera_class *get_current_selected_camera() { return get().current_selected_camera; } // +++++++
+	static void             set_current_selected_camera(vw_camera_class *n) { get().current_selected_camera = n; } // +++++++
+
+	static glm::vec2 get_current_mouseXY() { return get().current_mouseXY; } // +++++++
+	static void      set_current_mouseXY(glm::vec2 n) { get().current_mouseXY = n; } // +++++++
 
 	static id_type get_current_selected_data_context_id() { return get().current_selected_data_context_id; }
 	static void    set_current_selected_data_context_id(id_type n) { get().current_selected_data_context_id = n; }
@@ -62,6 +70,9 @@ public:
 
 private:
 	globalc() {};
+
+	vw_camera_class *current_selected_camera = nullptr; // +++++++
+	glm::vec2        current_mouseXY = {0.0f,0.0f}; // +++++++
 
 	id_type current_selected_data_context_id         = INVALID_ID;
 

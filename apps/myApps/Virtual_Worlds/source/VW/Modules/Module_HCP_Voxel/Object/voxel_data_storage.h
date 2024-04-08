@@ -308,17 +308,25 @@ public:
 
 		if (j % 2 == 0) {
 //QMessageBox::information(NULL, "voxelBS03", "here00 :"+QString::number(j * VOXEL_BIT_NUMBER + j_bit), QMessageBox::Ok);
+			// !!!!!!!!!!!!!!!!! MAJOR ERROR THAT NEEDS TO BE FIXED : NEED TO HAVE MATRIX ORIGIN VALUES ADDED TO AVOID CONFUSION AND CORRECT WHERE IN APP THIS FUNCTION IS USED !!!!!!!!!!!
 			voxel_cartesian_coordinate.x = ((float(i) * 2 + float(k % 2)) * voxel_size);
-			voxel_cartesian_coordinate.y =((sqrt3 * float(j) + sqrt3 * third * float(k % 2)) * voxel_size);
+			voxel_cartesian_coordinate.y = ((sqrt3 * float(j) + sqrt3 * third * float(k % 2)) * voxel_size);
+			//voxel_cartesian_coordinate.x = matrix_origin.x + ((float(i) * 2 + float(k % 2)) * voxel_size);
+			//voxel_cartesian_coordinate.y = matrix_origin.y +((sqrt3 * float(j) + sqrt3 * third * float(k % 2)) * voxel_size);
 		}
 		else {
 //QMessageBox::information(NULL, "voxelBS03", "here01 :"+QString::number(j * VOXEL_BIT_NUMBER + j_bit), QMessageBox::Ok);
 			//voxel_cartesian_coordinate.setX((1.0 + float(i) * 2 + float(k % 2)) * voxel_size - 2.0 * (k % 2)); the old wrong one
+			// !!!!!!!!!!!!!!!!! MAJOR ERROR THAT NEEDS TO BE FIXED : NEED TO HAVE MATRIX ORIGIN VALUES ADDED TO AVOID CONFUSION AND CORRECT WHERE IN APP THIS FUNCTION IS USED !!!!!!!!!!!
 			voxel_cartesian_coordinate.x = ((-1.0f + float(i) * 2.0f + float(k % 2) + 2.0f * float((k + 1) % 2)) * voxel_size);
 			voxel_cartesian_coordinate.y = ((sqrt3 + sqrt3 * (float(j) - 1) + sqrt3 * third * float(k % 2)) * voxel_size);
+			//voxel_cartesian_coordinate.x = matrix_origin.x + ((-1.0f + float(i) * 2.0f + float(k % 2) + 2.0f * float((k + 1) % 2)) * voxel_size);
+			//voxel_cartesian_coordinate.y = matrix_origin.y +((sqrt3 + sqrt3 * (float(j) - 1) + sqrt3 * third * float(k % 2)) * voxel_size);
 		}
 
+		// !!!!!!!!!!!!!!!!! MAJOR ERROR THAT NEEDS TO BE FIXED : NEED TO HAVE MATRIX ORIGIN VALUES ADDED TO AVOID CONFUSION AND CORRECT WHERE IN APP THIS FUNCTION IS USED !!!!!!!!!!!
 	     voxel_cartesian_coordinate.z = (z_mult * float(k) *voxel_size);
+	     //voxel_cartesian_coordinate.z = matrix_origin.x +(z_mult * float(k) *voxel_size);
 
 		return voxel_cartesian_coordinate;
 	}
@@ -327,7 +335,18 @@ public:
 		return get_voxel_cartesian_coordinate(voxel_coord, voxel_size);
 	}
 
+	glm::vec3 get_voxel_world_cartesian_coordinate(glm::ivec3 voxel_matrix_coord) {
+		glm::vec3  voxel_cart_coord   = get_voxel_cartesian_coordinate(voxel_matrix_coord) + matrix_origin;
 
+		return voxel_cart_coord;
+	}
+
+	glm::vec3 get_voxel_world_cartesian_coordinate(int index) {
+		glm::ivec3 voxel_matrix_coord = get_matrix_coordinate(index);
+		glm::vec3  voxel_cart_coord   = get_voxel_cartesian_coordinate(voxel_matrix_coord) + matrix_origin;
+
+		return voxel_cart_coord;
+	}
 
 	index_data_type get_voxel_matrix_data_index(glm::ivec3 matrix_coord) {// y in matrix_coord must be the corrected_y as defined in get_voxel_matrix_bit_location
 		return get_index_value(matrix_coord.x, matrix_coord.y, matrix_coord.z);
@@ -385,11 +404,82 @@ public:
 		return voxel_matrix_coordinate_activation_status(voxel_matrix_data_index);
 	}
 
+//+++++++++++++++++++++++
+	glm::ivec3 calc_voxel_volume_dimensions() {
+		if (voxel_generator_parameters.resolution_step == 0.0f)
+			return { 0,0,0 };
+
+		float x_size = voxel_generator_parameters.x_end - voxel_generator_parameters.x_start;
+		float y_size = voxel_generator_parameters.y_end - voxel_generator_parameters.y_start;
+		float z_size = voxel_generator_parameters.z_end - voxel_generator_parameters.z_start;
+		float z_mult = 2.0f * sqrt(6.0f) / 3.0f;
+
+		float x_res_step = voxel_generator_parameters.resolution_step * 2.0f;
+		float y_res_step = voxel_generator_parameters.resolution_step * (3.0f / sqrt(3.0f));
+		float z_res_step = voxel_generator_parameters.resolution_step * z_mult;
+
+		int data_set_x_size, data_set_y_size, data_set_z_size;
+
+		if (x_size / x_res_step - float((int)(x_size / x_res_step)) > 0.0)
+			data_set_x_size = (int)(x_size / x_res_step) + 1;
+		else
+			data_set_x_size = (int)(x_size / x_res_step);
+
+		if (y_size / y_res_step - float((int)(y_size / y_res_step)) > 0.0)
+			data_set_y_size = (int)(y_size / y_res_step) + 1;
+		else
+			data_set_y_size = (int)(y_size / y_res_step);
+
+		if (z_size / z_res_step - float((int)(z_size / z_res_step)) > 0.0)
+			data_set_z_size = (int)(z_size / z_res_step) + 1;
+		else
+			data_set_z_size = (int)(z_size / z_res_step);
+
+		return { data_set_x_size,data_set_y_size,data_set_z_size };
+	}
+
+	bool create_voxel_matrix(voxel_data_type volume_data_storage) {
+		voxel_matrix_data.clear();
+		voxel_matrix_data.shrink_to_fit();
+
+		glm::vec3 origin = { voxel_generator_parameters.x_start,voxel_generator_parameters.y_start,voxel_generator_parameters.z_start };
+
+		voxel_size = voxel_generator_parameters.resolution_step;
+		matrix_dimension = calc_voxel_volume_dimensions();
+		matrix_origin = origin;
+
+		create_volume_cubic(volume_data_storage, matrix_dimension.x, matrix_dimension.y, matrix_dimension.z);
+
+		if (voxel_matrix_data.size() > 0)
+			return true;
+		else
+			return false;
+	}
+//+++++++++++++++++++++++
+// 
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//bool create_voxel_matrix(voxel_hcp_object_class* cloud, voxel_generator_parameters_struct_type  voxel_generator_parameters) {
+	// Need to eventually refactor this as bool create_voxel_matrix(voxel_data_type volume_data_storage = 0) above
 	bool create_voxel_matrix() {
-		voxel_matrix_data.clear();   // ******
-		voxel_matrix_data.shrink_to_fit(); // ******
+		voxel_matrix_data.clear();
+		voxel_matrix_data.shrink_to_fit();
+
+		glm::vec3 origin = { voxel_generator_parameters.x_start,voxel_generator_parameters.y_start,voxel_generator_parameters.z_start };
+
+		voxel_size = voxel_generator_parameters.resolution_step;
+		matrix_dimension = calc_voxel_volume_dimensions();
+		matrix_origin = origin;
+
+		create_empty_volume_cubic( matrix_dimension.x, matrix_dimension.y, matrix_dimension.z);
+
+		if (voxel_matrix_data.size() > 0)
+			return true;
+		else
+			return false;
+	}
+/*
+	bool create_voxel_matrix() {
+		voxel_matrix_data.clear();
+		voxel_matrix_data.shrink_to_fit();
 
 
 		// ########### CREATE EMPTY VOXEL CLOUD MATRIX #################
@@ -434,6 +524,7 @@ public:
 		else
 			return false;
 	}
+*/
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 	// ++++++++++++++++++++ FUNCTIONS TO FIND VOXEL STORAGE INDEX LOCATIONS OF   +++++++++++++++++++++

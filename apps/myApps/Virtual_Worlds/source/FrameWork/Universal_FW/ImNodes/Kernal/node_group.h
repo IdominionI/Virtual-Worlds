@@ -3,6 +3,8 @@
 #include "node.h"
 #include "graph.h"
 
+//node_draw_data_struct_type node_group_draw_data;
+
 class node_group_class : public node_basis_class {
 public:
 	node_group_class() {}
