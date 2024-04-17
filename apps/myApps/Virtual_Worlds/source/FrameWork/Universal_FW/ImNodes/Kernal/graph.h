@@ -127,9 +127,20 @@ public:
 		// be deleted. To delete any list start from the last element
 		// and work down to ensure all elelemts are referenced using
 		// far a vector the size() function.
+//std::cout << "graph_class : clear_graph 000 : " << nodes.nodes.size() <<  std::endl;
+		if (nodes.nodes.size() < 1) return;
 
-		for (int i = nodes.nodes.size() - 1; i > -1; i--) {
-			delete_node(nodes.nodes[i]->node_id);
+		size_t number_nodes = nodes.nodes.size();// ++++
+
+//		for (int i = nodes.nodes.size() - 1; i > -1; i--) {
+//std::cout << "graph_class : clear_graph 111 : " << nodes.nodes.size() << ":" << i << ":"<< nodes.nodes[i]->node_id << ":" << nodes.nodes[i]->label << std::endl;
+//			delete_node(nodes.nodes[i]->node_id);
+//		}
+
+		while (number_nodes > 0) {
+//std::cout << "graph_class : clear_graph 111 : " << nodes.nodes.size() << ":" << number_nodes << ":"<< nodes.nodes[0]->node_id << ":" << nodes.nodes[0]->label << std::endl;
+			delete_node(nodes.nodes[0]->node_id);
+			number_nodes--;
 		}
 			
 	}

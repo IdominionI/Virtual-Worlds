@@ -172,10 +172,13 @@ cout << "setup here ZZZZZZ: " << std::endl;
         globalc::set_current_selected_camera(current_camera); // ++++++++
         globalc::set_current_mouseXY({mouseX,mouseY}); // ++++++++
 
+//std::cout << "before parameter_panel.show();" << std::endl;
         parameter_panel.show();
+//std::cout << "before  node_editor_panel.show();" << std::endl;
         node_editor_panel.show();
+//std::cout << "before  animation_timeline_panel.show()" << std::endl;
         animation_timeline_panel.show();
-
+//std::cout << "after  animation_timeline_panel.show()" << std::endl;
         
         // Following uncommented when investigating ImGui widget examples
         //ImGui::Begin;

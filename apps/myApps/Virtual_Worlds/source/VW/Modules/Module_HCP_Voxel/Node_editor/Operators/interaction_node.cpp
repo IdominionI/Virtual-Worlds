@@ -2,6 +2,7 @@
 
 #include <Universal_FW/ImNodes/Kernal/node_editor.h>>
 #include <Universal_FW/Timeline/timeline_tracks.h>
+#include <Universal_FW/Tools/dialogs.h>
 
 #include <VW/Editor/Node_Editor/node_editor_extras.h>
 #include <VW/Editor/Import_Export/vw_import_export_parameters.h>
@@ -217,13 +218,22 @@ void hcp_voxel_interaction_node_class::action() {
         voxel_hcp_object_class* voxel_hcp_object_A = get_voxel_hcp_object_to_execute(0);
         voxel_hcp_object_class* voxel_hcp_object_B = get_voxel_hcp_object_to_execute(1);
 
-        if(voxel_hcp_object_A == NULL || voxel_hcp_object_B == NULL) return;
+        if (voxel_hcp_object_A == NULL || voxel_hcp_object_B == NULL) {
+            std::string error_message = "ERROR :\n Interacting Voxel surface ";
+            if (!voxel_hcp_object_A) 
+                error_message += "A\n could not be found.\n";
+            else
+                error_message += "B\n could not be found.\n";
+
+            vwDialogs::display_error_message("Hex Interaction Node : action", error_message);
+            return;
+        }
 
 //std::cout << "hcp_voxel_interaction_node_class:action 2222 A: " << voxel_hcp_object_A->voxel_object_data.voxel_size << " : " << voxel_hcp_object_B->voxel_object_data.voxel_size << std::endl;
 
         // Voxel matrices must be of the same size
         if (voxel_hcp_object_A->voxel_object_data.voxel_size != voxel_hcp_object_B->voxel_object_data.voxel_size) {
-            // error message
+            vwDialogs::display_error_message("Voxel Interaction Node : action", "ERROR :\n Interacting voxels are not of the same voxel size\n");
             return;
         }
 
@@ -234,9 +244,12 @@ void hcp_voxel_interaction_node_class::action() {
 
         interaction_object = voxel_interaction.create_interaction_object(voxel_hcp_object_A, voxel_hcp_object_B); // ****** future enhancement to have this function as a static
 
-        if (!interaction_object) { 
+        if (!interaction_object) {
             node_entity_id          = INVALID_ID;
             node_entity_category_id = INVALID_ID;
+
+            vwDialogs::display_error_message("Voxel Interaction Node : action", "ERROR :\n Could not create an interaction object to assign voxel interaction to\n");
+
             return;
         }
 
@@ -332,19 +345,22 @@ void hcp_voxel_interaction_node_class::export_hcp_interaction_node_parameter_dat
 }
 
 bool hcp_voxel_interaction_node_class::import_node(std::vector<std::string> lines, int& line_number) {
-       std::string line;
+    std::string line;
     line_number++;
+    int error_code;
 
 	line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 //std::cout << "hcp_voxel_interaction_node_class::import_node AAAAAAA : " << line_number << ":" << lines[line_number] << std::endl;
 // next line read must be a RULE_BLOCK_START flag
 	if (!FW::stringtools::contains(lines[line_number], DATA_BLOCK_START)) {
 //std::cout << "hcp_voxel_translation_node_class", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing RULE_BLOCK_START flag", //QMessageBox::Ok);
+        vwDialogs::display_error_message("Interaction Node : import Node", "ERROR :\n Could not find start data block flag\n");
 		return false;
 	}
 
 //std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule CCCCCC : " << line_number << ":" << lines[line_number] << std::endl;
-    line_number++; line = lines[line_number];interaction_type = stoi(line);
+    //line_number++; line = lines[line_number];interaction_type = stoi(line);
+    line_number++; line = lines[line_number];if(!FW::stringtools::string_to_int(line,&interaction_type,error_code)) return false;
 
 	// next line read must be a RULE_BLOCK_END flag
 	line_number++;
@@ -353,7 +369,8 @@ bool hcp_voxel_interaction_node_class::import_node(std::vector<std::string> line
 
 	if (!FW::stringtools::contains(lines[line_number], DATA_BLOCK_END)) {
 //std::cout <<"hcp_voxel_translation_node_class", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing Rule block end flag", //QMessageBox::Ok);
-		return false;
+		vwDialogs::display_error_message("Interaction Node : import Node", "ERROR :\n Could not find end data block flag\n");
+        return false;
 	}
 
 	return true;

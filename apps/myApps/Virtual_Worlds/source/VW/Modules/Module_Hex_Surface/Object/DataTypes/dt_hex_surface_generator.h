@@ -60,13 +60,13 @@ struct hex_surface_generator_parameters_struct_type {
 	float	 x_start = -1.0f, x_end = 1.0f;
 	float	 y_start = -1.0f, y_end = 1.0f;
 
-	float	 resolution_step = 0.01f;
+	float	 resolution_step = 0.5f;
 	//float	 generation_threshold = 0.1f;
 	float    e_time = 0.0f;// , c_time = 0.0f;
 	int    frame = 0;
 	//float    frame = 0.0f;
 
-	int      invocation = 256;// this value may need to be changed to a maximum value
+	int      invocation = 0;// this value may need to be changed to a maximum value
 
 	hex_surface_data_type max_surface_value = 255.0f, min_surface_value = 1.0f; // *****
 

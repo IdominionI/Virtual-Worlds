@@ -155,4 +155,6 @@ private:
     voxel_hcp_object_class *interaction_object = nullptr;
 
     hcp_voxel_interactions_class voxel_interaction;
+
+    int error_code = 0;
 };

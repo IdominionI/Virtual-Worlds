@@ -4,8 +4,9 @@
 
 #include <VW_framework/Types/vw_type_definitions.h>
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
-#include <VW/Editor/Tools/dialogs.h>
+
 #include <Universal_FW/Interface/IconsFontAwesome.h>
+#include <Universal_FW/Tools/dialogs.h>
 
 #include "../../Object/voxel_hcp_object.h"
 
@@ -142,7 +143,7 @@ if (log_panel != NULL) log_panel->application_log.AddLog("INFO : After  voxel_hc
 	
 	void voxel_hcp_editor_generation_widget_class::save_generation_parameters() {
 //printf("save button clicked\n");// replace with clear variables
-		char const* patterns[] = { "*.vvp" };
+		char const* patterns[] = { "*.vep" };
 		char const* file_pathname = vwDialogs::save_file(nullptr, patterns, 1);
 
 		if (file_pathname == nullptr) {
@@ -163,7 +164,7 @@ if (log_panel != NULL) log_panel->application_log.AddLog("INFO : After  voxel_hc
 //printf("load button clicked\n");// replace with clear variables
 		clear_variables();
 
-		char const* patterns[] = { "*.vvp" };
+		char const* patterns[] = { "*.vep" };
 		char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
 
 		if (file_pathname == nullptr) {

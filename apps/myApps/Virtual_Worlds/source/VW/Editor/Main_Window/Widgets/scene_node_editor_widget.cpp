@@ -18,6 +18,7 @@
 // hex suface nodes
 #include <VW/Modules/Module_Hex_Surface/Node_editor/hex_surface_node.h>
 #include <VW/Modules/Module_Hex_Surface/Node_editor/hex_surface_automata_node.h>
+#include <VW/Modules/Module_Hex_Surface/Node_editor/hex_surface_editor_node.h>
 //hex surface modifiers
 #include <VW/Modules/Module_Hex_Surface/Node_editor/Modifiers/translation_node.h>
 //hex surface operators
@@ -92,6 +93,10 @@ void scene_node_editor_class::display() {
                                 create_node<hex_surface_node_class>(click_pos);
                             }
 
+                            if (ImGui::MenuItem("Create Hex suface Editor Node")) {
+                                create_node<hex_surface_editor_node_class>(click_pos);
+                            }
+
                             //if (ImGui::MenuItem("Create Cart to Hex suface Node")) {
                             //    //create_node<cart_to_hcp_voxel_node_class>(click_pos);
                             //}
@@ -118,7 +123,10 @@ void scene_node_editor_class::display() {
 
                         if (ImGui::MenuItem("import Group")) {
                             import_group(this, click_pos);
-//std::cout << "scene_node_editor_class : after import group 000" << std::endl;
+// Have random crashes and incorrect reading of files when importing groups
+// So inconsistant and occurs after this import has completed. 
+// An ImGUI or just a Compilor problem rather than coding ???
+std::cout << "scene_node_editor_class : after import group 000" << std::endl;
                         }
 
                         ImGui::EndMenu();
@@ -532,6 +540,9 @@ node_group_class *scene_node_editor_class::create_group_node(ImVec2 click_pos,bo
 
 //std::cout << "create_group_node 000\n";
     graph.add_node(new_node_group, click_pos, INVALID_ID);// Need to define an entity ID for node and not have an INVALID_ID passed to the graph class ???
+std::cout << "scene_node_editor_class :: create_group_node 000 NNN :" << new_node_group->node_id << std::endl;
+    new_node_group->label = "Node Group " + std::to_string(new_node_group->node_id);
+
     
     scene_node_editor_class *group_scene_node_editor = new scene_node_editor_class;
     if (group_scene_node_editor == nullptr) {
@@ -818,4 +829,7 @@ if(!node_group_editor->log_panel) std::cout << "scene_node_editor_class:import_g
 if(!node_group_editor->vw_scene) std::cout << "scene_node_editor_class:import_group 0000 !node_group_editor->vw_scene : %%%%%%%%% "  << std::endl;
 
     node_editor_import.import_node_group(file_pathname, node_group_editor,click_pos);
+
+    node_editor_import.line_number = 0;
+//std::cout << "scene_node_editor_class:import_group SSSSSSSSS : "  << std::endl;
 }

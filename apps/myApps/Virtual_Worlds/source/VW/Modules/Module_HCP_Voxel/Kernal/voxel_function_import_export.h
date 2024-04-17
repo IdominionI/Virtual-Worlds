@@ -70,4 +70,7 @@ public:
 	void write_cart_to_hcp_voxel_generation_function_paramater_data(std::fstream& stream);
 	bool import_cart_to_voxel_generated_function(cart_to_hcp_voxel_generator_parameters_struct_type &generator_parameters, std::string file_pathname);
 	bool read_cart_to_voxel_parameter_data(std::vector<std::string> lines, cart_to_hcp_voxel_generator_parameters_struct_type &generator_parameters, int& line_number);
+
+private:
+	int error_code = 0;
 };

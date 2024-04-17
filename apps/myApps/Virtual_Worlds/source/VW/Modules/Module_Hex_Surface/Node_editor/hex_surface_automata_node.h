@@ -110,7 +110,7 @@ public:
         import_export_hex_surface_automata_rules.hex_surface_automata_rules = hex_automata_byte_rules;
 
         stream << RULE_DATA_START << ENDL;
-        import_export_hex_surface_automata_rules.write_hcp_automata_byte_rules(stream);
+        import_export_hex_surface_automata_rules.write_hex_surface_automata_byte_rules(stream);
         stream << RULE_DATA_END << ENDL;
     }
 

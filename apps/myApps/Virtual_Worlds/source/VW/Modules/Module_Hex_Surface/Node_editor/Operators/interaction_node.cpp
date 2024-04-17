@@ -3,6 +3,7 @@
 
 #include <Universal_FW/ImNodes/Kernal/node_editor.h>>
 #include <Universal_FW/Timeline/timeline_tracks.h>
+#include <Universal_FW/Tools/dialogs.h>
 
 #include <VW/Editor/Node_Editor/node_editor_extras.h>
 #include <VW/Editor/Import_Export/vw_import_export_parameters.h>
@@ -143,7 +144,7 @@ bool hex_surface_interaction_node_class::create_hex_surface_interaction_timeline
 
     // ================ define as a create timeline group function ===============
     if (!animation_timeline_tracks_widget->timeline_track_group_exists(node_id)) {
-//std::cout << "hcp_voxel_node_class::create_hcp_animation_link 000 : !animation_timeline_tracks_widget->timeline_track_group_exists(node_id)\n";
+//std::cout << "hcp_hex_surface_node_class::create_hcp_animation_link 000 : !animation_timeline_tracks_widget->timeline_track_group_exists(node_id)\n";
         int index = animation_timeline_tracks_widget->add_timeline_group(label, node_id, hex_animation_object, TIMELINE_OBJECT_DATA_TYPE_ID_HEX_SURFACE_INTERACTION);
         if (index != INVALID_ID && index < animation_timeline_tracks_widget->timeline_track_groups.size()) {
             
@@ -197,7 +198,7 @@ void hex_surface_interaction_node_class::editor_menu_options() {
 }
 
 bool hex_surface_interaction_node_class::define_ui() {
-//std::cout << "hcp_voxel_interaction_node_class::display_ui\n";
+//std::cout << "hcp_hex_surface_interaction_node_class::display_ui\n";
 
     globalc::set_current_selected_data_context_id(this->ui_node_type.node_data_context);
     globalc::set_current_selected_entity_id(INVALID_ID);
@@ -210,7 +211,7 @@ bool hex_surface_interaction_node_class::define_ui() {
 }
 
 void hex_surface_interaction_node_class::display_ui(node_id_type current_selected_object_id) {
-//std::cout << "hcp_voxel_interaction_node_class::display_ui\n";
+//std::cout << "hcp_hex_surface_interaction_node_class::display_ui\n";
 
     // Best to perform this code block only when connecting or diconnecting node input link
     if (!vw_scene ) {
@@ -224,7 +225,7 @@ void hex_surface_interaction_node_class::display_ui(node_id_type current_selecte
 void hex_surface_interaction_node_class::display_interaction_ui(id_type current_selected_object_id) {
     float x_pos = 10.0f, y_pos = 70.0f;
 
-    text("HCP Voxel Interactions", x_pos + 70, y_pos);
+    text("HCP hex_surface Interactions", x_pos + 70, y_pos);
 
     y_pos += 30;
     ImGui::SetCursorPosX(x_pos + 70);
@@ -284,22 +285,29 @@ void hex_surface_interaction_node_class::action() {
     hex_surface_object_class *hex_surface_object_B = get_hex_surface_object_to_execute(1);
 
     if (!hex_surface_object_A || !hex_surface_object_B) {
-        // error message
+        std::string error_message = "ERROR :\n Interacting hex surface ";
+        if (!hex_surface_object_A) 
+            error_message += "A\n could not be found.\n";
+        else
+            error_message += "B\n could not be found.\n";
+
+        vwDialogs::display_error_message("Hex Interaction Node : action", error_message);
         return;
     }
 
-    // Voxel matrices must be of the same size
+    // hex_surface matrices must be of the same size
     if (hex_surface_object_A->hex_surface_object_data.hex_size != hex_surface_object_B->hex_surface_object_data.hex_size) {
-        // error message 
+        vwDialogs::display_error_message("Hex Interaction Node : action", "ERROR :\n Interacting hex surfaces are not of the same hex size\n");
         return;
     }
 
 //printf("hcp_interaction_node_class:action 0000 \n");
     interaction_object = hex_surface_interaction.create_interaction_object(hex_surface_object_A, hex_surface_object_B); // ****** future enhancement to have this function as a static
     if (!interaction_object) {
-        // error message
         node_entity_id          = INVALID_ID;
         node_entity_category_id = INVALID_ID;
+
+        vwDialogs::display_error_message("Hex Interaction Node : action", "ERROR :\n Could not create an interaction object to assign hex interaction to\n");
         return;
     }
 //std::cout << "hcp_interaction_node_class:action 1111 : " << interaction_object->hex_surface_object_data.grid_dimension.x << " : " << interaction_object->hex_surface_object_data.grid_dimension.y << std::endl;
@@ -311,7 +319,7 @@ void hex_surface_interaction_node_class::action() {
     if(!peform_interaction(hex_surface_object_A, hex_surface_object_B, interaction_type)) return;
 
 //printf("hcp_interaction_node_class action 3333\n");
-    hex_surface_interaction.update_voxel_verticies(interaction_object); // ****** future enhancement to have this function as a static
+    hex_surface_interaction.update_hex_surface_verticies(interaction_object); // ****** future enhancement to have this function as a static
 //printf("hcp_interaction_node_class action 4444\n");
 }
 
@@ -334,7 +342,7 @@ bool hex_surface_interaction_node_class::peform_interaction(hex_surface_object_c
     for (int xi = 0; xi < i_x_dim; xi++) {
         for (int yi = 0; yi < i_y_dim; yi++) {         
 //printf("hcp_interaction_node_class:peform_interaction 5555 %\n");
-            // Get coresponding voxel data entry in voxel matrix A that is at interaction matrix index coord xi,yi,zi
+            // Get coresponding hex_surface data entry in hex_surface matrix A that is at interaction matrix index coord xi,yi,zi
             hex_surface_data_type a_value = DEFAULT_INACTIVE_VALUE, b_value = DEFAULT_INACTIVE_VALUE;
             hex_index_vector matrix_coord_A = { a_start.x + xi,a_start.y + yi };
             index_data_type a_index = hex_surface_object_A->hex_surface_object_data.get_hex_surface_matrix_data_index(matrix_coord_A);
@@ -342,7 +350,7 @@ bool hex_surface_interaction_node_class::peform_interaction(hex_surface_object_c
                 a_value = hex_surface_object_A->hex_surface_object_data.hex_surface_matrix_data[a_index];
             }
 
-            // Get coresponding voxel data entry in voxel matrix A that is at interaction matrix index coord xi,yi,zi
+            // Get coresponding hex_surface data entry in hex_surface matrix A that is at interaction matrix index coord xi,yi,zi
             hex_index_vector matrix_coord_B = { b_start.x + xi,b_start.y + yi  };
             index_data_type b_index = hex_surface_object_B->hex_surface_object_data.get_hex_surface_matrix_data_index(matrix_coord_B);
             if (b_index >= 0 && b_index < hex_surface_object_B->hex_surface_object_data.hex_surface_matrix_data.size()) {
@@ -350,19 +358,19 @@ bool hex_surface_interaction_node_class::peform_interaction(hex_surface_object_c
             }
 //printf("hcp_interaction_node_class:peform_interaction 66666 %\n");
             switch (interaction_type) {
-                case HEX_SURFACE_INTERACTIONS_SUPERPOSITION_ADD: assign_voxel(xi, yi, a_value + b_value);break;
-                case HEX_SURFACE_INTERACTIONS_SUPERPOSITION_SUB: assign_voxel(xi, yi, abs(a_value - b_value)); break;
+                case HEX_SURFACE_INTERACTIONS_SUPERPOSITION_ADD: assign_hex_surface(xi, yi, a_value + b_value);break;
+                case HEX_SURFACE_INTERACTIONS_SUPERPOSITION_SUB: assign_hex_surface(xi, yi, abs(a_value - b_value)); break;
                 case HEX_SURFACE_INTERACTIONS_AND              : {if (a_value != DEFAULT_INACTIVE_VALUE && b_value != DEFAULT_INACTIVE_VALUE) 
-                                                                assign_voxel(xi, yi, DEFAULT_ACTIVE_VALUE);
+                                                                assign_hex_surface(xi, yi, DEFAULT_ACTIVE_VALUE);
                                                                 break;}
                 case HEX_SURFACE_INTERACTIONS_OR               : {if (a_value != DEFAULT_INACTIVE_VALUE || b_value != DEFAULT_INACTIVE_VALUE) 
-                                                                assign_voxel(xi, yi, DEFAULT_ACTIVE_VALUE);
+                                                                assign_hex_surface(xi, yi, DEFAULT_ACTIVE_VALUE);
                                                                 break;}
                 case HEX_SURFACE_INTERACTIONS_EXOR             : {if ((a_value != DEFAULT_INACTIVE_VALUE) != (b_value != DEFAULT_INACTIVE_VALUE)) 
-                                                                assign_voxel(xi, yi, DEFAULT_ACTIVE_VALUE);
+                                                                assign_hex_surface(xi, yi, DEFAULT_ACTIVE_VALUE);
                                                                 break;}
                 case HEX_SURFACE_INTERACTIONS_COMPLEMENT       : {if (!((a_value != DEFAULT_INACTIVE_VALUE) == (b_value != DEFAULT_INACTIVE_VALUE))) 
-                                                                assign_voxel(xi, yi, DEFAULT_ACTIVE_VALUE);
+                                                                assign_hex_surface(xi, yi, DEFAULT_ACTIVE_VALUE);
                                                                 break; }
             }
             }
@@ -374,7 +382,7 @@ bool hex_surface_interaction_node_class::peform_interaction(hex_surface_object_c
     //return false;
 }
 
-void hex_surface_interaction_node_class::assign_voxel(int xi, int yi, hex_surface_data_type value) {
+void hex_surface_interaction_node_class::assign_hex_surface(int xi, int yi, hex_surface_data_type value) {
     hex_index_vector matrix_coord_C = { xi,yi };
     index_data_type c_index = interaction_object->hex_surface_object_data.get_hex_surface_matrix_data_index(matrix_coord_C);
     // Future consideration is that this value is assigned to some other value
@@ -393,27 +401,32 @@ void hex_surface_interaction_node_class::export_hex_surface_interaction_node_par
 }
 
 bool hex_surface_interaction_node_class::import_node(std::vector<std::string> lines, int& line_number) {
-       std::string line;
+    std::string line;
     line_number++;
+    int error_code = 0;
 
 	line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
-//std::cout << "hcp_voxel_interaction_node_class::import_node AAAAAAA : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "hcp_hex_surface_interaction_node_class::import_node AAAAAAA : " << line_number << ":" << lines[line_number] << std::endl;
     // next line read must be a RULE_BLOCK_START flag
 	if (!FW::stringtools::contains(lines[line_number], DATA_BLOCK_START)) {
-//std::cout << "hcp_voxel_translation_node_class", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing RULE_BLOCK_START flag", //QMessageBox::Ok);
+//std::cout << "hcp_hex_surface_translation_node_class", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing RULE_BLOCK_START flag", //QMessageBox::Ok);
+        vwDialogs::display_error_message("Interaction Node : import Node", "ERROR :\n Could not find start data block flag\n");
 		return false;
 	}
 
 //std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule CCCCCC : " << line_number << ":" << lines[line_number] << std::endl;
-    line_number++; line = lines[line_number];interaction_type = stoi(line);
+    //line_number++; line = lines[line_number];interaction_type = stoi(line);
+    line_number++; line = lines[line_number];if(!FW::stringtools::string_to_int(line,&interaction_type,error_code)) return false;
+    
 
 	// next line read must be a RULE_BLOCK_END flag
 	line_number++;
 	line = lines[line_number];
-//std::cout << "hcp_voxel_translation_node_class::import_node 2222AA : " << line_number << ":" << lines[line_number] << std::endl;
+//std::cout << "hcp_hex_surface_translation_node_class::import_node 2222AA : " << line_number << ":" << lines[line_number] << std::endl;
 
 	if (!FW::stringtools::contains(lines[line_number], DATA_BLOCK_END)) {
-//std::cout <<"hcp_voxel_translation_node_class", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing Rule block end flag", //QMessageBox::Ok);
+//std::cout <<"hcp_hex_surface_translation_node_class", "File read Error : Read error at line " + std::string::number(line_number) + " of file \n" + file_pathname + "\nMissing Rule block end flag", //QMessageBox::Ok);
+        vwDialogs::display_error_message("Interaction Node : import Node", "ERROR :\n Could not find end data block flag\n");
 		return false;
 	}
 

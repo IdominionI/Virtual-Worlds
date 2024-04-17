@@ -3,8 +3,9 @@
 #include <imgui-docking/imgui.h>
 #include <VW_framework/Types/vw_type_definitions.h>
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
-#include <VW/Editor/Tools/dialogs.h>
+
 #include <Universal_FW/Interface/IconsFontAwesome.h>
+#include <Universal_FW/Tools/dialogs.h>
 
 	void hex_surface_automata_widget_class::display() {
 		if (hex_surface_automata_rules == NULL) {
@@ -133,7 +134,7 @@
 
 		//import_export_hex_surface_automata_rules.hex_surface_automata_rules = hex_surface_object_to_execute->hex_surface_object_data.hex_surface_automata_rules;
 		import_export_hex_surface_automata_rules.hex_surface_automata_rules = *hex_surface_automata_rules;
-		import_export_hex_surface_automata_rules.export_hcp_automata_byte_rules(file_pathname);
+		import_export_hex_surface_automata_rules.export_hex_surface_automata_byte_rules(file_pathname);
 
 		if (log_panel != NULL) log_panel->application_log.AddLog("INFO : hex surface automata rules data saved to file\n %s\n", file_pathname);
 
@@ -156,7 +157,7 @@
 			printf("load_automata_rules != NULL  \n");
 
 		//import_export_hex_surface_automata_rules.import_hcp_automata_byte_rules(hex_surface_object_to_execute->hex_surface_object_data.hex_surface_automata_rules, file_pathname);
-		import_export_hex_surface_automata_rules.import_hcp_automata_byte_rules(*hex_surface_automata_rules, file_pathname);
+		import_export_hex_surface_automata_rules.import_hex_surface_automata_byte_rules(*hex_surface_automata_rules, file_pathname);
 
 		if (log_panel != NULL) log_panel->application_log.AddLog("INFO : hex surface automata rules data imported from file\n %s\n", file_pathname);
 

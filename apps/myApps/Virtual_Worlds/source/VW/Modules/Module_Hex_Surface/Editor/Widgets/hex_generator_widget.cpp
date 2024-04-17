@@ -4,9 +4,9 @@
 
 #include <VW_framework/Types/vw_type_definitions.h>
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
-#include <VW/Editor/Tools/dialogs.h>
-#include <Universal_FW/Interface/IconsFontAwesome.h>
 
+#include <Universal_FW/Interface/IconsFontAwesome.h>
+#include <Universal_FW/Tools/dialogs.h>
 
 void hex_surface_generation_widget_class::display() {
 		if (hex_surface_object_to_execute == NULL) {

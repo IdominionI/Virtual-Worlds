@@ -3,8 +3,9 @@
 #include <imgui-docking/imgui.h>
 #include <VW_framework/Types/vw_type_definitions.h>
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
-#include <VW/Editor/Tools/dialogs.h>
+
 #include <Universal_FW/Interface/IconsFontAwesome.h>
+#include <Universal_FW/Tools/dialogs.h>
 
 void voxel_hcp_automata_widget_class::display() {
 	if (!voxel_hcp_automata_byte_rules) {

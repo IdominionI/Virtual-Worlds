@@ -58,13 +58,14 @@ public:
 	///bounding_area_class bounding_area;
 
 	bool display_hex_surface_object_as_points = false;
-		bool  animate_automata = false;
+	bool animate_automata = false;
+	bool object_changed = false;
 
 	glm::uvec4 color                          = {1.0,1.0,1.0,1.0};
 
 	float min_surface_display_value, max_surface_display_value;
 
-	int min_hex_surface_value = 0, max_hex_surface_value = 0;
+	int min_hex_surface_value = INVALID_HEX_VALUE, max_hex_surface_value = INVALID_HEX_VALUE;
 
 	void delete_object() {
 		delete parameter_widget;
@@ -94,6 +95,12 @@ public:
 
 	bool automata_rule_within_frame(int frame);
 	//bool define_vbo_vertices(int min_hex_surface_value, int  max_hex_surface_value);
+
+	void set_hex_surface_value_range(int min_hex_value, int  max_hex_value) {
+		min_hex_surface_value = min_hex_value;
+		max_hex_surface_value = max_hex_value;
+	}
+
 	bool define_geometry_data();
 	bool add_hex_surface_vbo_vertex(int index);
 	int  define_vbo_faces();

@@ -5,8 +5,10 @@
 #include <VW_FrameWork/Types/vw_type_definitions.h>
 
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
-#include <VW/Editor/Tools/dialogs.h>
+
 #include <VW/Editor/Main_Window/Panels/log_panel.h>
+
+#include <Universal_FW/Tools/dialogs.h>
 
 #include "../../Object/DataTypes/dt_voxel_generator.h"
 #include "../../Kernal/voxel_function_import_export.h"

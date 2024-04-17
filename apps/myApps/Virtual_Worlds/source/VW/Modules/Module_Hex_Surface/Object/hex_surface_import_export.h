@@ -2,11 +2,12 @@
 
 #include "hex_surface_object.h"
 
-#include <Source/Editor/Tools/dialogs.h>
-#include <Source/Editor/Main_Window/Panels/log_panel.h>
-#include <Source/Editor/Import_Export/vw_import_export_parameters.h>
+#include <Universal_FW/Tools/dialogs.h>
+#include <VW/Editor/Main_Window/Panels/log_panel.h>
+#include <VW/Editor/Import_Export/vw_import_export_parameters.h>
 
-#include <Source/Editor/Object/object_basis.h> // *****
+//#include <Source/Editor/Object/object_basis.h> // *****
+#include <VW_framework/Object/vw_object_base.h> // *****
 
 /*
 	hex_surface_import_export_class

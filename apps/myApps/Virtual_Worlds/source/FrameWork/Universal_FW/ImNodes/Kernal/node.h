@@ -328,8 +328,11 @@ public:
 
     bool delete_node(int node_id) {
         int index = get_node_index(node_id);
+//std::cout <<"nodes_class::delete_node:: NNN000 : " << index << std::endl;
         if (index == INVALID_ID) return false;
+//std::cout <<"nodes_class::delete_node:: NNN111 : " << index << " : " << nodes.size()<< " : "<< nodes[index]->node_id << std::endl;
         nodes[index]->delete_node_entity();
+//std::cout <<"nodes_class::delete_node:: NNN222 : " << index << " : " << nodes.size()<< std::endl;
         nodes.erase(nodes.begin() + index);
 
         return true;

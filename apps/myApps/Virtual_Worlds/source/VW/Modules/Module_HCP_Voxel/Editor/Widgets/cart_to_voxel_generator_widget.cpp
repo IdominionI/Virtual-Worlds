@@ -8,8 +8,9 @@
 #include <FrameWork/Universal_FW/assimp/scene.h>
 
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
-#include <VW/Editor/Tools/dialogs.h>
+
 #include <Universal_FW/Interface/IconsFontAwesome.h>
+#include <Universal_FW/Tools/dialogs.h>
 
 #include "../../Object/voxel_hcp_object.h"
 

@@ -185,23 +185,28 @@ std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule A
 	line_number++;
 	line = lines[line_number];
 //std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule CCCCCC : " << line_number << ":" << lines[line_number] << std::endl;
-	if (stoi(line) == 0) voxel_hcp_automata_rule.active_rule = false; else voxel_hcp_automata_rule.active_rule = true;
+	//if (stoi(line) == 0) voxel_hcp_automata_rule.active_rule = false; else voxel_hcp_automata_rule.active_rule = true;
+	int active_rule;
+	if(!FW::stringtools::string_to_int(lines[line_number],&active_rule,error_code)) return false;
+	if (active_rule == 0) voxel_hcp_automata_rule.active_rule = false; else voxel_hcp_automata_rule.active_rule = true;
 
 	line_number++;
 	line = lines[line_number];
 //std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule DDDDDD : " << line_number << ":" << lines[line_number] << std::endl;
-	voxel_hcp_automata_rule.voxel_state = stoi(line);
+	//voxel_hcp_automata_rule.voxel_state = stoi(line);
+	if(!FW::stringtools::string_to_int(lines[line_number],&voxel_hcp_automata_rule.voxel_state,error_code)) return false;
 
 	line_number++;
 	line = lines[line_number];
 //std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule EEEEE : " << line_number << ":" << lines[line_number] << std::endl;
-	voxel_hcp_automata_rule.start_step = stoi(line);
+	//voxel_hcp_automata_rule.start_step = stoi(line);
+	if(!FW::stringtools::string_to_int(lines[line_number],&voxel_hcp_automata_rule.start_step,error_code)) return false;
 
 	line_number++;
 	line = lines[line_number];
 //std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule FFFFF : " << line_number << ":" << lines[line_number] << std::endl;
-	voxel_hcp_automata_rule.end_step = stoi(line);
-
+	//voxel_hcp_automata_rule.end_step = stoi(line);
+	if(!FW::stringtools::string_to_int(lines[line_number],&voxel_hcp_automata_rule.end_step,error_code)) return false;
 
 	// next line contains the self rule definitions where each rule defenintion is seperated by the deliminator RULE_DELIMINATOR
 	line_number++;
@@ -216,23 +221,32 @@ std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule A
 		return false;
 	}
 
+	int rule_list0, rule_list1, rule_list2, rule_list3;
+	if(!FW::stringtools::string_to_int(rule_list[0],&rule_list0,error_code)) return false;
+	if(!FW::stringtools::string_to_int(rule_list[1],&rule_list1,error_code)) return false;
+	if(!FW::stringtools::string_to_int(rule_list[2],&rule_list2,error_code)) return false;
+	if(!FW::stringtools::string_to_int(rule_list[3],&rule_list3,error_code)) return false;
 
-	voxel_hcp_automata_rule.voxel_self_rule_condition.lower_rule_value = stoi(rule_list[0]);
+	//voxel_hcp_automata_rule.voxel_self_rule_condition.lower_rule_value = stoi(rule_list[0]);
+	voxel_hcp_automata_rule.voxel_self_rule_condition.lower_rule_value = rule_list0;
 
-	switch (stoi(rule_list[1])) {
+	//switch (stoi(rule_list[1])) {
+	switch (rule_list1) {
 		case NEIGHBOR_IGNOR_RULE_CODE              : voxel_hcp_automata_rule.voxel_self_rule_condition.lower_rule = lower_rule_condition_enum_type::ignore; break;
 		case NEIGHBOR_LESS_THAN_RULE_CODE          : voxel_hcp_automata_rule.voxel_self_rule_condition.lower_rule = lower_rule_condition_enum_type::LT;     break;
 		case NEIGHBOR_LESS_THAN_OR_EQUAL_RULE_CODE : voxel_hcp_automata_rule.voxel_self_rule_condition.lower_rule = lower_rule_condition_enum_type::LTEQ;   break;
 	}
 
-	switch (stoi(rule_list[2])) {
+	//switch (stoi(rule_list[2])) {
+	switch (rule_list2) {
 		case NEIGHBOR_IGNOR_RULE_CODE              : voxel_hcp_automata_rule.voxel_self_rule_condition.upper_rule = upper_rule_condition_enum_type::ignore; break;
 		case NEIGHBOR_NOT_EQUAL_RULE_CODE          : voxel_hcp_automata_rule.voxel_self_rule_condition.upper_rule = upper_rule_condition_enum_type::NE;     break;
 		case NEIGHBOR_EQUAL_RULE_CODE              : voxel_hcp_automata_rule.voxel_self_rule_condition.upper_rule = upper_rule_condition_enum_type::EQ;     break;
 		case NEIGHBOR_LESS_THAN_RULE_CODE          : voxel_hcp_automata_rule.voxel_self_rule_condition.upper_rule = upper_rule_condition_enum_type::LT;    break;
 		case NEIGHBOR_LESS_THAN_OR_EQUAL_RULE_CODE : voxel_hcp_automata_rule.voxel_self_rule_condition.upper_rule = upper_rule_condition_enum_type::LTEQ;   break;
 	}
-	voxel_hcp_automata_rule.voxel_self_rule_condition.upper_rule_value = stoi(rule_list[3]);// .toInt();
+	//voxel_hcp_automata_rule.voxel_self_rule_condition.upper_rule_value = stoi(rule_list[3]);// .toInt();
+	voxel_hcp_automata_rule.voxel_self_rule_condition.upper_rule_value = rule_list3;// .toInt();
 
 
 	// next NUMBER_HCP_NEIGHBOURS lines must have the neighbour activity states for the rule
@@ -249,21 +263,30 @@ std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule A
 			return false;
 		}
 
-		voxel_hcp_automata_rule.neighbours_rule_condition[i].lower_rule_value = stoi(rule_list[0]);// .toInt();
-		switch (stoi(rule_list[1])) {
-			case NEIGHBOR_IGNOR_RULE_CODE: voxel_hcp_automata_rule.neighbours_rule_condition[i].lower_rule = lower_rule_condition_enum_type::ignore; break;
-			case NEIGHBOR_LESS_THAN_RULE_CODE: voxel_hcp_automata_rule.neighbours_rule_condition[i].lower_rule = lower_rule_condition_enum_type::LT;     break;
-			case NEIGHBOR_LESS_THAN_OR_EQUAL_RULE_CODE: voxel_hcp_automata_rule.neighbours_rule_condition[i].lower_rule = lower_rule_condition_enum_type::LTEQ;   break;
+		if(!FW::stringtools::string_to_int(rule_list[0],&rule_list0,error_code)) return false;
+		if(!FW::stringtools::string_to_int(rule_list[1],&rule_list1,error_code)) return false;
+		if(!FW::stringtools::string_to_int(rule_list[2],&rule_list2,error_code)) return false;
+		if(!FW::stringtools::string_to_int(rule_list[3],&rule_list3,error_code)) return false;
+
+		//voxel_hcp_automata_rule.neighbours_rule_condition[i].lower_rule_value = stoi(rule_list[0]);// .toInt();
+		voxel_hcp_automata_rule.neighbours_rule_condition[i].lower_rule_value = rule_list0;// .toInt();
+		//switch (stoi(rule_list[1])) {
+		switch (rule_list1) {
+			case NEIGHBOR_IGNOR_RULE_CODE              : voxel_hcp_automata_rule.neighbours_rule_condition[i].lower_rule = lower_rule_condition_enum_type::ignore; break;
+			case NEIGHBOR_LESS_THAN_RULE_CODE          : voxel_hcp_automata_rule.neighbours_rule_condition[i].lower_rule = lower_rule_condition_enum_type::LT;     break;
+			case NEIGHBOR_LESS_THAN_OR_EQUAL_RULE_CODE : voxel_hcp_automata_rule.neighbours_rule_condition[i].lower_rule = lower_rule_condition_enum_type::LTEQ;   break;
 		}
 
-		switch (stoi(rule_list[2])) {
-			case NEIGHBOR_IGNOR_RULE_CODE: voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule = upper_rule_condition_enum_type::ignore; break;
-			case NEIGHBOR_NOT_EQUAL_RULE_CODE: voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule = upper_rule_condition_enum_type::NE;     break;
-			case NEIGHBOR_EQUAL_RULE_CODE: voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule = upper_rule_condition_enum_type::EQ;     break;
-			case NEIGHBOR_LESS_THAN_RULE_CODE: voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule = upper_rule_condition_enum_type::LT;    break;
+		//switch (stoi(rule_list[2])) {
+		switch (rule_list2) {
+			case NEIGHBOR_IGNOR_RULE_CODE             : voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule = upper_rule_condition_enum_type::ignore; break;
+			case NEIGHBOR_NOT_EQUAL_RULE_CODE         : voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule = upper_rule_condition_enum_type::NE;     break;
+			case NEIGHBOR_EQUAL_RULE_CODE             : voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule = upper_rule_condition_enum_type::EQ;     break;
+			case NEIGHBOR_LESS_THAN_RULE_CODE         : voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule = upper_rule_condition_enum_type::LT;    break;
 			case NEIGHBOR_LESS_THAN_OR_EQUAL_RULE_CODE: voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule = upper_rule_condition_enum_type::LTEQ;   break;
 		}
-		voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule_value = stoi(rule_list[3]);// .toInt();
+		//voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule_value = stoi(rule_list[3]);// .toInt();
+		voxel_hcp_automata_rule.neighbours_rule_condition[i].upper_rule_value = rule_list3;// .toInt();
 	}
 
 	// next line read must be a RULE_BLOCK_END flag

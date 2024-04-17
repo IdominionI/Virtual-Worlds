@@ -43,15 +43,16 @@ public:
 
 	std::vector <hex_surface_automata_rule_struct_type>  hex_surface_automata_rules;
 
-	int open_file_stream(std::string filename, int write_mode);
+	int  open_file_stream(std::string filename, int write_mode);
 	void close_file_stream();
-	bool export_hcp_automata_byte_rules(std::string file_pathname);
-	void write_hcp_automata_byte_rules(std::fstream& stream);
+	bool export_hex_surface_automata_byte_rules(std::string file_pathname);
+	void write_hex_surface_automata_byte_rules(std::fstream& stream);
 	bool open_file_to_read(std::string filename);
-	bool import_hcp_automata_byte_rules(std::vector <hex_surface_automata_rule_struct_type>& automata_byte_rules_parameters, std::string file_pathname);
+	bool import_hex_surface_automata_byte_rules(std::vector <hex_surface_automata_rule_struct_type>& automata_byte_rules_parameters, std::string file_pathname);
 	bool read_automata_byte_rules_into_byte_rules_parameters(std::vector<std::string> lines,std::vector <hex_surface_automata_rule_struct_type>& generator_parameters, int& line_number);
 	bool read_automata_byte_rule(std::vector<std::string> lines, hex_surface_automata_rule_struct_type& hex_surface_automata_rule, int& line_number);
 
 
-//private:
+private:
+	int error_code = 0;
 };

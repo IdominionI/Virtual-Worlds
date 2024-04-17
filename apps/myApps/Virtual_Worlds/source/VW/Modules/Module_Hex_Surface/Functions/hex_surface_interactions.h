@@ -7,7 +7,7 @@ public:
     vw_scene_class   *scene_manager = nullptr;
     log_panel_class  *log_panel     = nullptr;
 
-    static bool voxel_intersection(hex_surface_object_class *hex_surface_object_A, hex_surface_object_class *hex_surface_object_B) {
+    static bool hex_surface_intersection(hex_surface_object_class *hex_surface_object_A, hex_surface_object_class *hex_surface_object_B) {
         bool x_intersection = false, y_intersection = false, z_intersection = false;
 
         float a_xmin = hex_surface_object_A->hex_surface_object_data.grid_origin.x;
@@ -89,8 +89,8 @@ public:
     }
 
 
-   bool align_voxel_matricies(hex_surface_object_class* hex_surface_object_A, hex_surface_object_class* hex_surface_object_B, bool update_hcp_object_A_vertices = true) {
-//printf("hcp_interaction_node_class:align_voxel_matricies 0000 %\n");
+   bool align_hex_surface_matricies(hex_surface_object_class* hex_surface_object_A, hex_surface_object_class* hex_surface_object_B, bool update_hcp_object_A_vertices = true) {
+//printf("hcp_interaction_node_class:align_hex_surface_matricies 0000 %\n");
         if (hex_surface_object_A->hex_surface_object_data.hex_size != hex_surface_object_B->hex_surface_object_data.hex_size) return false;
 
         float hex_size = hex_surface_object_A->hex_surface_object_data.hex_size;
@@ -107,15 +107,15 @@ public:
 
         hex_surface_object_A->hex_surface_object_data.grid_origin += translation * hex_size;
 
-        if (update_hcp_object_A_vertices) update_voxel_verticies(hex_surface_object_A);
+        if (update_hcp_object_A_vertices) update_hex_surface_verticies(hex_surface_object_A);
 
         return true;
     }
 
-        // !!!!!!!! FOLLOWING UPDATE CODE NEEDS TO BE PUT INTO A GENERAL UPDATE VOXEL VERTICES FUNCTION !!!!!!!!!!!!!!
-    void update_voxel_verticies(hex_surface_object_class *hex_surface_object) {
-//printf("hcp_voxel_interactions_class:update_voxel_verticies 0000\n");        
-         hex_surface_object->define_geometry_data();// need to define values for min/max voxel value range or have incorrect to misleading display
+        // !!!!!!!! FOLLOWING UPDATE CODE NEEDS TO BE PUT INTO A GENERAL UPDATE hex_surface VERTICES FUNCTION !!!!!!!!!!!!!!
+    void update_hex_surface_verticies(hex_surface_object_class *hex_surface_object) {
+//printf("hcp_hex_surface_interactions_class:update_hex_surface_verticies 0000\n");        
+         hex_surface_object->define_geometry_data();// need to define values for min/max hex_surface value range or have incorrect to misleading display
     }
 
     hex_surface_object_class *create_interaction_object(hex_surface_object_class* hex_surface_object_A, hex_surface_object_class* hex_surface_object_B) {
@@ -124,7 +124,7 @@ public:
         if (scene_manager == NULL) return NULL;
 
 //printf("hcp_interaction_node_class:create_interaction_object 0000 %\n");
-        if (!align_voxel_matricies(hex_surface_object_A, hex_surface_object_B), false) return NULL;
+        if (!align_hex_surface_matricies(hex_surface_object_A, hex_surface_object_B), false) return NULL;
 //printf("hcp_interaction_node_class:create_interaction_object 11111  %\n");
         if (!define_intersection_boundary(hex_surface_object_A, hex_surface_object_B, boundary_min, boundary_max)) return NULL;
 //printf("hcp_interaction_node_class:create_interaction_object 2222 min : %f : %f \n", boundary_min.x, boundary_min.y);
@@ -167,20 +167,20 @@ public:
             }
 
             if (!interaction_object->geometry->shader->shader_compile_successful) {
-//std::cout << "hcp_interaction_hex_surface_interactions_classnode_class::create_interaction_object: hcp_voxel Shaders not loaded !!!!! : " << std::endl;
+//std::cout << "hcp_interaction_hex_surface_interactions_classnode_class::create_interaction_object: hcp_hex_surface Shaders not loaded !!!!! : " << std::endl;
 //std::string s = "jjjj\n";
 //cout << s << std::endl;
 //std::cout << interaction_object->geometry->shader->compile_log << std::endl;
-//std::cout << "hex_surface_interactions_class::create_interaction_object: hcp_voxel Shaders not loaded !!!!! END : " << std::endl;
+//std::cout << "hex_surface_interactions_class::create_interaction_object: hcp_hex_surface Shaders not loaded !!!!! END : " << std::endl;
             }
             else {
 //cout << " Shaders loaded ^^^^^ : " << shader.getProgram() << " : " << std::endl;
-                std::cout << "hex_surface_interactions_class::create_interaction_object: hcp_voxel Shaders loaded ^^^^^ : " << std::endl;
+                std::cout << "hex_surface_interactions_class::create_interaction_object: hcp_hex_surface Shaders loaded ^^^^^ : " << std::endl;
 //cout << entity_object03->geometry->shader->compile_log << std::endl;
             }
         }
         else
-//std::cout << "hex_surface_interactions_class::create_interaction_object: hcp_voxel Shader not created : " << std::endl;
+//std::cout << "hex_surface_interactions_class::create_interaction_object: hcp_hex_surface Shader not created : " << std::endl;
          //+++++++++++++++++
  
          if (interaction_object == NULL) return NULL;
@@ -213,7 +213,7 @@ public:
                                                                                interaction_object->hex_surface_object_data.grid_dimension.y);
 
 //printf("hcp_interaction_node_class:create_interaction_object 8888 size : %i \n", interaction_object->hex_surface_object_data.hex_surface_matrix_data.size());
-        // ########### END CREATE EMPTY VOXEL CLOUD MATRIX #################
+        // ########### END CREATE EMPTY hex_surface CLOUD MATRIX #################
 
         return interaction_object;
     }
@@ -226,14 +226,14 @@ public:
         float xs, ys;// , xe, ye, ze;
         float hex_size = interaction_object->hex_surface_object_data.hex_size;
 
-        //start indexes for voxel matrix A
+        //start indexes for hex_surface matrix A
         xs = ((interaction_object->hex_surface_object_data.grid_origin.x - hex_surface_object_A->hex_surface_object_data.grid_origin.x) / hex_size) + 0.5f;
         ys = ((interaction_object->hex_surface_object_data.grid_origin.y - hex_surface_object_A->hex_surface_object_data.grid_origin.y) / hex_size) + 0.5f;
 
         if (xs <= 1.0f) a_start.x = 0; else a_start.x = int(floor(xs)*hex_size);
         if (ys <= 1.0f) a_start.y = 0; else a_start.y = int(floor(ys)*hex_size);
 
-        //start indexes for voxel matrix B
+        //start indexes for hex_surface matrix B
         xs = ((interaction_object->hex_surface_object_data.grid_origin.x - hex_surface_object_B->hex_surface_object_data.grid_origin.x) / hex_size) + 0.5f;
         ys = ((interaction_object->hex_surface_object_data.grid_origin.y - hex_surface_object_B->hex_surface_object_data.grid_origin.y) / hex_size) + 0.5f;
 
@@ -259,7 +259,7 @@ public:
         i_endf.y = (i_origin.y + interaction_object->hex_surface_object_data.matrix_dimension.y * hex_size);
         i_endf.z = (i_origin.z + interaction_object->hex_surface_object_data.matrix_dimension.z * hex_size);
 
-        // End indexes for voxel matrix A
+        // End indexes for hex_surface matrix A
         xe = ((i_endf.x - a_endf.x) / hex_size) + 0.5;
         ye = ((i_endf.y - a_endf.y) / hex_size) + 0.5;
         ze = ((i_endf.z - a_endf.z) / hex_size) + 0.5;
@@ -268,7 +268,7 @@ public:
         if (ye <= 0.0) a_end.y = a_start.y + (int)(floor(ye)); else a_end.y = hex_surface_object_A->hex_surface_object_data.matrix_dimension.y;
         if (ze <= 0.0) a_end.z = a_start.z + (int)(floor(ze)); else a_end.z = hex_surface_object_A->hex_surface_object_data.matrix_dimension.z;
 
-        // End indexes for voxel matrix B
+        // End indexes for hex_surface matrix B
         xe = ((i_endf.x - b_endf.x) / hex_size) + 0.5;
         ye = ((i_endf.y - b_endf.y) / hex_size) + 0.5;
         ze = ((i_endf.z - b_endf.z) / hex_size) + 0.5;

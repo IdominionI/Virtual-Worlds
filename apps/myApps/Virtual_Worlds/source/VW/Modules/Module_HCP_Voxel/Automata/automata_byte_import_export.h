@@ -39,6 +39,8 @@ class import_export_byte_automata_rules_class {
 public:
 	std::fstream stream;
 
+	int error_code = 0;
+
 	std::vector <voxel_hcp_automata_byte_rule_struct_type>  byte_automata_rules;
 
 	int open_file_stream(std::string filename, int write_mode);

@@ -96,7 +96,7 @@ public:
 
         // specific Node data here
         export_hcp_voxel_node_parameter_data(stream);
-        export_hcp_voxel_node_shader_data(stream);
+       // export_hcp_voxel_node_shader_data(stream);
 
         export_node_pin_data(stream);// mandatory node export function that must be present in all graph node exports if have pins
     }
@@ -107,17 +107,18 @@ public:
         voxel_function_import_export.write_voxel_generation_function_paramater_data(stream);
     }
 
-    void export_hcp_voxel_node_shader_data(std::fstream &stream) {
-        //voxel_texture_import_export_class voxel_texture_import_export;
-        //voxel_texture_import_export.shader_parameters = hcp_voxel->voxel_object_data.shader_parameters;
-        //voxel_texture_import_export.write_shader_parameter_data(stream);
-    }
+    //void export_hcp_voxel_node_shader_data(std::fstream &stream) {
+    //    //voxel_texture_import_export_class voxel_texture_import_export;
+    //    //voxel_texture_import_export.shader_parameters = hcp_voxel->voxel_object_data.shader_parameters;
+    //    //voxel_texture_import_export.write_shader_parameter_data(stream);
+    //}
 
     bool import_node(std::vector<std::string> lines, int& line_number) {
         // Imports must be in the following order
-        if (!import_hcp_voxel_node_parameter_data(lines, line_number)) return false;
+        return import_hcp_voxel_node_parameter_data(lines, line_number);
+        //if (!import_hcp_voxel_node_parameter_data(lines, line_number)) return false;
         
-        return import_hcp_voxel_node_shader_data(lines, line_number);
+        //return import_hcp_voxel_node_shader_data(lines, line_number);
     }
 
     bool import_hcp_voxel_node_parameter_data(std::vector<std::string> lines, int& line_number) {
@@ -129,19 +130,18 @@ public:
     }
 
 
-    bool import_hcp_voxel_node_shader_data(std::vector<std::string> lines, int& line_number) {
-        //if (!hcp_voxel) return false;
-
-        //voxel_texture_import_export_class voxel_texture_import_export;
-//std::cout << "hcp_voxel_node_class: import_hcp_voxel_node_shader_data 0000 : " << line_number << ":" << lines[line_number] << std::endl;
-        //line_number++;
-       // return voxel_texture_import_export.read_shader_parameter_data(lines, &hcp_voxel->voxel_object_data.shader_parameters,line_number);
-        return false;
-    }
+//    bool import_hcp_voxel_node_shader_data(std::vector<std::string> lines, int& line_number) {
+//        //if (!hcp_voxel) return false;
+//
+//        //voxel_texture_import_export_class voxel_texture_import_export;
+////std::cout << "hcp_voxel_node_class: import_hcp_voxel_node_shader_data 0000 : " << line_number << ":" << lines[line_number] << std::endl;
+//        //line_number++;
+//       // return voxel_texture_import_export.read_shader_parameter_data(lines, &hcp_voxel->voxel_object_data.shader_parameters,line_number);
+//        return false;
+//    }
 
 private:
     void display_voxel_editor_widget(voxel_hcp_object_class *voxel_hcp_object_to_execute);
 
-    //hcp_voxel_generation_editor_widget_class voxel_generation_editor_widget;
     voxel_hcp_parameters_editor_widget_class voxel_generation_editor_widget;
 };

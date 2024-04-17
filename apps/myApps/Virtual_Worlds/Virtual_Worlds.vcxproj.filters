@@ -80,6 +80,12 @@
     <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\imgui_draw.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\maybe_disabled.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\Interface\imgui_gradient\src\RelativePosition.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_editor_node.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_parameters_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_generation_editor_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_editing_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_generator_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_surface_editor_import_export.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -141,7 +147,6 @@
     <ClInclude Include="source\FrameWork\Universal_FW\Kernal\FWstring_tools.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Kernal\id_key_manager.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generation_widget.h" />
-    <ClInclude Include="source\VW\Editor\Tools\dialogs.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Compute\compute_shader.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Compute\import_compute_expression_code.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generator_widget.h" />
@@ -202,7 +207,6 @@
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Animation\cart_to_hcp_voxel_animation.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Compute\hex_surface_compute_generation.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_data_storage.h" />
-    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_import_export.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_object.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_parameters.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Kernal\hex_surface_function_import_export.h" />
@@ -279,5 +283,14 @@
     <ClInclude Include="source\FrameWork\Kernels\ImGuiEx\ImGui_vec_operators.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_brush.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_analysis_shader.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_editor_node.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_parameters_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_generation_editor_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_editing_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_generator_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_analysis_shader.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_brush.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_surface_editor_import_export_.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Tools\dialogs.h" />
   </ItemGroup>
 </Project>

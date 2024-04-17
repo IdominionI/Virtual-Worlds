@@ -126,28 +126,27 @@ private:
         }
     }
 public:
-    //bool create_group_node(ImVec2 click_pos);
     node_group_class *create_group_node(ImVec2 click_pos, bool create_import_group_node = false);
 
     void delete_group_node(node_basis_class *selected_node) {
-    //void delete_group_node(node_group_class *selected_node) {
-//std::cout << "scene_node_editor_class : delete_group_node 000: " << selected_node->node_id << std::endl;
+std::cout << "scene_node_editor_class : delete_group_node 000: " << selected_node->node_id << std::endl;
         for (int i = 0; i < child_groups.size();i++) {
-//std::cout << "scene_node_editor_class : delete_group_node 111: " << child_groups[i]->editor_id << std::endl;
+std::cout << "scene_node_editor_class : delete_group_node 111: " << child_groups[i]->editor_id << std::endl;
             if (child_groups[i]->editor_id == selected_node->node_id) {
-//std::cout << "scene_node_editor_class : delete_group_node 222 : " << selected_node->node_id << ":" << child_groups[i]->graph.nodes.nodes.size() <<  std::endl;
+std::cout << "scene_node_editor_class : delete_group_node 222 : " << selected_node->node_id << ":" << child_groups[i]->graph.nodes.nodes.size() <<  std::endl;
                 child_groups[i]->delete_child_group_nodes();
+std::cout << "scene_node_editor_class : delete_group_node 222AAA : " << selected_node->node_id << ":" << child_groups[i]->graph.nodes.nodes.size() <<  std::endl;
                 child_groups[i]->delete_group_links();
+std::cout << "scene_node_editor_class : delete_group_node 222BBB : " << selected_node->node_id << ":" << child_groups[i]->graph.nodes.nodes.size() <<  std::endl;
                 child_groups[i]->delete_group_node_graph();// !!!!!
 
-//std::cout << "scene_node_editor_class : delete_group_node 222AAA : " << selected_node->node_id << std::endl;
+std::cout << "scene_node_editor_class : delete_group_node 333 : " << selected_node->node_id << std::endl;
                 delete_group_links();// ++++++
-//std::cout << "scene_node_editor_class : delete_group_node 222BBBB : " << selected_node->node_id << std::endl;
+std::cout << "scene_node_editor_class : delete_group_node 444 : " << selected_node->node_id << std::endl;
                 graph.delete_node(selected_node->node_id);
                 delete_node_group_editor(child_groups[i]->editor_id);
                 child_groups.erase(child_groups.begin() + i);
-//std::cout << "scene_node_editor_class : delete_group_node 333 : " << selected_node->node_id << std::endl;
-                //master_graph.delete_node(selected_node->node_id);// !!!!!
+std::cout << "scene_node_editor_class : delete_group_node 555 : " << selected_node->node_id << std::endl;
                 display_graph_status(this);// testing only
                 return;
             }

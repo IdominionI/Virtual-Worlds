@@ -16,7 +16,7 @@ bool hcp_voxel_editor_node_class::define_node(ImVec2 click_pos, node_id_type ent
     // !!! OTHER NODE AND NODE EDITOR FUCTIONALITY 
 
     ui_node_type.category          = NODE_CATEGORY_ID_GENERATOR;
-    ui_node_type.node_type         = NODE_TYPE_ID_HCP_VOXEL;
+    ui_node_type.node_type         = NODE_TYPE_ID_HCP_VOXEL_EDITOR;
     ui_node_type.node_data_context = NODE_DATA_CONTEXT;
 
 //std::cout << "hcp_voxel_editor_node_class :: define_node 111  : " << std::endl;

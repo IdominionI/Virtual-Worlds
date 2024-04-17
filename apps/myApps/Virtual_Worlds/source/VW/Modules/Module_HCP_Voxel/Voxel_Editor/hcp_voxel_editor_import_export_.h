@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include <FrameWork/Universal_FW/Tools/dialogs.h>
+
 #include <VW/Editor/Import_Export/vw_import_export_parameters.h>
 #include <VW/Editor/Main_Window/Panels/log_panel.h>
 
@@ -73,10 +75,20 @@ public:
 		std::vector<std::string> lines = FW::stringtools::split(working_model_string, '\n');
 		int line_number = 0;
 
-		return read_voxel_volume_data(lines, voxel_object_data, line_number);
+		//return read_voxel_volume_data(lines, voxel_object_data, line_number);
+		if (!read_voxel_volume_data(lines, voxel_object_data, line_number)) {
+			std::string error_message = "ERROR :: Import voxel volume failed\n corrupted or out of sequence data at line\n";
+			error_message += std::to_string(line_number) + "\n with entry  \n" + lines[line_number] + "\n";
+            vwDialogs::display_error_message("Import voxel volume data", error_message);
+			return false;
+		}
+
+		return true;
 	}
 
 private:
+	int error_code = 0;
+
 	bool export_voxel_volume_data(voxel_object_data_class &voxel_object_data) {
 		stream << voxel_object_data.voxel_size << std::endl;
 		stream << voxel_object_data.matrix_origin.x << std::endl;
@@ -96,17 +108,29 @@ private:
 	bool read_header(std::vector<std::string>& lines, voxel_object_data_class& voxel_object_data, int& line_number){
 		if (lines.size() < 7) return false;
 
-		voxel_object_data.voxel_size          = stof(lines[line_number]);line_number++;
-		voxel_object_data.matrix_origin.x 	  = stof(lines[line_number]);line_number++;
-		voxel_object_data.matrix_origin.y 	  = stof(lines[line_number]);line_number++;
-		voxel_object_data.matrix_origin.z 	  = stof(lines[line_number]);line_number++;
-		voxel_object_data.matrix_dimension.x  = stoi(lines[line_number]);line_number++;
-		voxel_object_data.matrix_dimension.y  = stoi(lines[line_number]);line_number++;
-		voxel_object_data.matrix_dimension.z  = stoi(lines[line_number]);line_number++;
+		//voxel_object_data.voxel_size          = stof(lines[line_number]);line_number++;
+		//voxel_object_data.matrix_origin.x 	  = stof(lines[line_number]);line_number++;
+		//voxel_object_data.matrix_origin.y 	  = stof(lines[line_number]);line_number++;
+		//voxel_object_data.matrix_origin.z 	  = stof(lines[line_number]);line_number++;
+		//voxel_object_data.matrix_dimension.x  = stoi(lines[line_number]);line_number++;
+		//voxel_object_data.matrix_dimension.y  = stoi(lines[line_number]);line_number++;
+		//voxel_object_data.matrix_dimension.z  = stoi(lines[line_number]);line_number++;
+
+		if (!FW::stringtools::string_to_float(lines[line_number], &voxel_object_data.voxel_size, error_code)) return false;      line_number++;
+		if (!FW::stringtools::string_to_float(lines[line_number], &voxel_object_data.matrix_origin.x, error_code)) return false; line_number++;
+		if (!FW::stringtools::string_to_float(lines[line_number], &voxel_object_data.matrix_origin.y, error_code)) return false; line_number++;
+		if (!FW::stringtools::string_to_float(lines[line_number], &voxel_object_data.matrix_origin.z, error_code)) return false; line_number++;
+
+		if (!FW::stringtools::string_to_int(lines[line_number], &voxel_object_data.matrix_dimension.x, error_code)) return false; line_number++;
+		if (!FW::stringtools::string_to_int(lines[line_number], &voxel_object_data.matrix_dimension.y, error_code)) return false; line_number++;
+		if (!FW::stringtools::string_to_int(lines[line_number], &voxel_object_data.matrix_dimension.z, error_code)) return false; line_number++;
+
+
 
 		return true;
 	}
 
 	bool read_voxel_volume_data(std::vector<std::string>& lines, voxel_object_data_class& voxel_object_data, int& line_number);
 
+	//void vwDialogs::display_error_message::display_error_message(std::string dialog_header, std::string error_message, int error_code = 0);
 };

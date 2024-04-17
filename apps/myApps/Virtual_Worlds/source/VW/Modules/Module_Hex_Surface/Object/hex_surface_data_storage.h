@@ -244,6 +244,20 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 		return get_hex_surface_cartesian_coordinate(hex_surface_coord, hex_size);
 	}
 
+
+	glm::vec3 get_hex_surface_world_cartesian_coordinate(glm::ivec3 voxel_matrix_coord) {
+		glm::vec3  voxel_cart_coord = get_hex_surface_cartesian_coordinate(voxel_matrix_coord) + glm::vec3{ grid_origin,0.0f };
+
+		return voxel_cart_coord;
+	}
+
+	glm::vec3 get_hex_surface_world_cartesian_coordinate(int index) {
+		glm::ivec3 voxel_matrix_coord = get_matrix_coordinate(index);
+		glm::vec3  voxel_cart_coord   = get_hex_surface_cartesian_coordinate(voxel_matrix_coord) +  glm::vec3{ grid_origin,0.0f };
+
+		return voxel_cart_coord;
+	}
+
 	hex_surface_index_data_type get_hex_surface_matrix_data_index(hex_index_vector matrix_coord) {// y in matrix_coord must be the corrected_y as defined in get_hex_surface_matrix_bit_location
 		return get_index_value(matrix_coord.x,matrix_coord.y, 0);
 	}
@@ -300,7 +314,8 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 	}
 
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	bool create_hex_grid() {
+	//bool create_hex_grid() {
+	bool create_hex_grid(hex_surface_data_type value = DEFAULT_INACTIVE_VALUE) { // !!!!!!!!!!!!!
 		hex_surface_matrix_data.clear();
 		hex_surface_matrix_data.shrink_to_fit();
 
@@ -332,7 +347,8 @@ QMessageBox::information(0, "get_matrix_coordinate", "get_matrix_coordinate 00: 
 
 		grid_dimension = { data_set_x_size,data_set_y_size,0};
 		grid_origin = origin;
-		create_empty_surface_cubic(data_set_x_size, data_set_y_size);
+		//create_empty_surface_cubic(data_set_x_size, data_set_y_size);
+		create_hex_surface_grid(value,data_set_x_size, data_set_y_size);// !!!!!!!!!!!!!
 //QMessageBox::information(0, "Function Expression Success", "create_voxel_matrix 01: "+QString::number(cloud->voxel_object_data.voxel_matrix_data.size())+":", QMessageBox::Ok);
 
 		if (hex_surface_matrix_data.size() > 0)

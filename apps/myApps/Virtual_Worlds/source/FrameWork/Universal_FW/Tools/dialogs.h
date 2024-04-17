@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "../tinyFileDialog/tinyfiledialogs.h"
 
 #include "../Kernal/FWstring_tools.h"
@@ -52,6 +54,17 @@ namespace vwDialogs {
         return tinyfd_messageBox(title, message, dialog_type, icon_type,default_button);
     }
 
+    inline void display_error_message(std::string dialog_header, std::string error_message, int error_code=0) {
+	    switch (error_code) {
+		    case FW_INVALID_ARGUMENT: error_message += "Invalid argument\n"; break;
+		    case FW_OUT_OF_RANGE    : error_message += "Out of range\n"; break;
+		    case FW_EXCEPTION       : error_message += "Exceltion\n"; break;
+	    }
+
+	    std::cout << dialog_header << std::endl;
+	    std::cout << error_message;
+	    vwDialogs::message_box(dialog_header.c_str(), error_message.c_str());// THis compiles fine in a cpp file but causes compile errors in a .h file : Absurb
+    }
 
     // Function to seperate a filename from the given file pathname as a standard C++ string
 

@@ -432,6 +432,7 @@ void  hcp_voxel_translation_node_class::export_hcp_translation_node_parameter_da
 bool hcp_voxel_translation_node_class::import_node(std::vector<std::string> lines, int& line_number) {
     std::string line;
     line_number++;
+    int error_code = 0;
 
 	line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 //std::cout << "hcp_voxel_translation_node_class::import_node AAAAAAA : " << line_number << ":" << lines[line_number] << std::endl;
@@ -442,25 +443,45 @@ bool hcp_voxel_translation_node_class::import_node(std::vector<std::string> line
 	}
 
 //std::cout << "import_export_byte_automata_rules_class::read_automata_byte_rule CCCCCC : " << line_number << ":" << lines[line_number] << std::endl;
-    line_number++; line = lines[line_number];location.x = stof(line);
-    line_number++; line = lines[line_number];location.y = stof(line);
-    line_number++; line = lines[line_number];location.z = stof(line);
+    //line_number++; line = lines[line_number];location.x = stof(line);
+    //line_number++; line = lines[line_number];location.y = stof(line);
+    //line_number++; line = lines[line_number];location.z = stof(line);
+    //    
+    //line_number++; line = lines[line_number];step.x = stof(line);
+    //line_number++; line = lines[line_number];step.y = stof(line);
+    //line_number++; line = lines[line_number];step.z = stof(line);
+
+    //line_number++; line = lines[line_number];translation.x = stof(line);
+    //line_number++; line = lines[line_number];translation.y = stof(line);
+    //line_number++; line = lines[line_number];translation.z = stof(line);
+
+    //line_number++; line = lines[line_number];translation_step.x = stof(line);
+    //line_number++; line = lines[line_number];translation_step.y = stof(line);
+    //line_number++; line = lines[line_number];translation_step.z = stof(line);
+
+    //line_number++; line = lines[line_number];active.x = stof(line);
+    //line_number++; line = lines[line_number];active.y = stof(line);
+    //line_number++; line = lines[line_number];active.z = stof(line);
+
+    line_number++; line = lines[line_number]; if (!FW::stringtools::string_to_float(line, &location.x, error_code)) return false;
+    line_number++; line = lines[line_number]; if (!FW::stringtools::string_to_float(line, &location.y, error_code)) return false;
+    line_number++; line = lines[line_number]; if (!FW::stringtools::string_to_float(line, &location.z, error_code)) return false;
         
-    line_number++; line = lines[line_number];step.x = stof(line);
-    line_number++; line = lines[line_number];step.y = stof(line);
-    line_number++; line = lines[line_number];step.z = stof(line);
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_float(line, &step.x, error_code)) return false;
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_float(line, &step.y, error_code)) return false;
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_float(line, &step.z, error_code)) return false;
 
-    line_number++; line = lines[line_number];translation.x = stof(line);
-    line_number++; line = lines[line_number];translation.y = stof(line);
-    line_number++; line = lines[line_number];translation.z = stof(line);
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_float(line, &translation.x, error_code)) return false;
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_float(line, &translation.y, error_code)) return false;
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_float(line, &translation.z, error_code)) return false;
 
-    line_number++; line = lines[line_number];translation_step.x = stof(line);
-    line_number++; line = lines[line_number];translation_step.y = stof(line);
-    line_number++; line = lines[line_number];translation_step.z = stof(line);
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_float(line, &translation_step.x, error_code)) return false;
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_float(line, &translation_step.y, error_code)) return false;
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_float(line, &translation_step.z, error_code)) return false;
 
-    line_number++; line = lines[line_number];active.x = stof(line);
-    line_number++; line = lines[line_number];active.y = stof(line);
-    line_number++; line = lines[line_number];active.z = stof(line);
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_bool(line, &active.x, error_code)) return false;
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_bool(line, &active.y, error_code)) return false;
+    line_number++; line = lines[line_number];if (!FW::stringtools::string_to_bool(line, &active.z, error_code)) return false;
 
 	// next line read must be a RULE_BLOCK_END flag
 	line_number++;

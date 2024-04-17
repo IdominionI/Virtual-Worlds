@@ -6,8 +6,10 @@
 #include <VW_FrameWork/App/global.h>
 
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
-#include <VW/Editor/Tools/dialogs.h>
+
 #include <VW/Editor/Main_Window/Panels/log_panel.h>
+
+#include <Universal_FW/Tools/dialogs.h>
 
 #include "../../Object/DataTypes/dt_voxel_generator.h"
 #include "../../Kernal/voxel_function_import_export.h"
@@ -49,28 +51,30 @@ std::cout << "hcp_voxel_editor_editing_widget_class : !hcp_analysis_shader\n";
 			if (test_brush.hcp_voxel_3d_brush.brush_voxel_value > 255) test_brush.hcp_voxel_3d_brush.brush_voxel_value = 255;
 			if (test_brush.hcp_voxel_3d_brush.brush_voxel_value < 0)   test_brush.hcp_voxel_3d_brush.brush_voxel_value = 0;
 		}
+	
 		y_pos += 30;
-
-		text("Brush Radius", x_pos + 90, y_pos);
+		text("Brush Radius", x_pos + 155, y_pos);
+		y_pos += 20;
+		text("X             Y              Z", x_pos + 90, y_pos);
 
 		y_pos += 30;
 		ImGui::SetCursorPosX(50);
 		ImGui::SetNextItemWidth(100);
-		//bool ImGui::DragFloat(const char* label, float* v, float v_speed, float v_min, float v_max, const char* format, ImGuiSliderFlags flags)
+		
 		if (ImGui::DragFloat("###vebx", &test_brush.hcp_voxel_3d_brush.radius_3d.x, 0.1f, 0.1f,1000.0f , "%.1f", ImGuiSliderFlags_None)) {
-			//test_brush->update_shader_brush_data();
+			//test_brush->update_shader_brush_data(); // testing only : no longer needed
 		}
 
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(100);
 		if (ImGui::DragFloat("###vebmy", &test_brush.hcp_voxel_3d_brush.radius_3d.y, 0.1f, 0.1f,1000.0f , "%.1f", ImGuiSliderFlags_None)) {
-			//test_brush->update_shader_brush_data();
+			//test_brush->update_shader_brush_data(); // testing only : no longer needed
 		}
 
 		ImGui::SameLine();
 		ImGui::SetNextItemWidth(100);
 		if (ImGui::DragFloat("###vebmz", &test_brush.hcp_voxel_3d_brush.radius_3d.z, 0.1f, 0.1f,1000.0f , "%.1f", ImGuiSliderFlags_None)) {
-			//test_brush->update_shader_brush_data();
+			//test_brush->update_shader_brush_data(); // testing only : no longer needed
 		}
 
 		if (s_index > -1) {

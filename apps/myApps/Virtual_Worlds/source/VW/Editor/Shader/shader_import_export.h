@@ -6,6 +6,8 @@
 
 #include <FrameWork/Universal_FW/Kernal/FWstring_tools.h>
 #include <FrameWork/Universal_FW/Kernal/FWfile_tools.h>
+#include <FrameWork/Universal_FW/Tools/dialogs.h>
+#include <FrameWork/Universal_FW/tinyFileDialog/tinyfiledialogs.h>
 
 #include <VW_framework/Shader/shader_components.h>
 
@@ -74,7 +76,10 @@ public:
 			return false;
 		}
 
-		if (!open_file_stream(file_pathname, OVER_WRITE_SHADER_FILE  )) return false;
+		if (!open_file_stream(file_pathname, OVER_WRITE_SHADER_FILE)) {
+			vwDialogs::display_error_message("Save shader parameter data", "ERROR : Could not open file stream to export shader parameter data\n");	
+			return false;
+		}
 
 		write_shader_parameter_data(stream);
 
@@ -138,6 +143,7 @@ public:
 	bool import_voxel_genereated_function(material_struct_type *texture_parameters, std::string file_pathname) {
 		if (file_pathname.size() == 0) {
 			//QMessageBox::information(NULL, "", "No file name defined to import data from \n Import Generated Function aborted", //QMessageBox::Ok);
+			vwDialogs::display_error_message("Import shader parameter data", "ERROR : No file defined to import shader parameter data from\n");
 			return false;
 		}
 
@@ -146,6 +152,7 @@ public:
 		if (!working_model_file) {
 			//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Could not find read Import voxel generation model defined in file \n" +
 			//																 file_pathname, //QMessageBox::Ok);
+			vwDialogs::display_error_message("Import shader parameter data", "ERROR :  Could not open file\n" + file_pathname +"\n to import shader data \n");
 			return false;
 		}
 
@@ -154,19 +161,27 @@ public:
 
 		std::vector<std::string> lines = FW::stringtools::split(working_model_string, '\n');
 		int line_number = 0;
-		return read_shader_parameter_data(lines, texture_parameters, line_number);
+		//return read_shader_parameter_data(lines, texture_parameters, line_number);
+		if (!read_shader_parameter_data(lines, texture_parameters, line_number)) {
+			std::string error_message = "ERROR :: Have corrupted or out of sequence entry at line " + std::to_string(line_number) + "\n with entry  \n" + lines[line_number] +"\n";
+			vwDialogs::display_error_message("Read shader parameter data :", error_message,error_code);
+			return false;
+		}else
+			return true;
 	}
 
 	bool read_shader_parameter_data(std::vector<std::string> lines, material_struct_type* texture_parameters, int& line_number) {
 		std::string line;
 
 		if (!FW::stringtools::contains(lines[line_number], SHADER_BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
-			std::cout << "Import voxel  texture model ERROR : \n Could not find start block to import user shader files at line : " << line_number << " : " << lines[line_number] << std::endl;
+			std::string error_message = "ERROR :: Could not find start block to import user shader files at line : " + std::to_string(line_number) + " with text" + lines[line_number] + "\n";
+			vwDialogs::display_error_message("Read shader parameter data", error_message);
 			return false;
 		}
 
 		if (lines.size() < line_number + 5) {
 			std::cout << "Import voxel  texture model ERROR : \n Corrupted file.";
+			vwDialogs::display_error_message("Read shader parameter data",  "ERROR :: Suspected Corrupted file");
 			return false;
 		}
 
@@ -184,7 +199,8 @@ public:
         line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 std::cout << "voxel_texture_import_export_class: read_expression_into_shader_parameters 2222 : " << line_number << ":" << lines[line_number] << std::endl;
         if (!FW::stringtools::contains(lines[line_number], FLOAT_SHADER_BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
-            //error message
+			std::string error_message = "ERROR :: Could not find shader float variables start block to import user shader files at line : " + std::to_string(line_number) + " with text" + lines[line_number] + "\n";
+            vwDialogs::display_error_message("Read shader parameter data",error_message);
             return false;
         }
 
@@ -196,14 +212,22 @@ std::cout << "voxel_texture_import_export_class: read_expression_into_shader_par
 			}
 
 			shader_parameter_variable_struct_type variable;
-			variable.active_variable = stof(lines[line_number]); line_number++;
+			//variable.active_variable = stof(lines[line_number]); line_number++;
+			if (!FW::stringtools::string_to_bool(lines[line_number], &variable.active_variable, error_code)) return false;line_number++;
+
 			line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 			variable.variable_name = line; line_number++;
-			variable.value = stof(lines[line_number]); line_number++;
-			variable.variable_step = stof(lines[line_number]); line_number++;
-			variable.active_variable_step = stof(lines[line_number]); line_number++;
-			variable.slider_min = stof(lines[line_number]);   line_number++;
-			variable.slider_max = stof(lines[line_number]);   line_number++;
+			//variable.value = stof(lines[line_number]); line_number++;
+			//variable.variable_step = stof(lines[line_number]); line_number++;
+			//variable.active_variable_step = stof(lines[line_number]); line_number++;
+			//variable.slider_min = stof(lines[line_number]);   line_number++;
+			//variable.slider_max = stof(lines[line_number]);   line_number++;
+
+			if (!FW::stringtools::string_to_float(lines[line_number], &variable.value, error_code)) return false;line_number++;
+			if (!FW::stringtools::string_to_float(lines[line_number], &variable.variable_step, error_code)) return false;line_number++;
+			if (!FW::stringtools::string_to_bool(lines[line_number], &variable.active_variable_step, error_code)) return false;line_number++;
+			if (!FW::stringtools::string_to_float(lines[line_number], &variable.slider_min, error_code)) return false;line_number++;
+			if (!FW::stringtools::string_to_float(lines[line_number], &variable.slider_max, error_code)) return false;line_number++;
 
 			texture_parameters->variables.push_back(variable);
 		}
@@ -212,7 +236,8 @@ std::cout << "voxel_texture_import_export_class: read_expression_into_shader_par
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 std::cout << "voxel_texture_import_export_class: read_expression_into_shader_parameters 3333 : " << line_number << ":" << lines[line_number] << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], INT_SHADER_BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
-			//error message
+			std::string error_message = "ERROR :: Could not find shader integer variables start block to import user shader files at line : " + std::to_string(line_number) + " with text" + lines[line_number] + "\n";
+            vwDialogs::display_error_message("Read shader parameter data",error_message);
 			return false;
 		}
 
@@ -223,14 +248,22 @@ std::cout << "voxel_texture_import_export_class: read_expression_into_shader_par
 			}
 
 			shader_parameter_int_variable_struct_type variable;
-			variable.active_variable = stoi(lines[line_number]); line_number++;
+			//variable.active_variable = stoi(lines[line_number]); line_number++;
+			if (!FW::stringtools::string_to_bool(lines[line_number], &variable.active_variable, error_code)) return false;line_number++;
+			
 			line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 			variable.variable_name = line; line_number++;
-			variable.value = stoi(lines[line_number]); line_number++;
-			variable.variable_step = stoi(lines[line_number]); line_number++;
-			variable.active_variable_step = stoi(lines[line_number]); line_number++;
-			variable.slider_min = stoi(lines[line_number]); line_number++;
-			variable.slider_max = stoi(lines[line_number]); line_number++;
+			
+			//variable.value = stoi(lines[line_number]); line_number++;
+			//variable.variable_step = stoi(lines[line_number]); line_number++;
+			//variable.active_variable_step = stoi(lines[line_number]); line_number++;
+			//variable.slider_min = stoi(lines[line_number]); line_number++;
+			//variable.slider_max = stoi(lines[line_number]); line_number++;
+			if (!FW::stringtools::string_to_int(lines[line_number], &variable.value, error_code)) return false;line_number++;
+			if (!FW::stringtools::string_to_int(lines[line_number], &variable.variable_step, error_code)) return false;line_number++;
+			if (!FW::stringtools::string_to_bool(lines[line_number], &variable.active_variable_step, error_code)) return false;line_number++;
+			if (!FW::stringtools::string_to_int(lines[line_number], &variable.slider_min, error_code)) return false;line_number++;
+			if (!FW::stringtools::string_to_int(lines[line_number], &variable.slider_max, error_code)) return false;line_number++;
 
 			texture_parameters->int_variables.push_back(variable);
 		}
@@ -239,7 +272,8 @@ std::cout << "voxel_texture_import_export_class: read_expression_into_shader_par
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 std::cout << "voxel_texture_import_export_class: read_expression_into_shader_parameters 4444 : " << line_number << ":" << lines[line_number] << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], BOOL_SHADER_BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
-			//error message
+			std::string error_message = "ERROR :: Could not find shader boolean variables start block to import user shader files at line : " + std::to_string(line_number) + " with text" + lines[line_number] + "\n";
+            vwDialogs::display_error_message("Read shader parameter data",error_message);
 			return false;
 		}
 
@@ -250,10 +284,12 @@ std::cout << "voxel_texture_import_export_class: read_expression_into_shader_par
 			}
 
 			shader_parameter_bool_variable_struct_type variable;
-			variable.active_variable = stoi(lines[line_number]); line_number++;
+			//variable.active_variable = stoi(lines[line_number]); line_number++;
+			if (!FW::stringtools::string_to_bool(lines[line_number], &variable.active_variable, error_code)) return false;line_number++;
 			line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 			variable.variable_name = line; line_number++;
-			variable.value = stoi(lines[line_number]); line_number++;
+			//variable.value = stoi(lines[line_number]); line_number++;
+			if (!FW::stringtools::string_to_bool(lines[line_number], &variable.value, error_code)) return false;line_number++;
 
 			texture_parameters->bool_variables.push_back(variable);
 		}
@@ -262,13 +298,15 @@ std::cout << "voxel_texture_import_export_class: read_expression_into_shader_par
 		line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 std::cout << "voxel_texture_import_export_class: read_expression_into_shader_parameters 5555 : " << line_number << ":" << lines[line_number] << std::endl;
 		if (!FW::stringtools::contains(lines[line_number], SHADER_BLOCK_END)) {
-			//error message
+			std::string error_message = "ERROR :: Could not find shader data end block to import user shader files at line : " + std::to_string(line_number) + " with text" + lines[line_number] + "\n";
+			vwDialogs::display_error_message("Read shader parameter data",error_message);
 			return false;
 		}
 
 		return true;
 	}
 
-
+private:
+	int error_code = 0;
 
 };

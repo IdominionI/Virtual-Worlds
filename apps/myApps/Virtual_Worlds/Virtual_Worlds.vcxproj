@@ -178,6 +178,12 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_parameters_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_shaders_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_shader_variables_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_surface_editor_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_generator_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_editing_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_generation_editor_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_parameters_widget.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_editor_node.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_automata_node.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Modifiers\translation.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Operators\interaction_node.cpp" />
@@ -227,6 +233,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_interval.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_parameters.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline_tracks.h" />
+    <ClInclude Include="source\FrameWork\Universal_FW\Tools\dialogs.h" />
     <ClInclude Include="source\FrameWork\VW_framework\3D\Overlays\reference_grid.h" />
     <ClInclude Include="source\FrameWork\VW_framework\App\user_bindings.h" />
     <ClInclude Include="source\FrameWork\VW_framework\Object\vw_object_material.h" />
@@ -322,7 +329,6 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\VW\Editor\Main_Window\Widgets\scene_node_editor_widget.h" />
     <ClInclude Include="source\VW\Editor\Node_Editor\node_editor_import_export.h" />
     <ClInclude Include="source\VW\Editor\Shader\shader_import_export.h" />
-    <ClInclude Include="source\VW\Editor\Tools\dialogs.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Compute\voxel_compute_generation.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\cart_to_voxel_generator_widget.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Editor\Widgets\hcp_voxel_generation_widget.h" />
@@ -371,6 +377,14 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_shader_variables_widget.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Functions\hex_surface_exports.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Functions\hex_surface_interactions.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_surface_editor_import_export_.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_brush.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_analysis_shader.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_generator_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_editing_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_generation_editor_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_parameters_widget.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_editor_node.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\hex_surface_automata_node.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Modifiers\Animation\hex_surface_translation_animation.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Node_editor\Modifiers\translation_node.h" />
@@ -380,7 +394,6 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\DataTypes\dt_hex_surface_generator.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\DataTypes\dt_hex_surface_shader_parameters.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_data_storage.h" />
-    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_import_export.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_object.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Object\hex_surface_parameters.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Kernal\hex_surface_function_import_export.h" />

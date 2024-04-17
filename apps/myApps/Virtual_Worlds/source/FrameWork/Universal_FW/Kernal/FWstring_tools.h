@@ -10,6 +10,12 @@
 #include <sstream>
 #include <unordered_map>
 
+
+#define FW_NO_ERROR          0
+#define FW_INVALID_ARGUMENT -1
+#define FW_OUT_OF_RANGE     -2
+#define FW_EXCEPTION        -3
+
 namespace FW {
     namespace stringtools {
         /**
@@ -737,6 +743,224 @@ namespace FW {
             return str.substr(0, index);
         }
 
+        // If C++ stoi,stof,stod etc are not able to convert a string to their respective datatypes, then the application will crash.
+        // So need to perform some error checking and wrap these string conversions in a function to handle any exception or other
+        // error throws to avoid potential application crashes.
+        // Why on earth does C++ not have functions to perform this have a safe usage of these funcions.
+
+        inline bool string_to_bool(const std::string& str, bool* p_value,int &error_code, std::size_t* pos = 0, int base = 10) {
+            // wrapping std::stoi because it may throw an exception
+
+            try {
+                int b_value = std::stoi(str, pos, base);
+
+                if(b_value == 0)
+                    *p_value = false;
+                else
+                    *p_value = true;
+
+                error_code = FW_NO_ERROR;
+                return true;
+            }
+
+            catch (const std::invalid_argument& ia) {
+                //std::cerr << "Invalid argument: " << ia.what() << std::endl;
+                error_code = FW_INVALID_ARGUMENT;
+                return false;
+            }
+
+            catch (const std::out_of_range& oor) {
+                //std::cerr << "Out of Range error_code: " << oor.what() << std::endl;
+                error_code = FW_OUT_OF_RANGE;
+                return false;
+            }
+
+            catch (const std::exception& e)
+            {
+                //std::cerr << "Undefined error_code: " << e.what() << std::endl;
+                error_code = FW_EXCEPTION;
+                return false;
+            }
+        }
+
+
+        inline bool string_to_int(const std::string& str, int* p_value,int &error_code, std::size_t* pos = 0, int base = 10) {
+            // wrapping std::stoi because it may throw an exception
+
+            try {
+                *p_value = std::stoi(str, pos, base);
+                error_code = FW_NO_ERROR;
+                return true;
+            }
+
+            catch (const std::invalid_argument& ia) {
+                //std::cerr << "Invalid argument: " << ia.what() << std::endl;
+                error_code = FW_INVALID_ARGUMENT;
+                return false;
+            }
+
+            catch (const std::out_of_range& oor) {
+                //std::cerr << "Out of Range error_code: " << oor.what() << std::endl;
+                error_code = FW_OUT_OF_RANGE;
+                return false;
+            }
+
+            catch (const std::exception& e)
+            {
+                //std::cerr << "Undefined error_code: " << e.what() << std::endl;
+                error_code = FW_EXCEPTION;
+                return false;
+            }
+        }
+
+        inline bool string_to_float(const std::string& str, float *p_value,int &error_code, std::size_t* pos = 0) {
+            // wrapping std::stof because it may throw an exception
+
+            try {
+                *p_value = std::stof(str, pos);
+                error_code = FW_NO_ERROR;
+                return 1;
+            }
+
+            catch (const std::invalid_argument& ia) {
+                //std::cerr << "Invalid argument: " << ia.what() << std::endl;
+                error_code = FW_INVALID_ARGUMENT;
+                return false;
+            }
+
+            catch (const std::out_of_range& oor) {
+                //std::cerr << "Out of Range error_code: " << oor.what() << std::endl;
+                error_code = FW_OUT_OF_RANGE;
+                return false;
+            }
+
+            catch (const std::exception& e)
+            {
+                //std::cerr << "Undefined error_code: " << e.what() << std::endl;
+                error_code = FW_EXCEPTION;
+                return false;
+            }
+        }
+
+        // Those below are yet to be tested
+
+        inline bool string_to_long(const std::string& str, long* p_value,int &error_code, std::size_t* pos = 0, int base = 10) {
+            // wrapping std::stof because it may throw an exception
+
+            try {
+                *p_value = std::stol(str, pos);
+                error_code = FW_NO_ERROR;
+                return 1;
+            }
+
+            catch (const std::invalid_argument& ia) {
+                //std::cerr << "Invalid argument: " << ia.what() << std::endl;
+                error_code = FW_INVALID_ARGUMENT;
+                return false;
+            }
+
+            catch (const std::out_of_range& oor) {
+                //std::cerr << "Out of Range error_code: " << oor.what() << std::endl;
+                error_code = FW_OUT_OF_RANGE;
+                return false;
+            }
+
+            catch (const std::exception& e)
+            {
+                //std::cerr << "Undefined error_code: " << e.what() << std::endl;
+                error_code = FW_EXCEPTION;
+                return false;
+            }
+        }
+
+        inline bool string_to_long_long(const std::string& str, long long* p_value,int &error_code, std::size_t* pos = 0, int base = 10) { 
+            // wrapping std::stof because it may throw an exception
+
+            try {
+                *p_value = std::stoll(str, pos);
+                error_code = FW_NO_ERROR;
+                return 1;
+            }
+
+            catch (const std::invalid_argument& ia) {
+                //std::cerr << "Invalid argument: " << ia.what() << std::endl;
+                error_code = FW_INVALID_ARGUMENT;
+                return false;
+            }
+
+            catch (const std::out_of_range& oor) {
+                //std::cerr << "Out of Range error_code: " << oor.what() << std::endl;
+                error_code = FW_OUT_OF_RANGE;
+                return false;
+            }
+
+            catch (const std::exception& e)
+            {
+                //std::cerr << "Undefined error_code: " << e.what() << std::endl;
+                error_code = FW_EXCEPTION;
+                return false;
+            }
+        }
+
+        inline bool string_to_double(const std::string& str, double *p_value,int &error_code, std::size_t* pos = 0) {
+            // wrapping std::stof because it may throw an exception
+
+            try {
+                *p_value = std::stod(str, pos);
+                error_code = FW_NO_ERROR;
+                return 1;
+            }
+
+            catch (const std::invalid_argument& ia) {
+                //std::cerr << "Invalid argument: " << ia.what() << std::endl;
+                error_code = FW_INVALID_ARGUMENT;
+                return false;
+            }
+
+            catch (const std::out_of_range& oor) {
+                //std::cerr << "Out of Range error_code: " << oor.what() << std::endl;
+                error_code = FW_OUT_OF_RANGE;
+                return false;
+            }
+
+            catch (const std::exception& e)
+            {
+                //std::cerr << "Undefined error_code: " << e.what() << std::endl;
+                error_code = FW_EXCEPTION;
+                return false;
+            }
+        }
+
+        inline bool string_to_long_double(const std::string& str, long double *p_value,int &error_code, std::size_t* pos = 0) {
+            // wrapping std::stof because it may throw an exception
+
+            try {
+                *p_value = std::stold(str, pos);
+                error_code = FW_NO_ERROR;
+                return 1;
+            }
+
+            catch (const std::invalid_argument& ia) {
+                //std::cerr << "Invalid argument: " << ia.what() << std::endl;
+                error_code = FW_INVALID_ARGUMENT;
+                return false;
+            }
+
+            catch (const std::out_of_range& oor) {
+                //std::cerr << "Out of Range error_code: " << oor.what() << std::endl;
+                error_code = FW_OUT_OF_RANGE;
+                return false;
+            }
+
+            catch (const std::exception& e)
+            {
+                //std::cerr << "Undefined error_code: " << e.what() << std::endl;
+                error_code = FW_EXCEPTION;
+                return false;
+            }
+        }
+
     } // end of namespace StringTools
+
 
 } // end of namespace FW

@@ -65,4 +65,6 @@ public:
 	//bool read_expression_into_hex_surface_generator_parameters(std::string working_model_string, hex_surface_generator_parameters_struct_type& generator_parameters);
 	bool read_expression_into_hex_surface_generator_parameters(std::vector<std::string> lines, hex_surface_generator_parameters_struct_type &generator_parameters, int &line_number);
 
+	
+	int error_code = 0;
 };

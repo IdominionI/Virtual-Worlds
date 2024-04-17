@@ -47,7 +47,7 @@ public:
     // ++++++++++++++++++++++
 
     void *get_node_data() {
-        //return get_voxel_hcp_object_to_execute();
+        //return get_hex_surface_hcp_object_to_execute();
         return interaction_object; // ++++++++++++++
     }
 
@@ -66,9 +66,9 @@ public:
     // +++++++++++++++++++
     void editor_menu_options();
 
-    // The display_ui here uses a different voxel_hcp_parameters_widget to the main 
+    // The display_ui here uses a different hex_surface_hcp_parameters_widget to the main 
     // and thus will have different parameter values stored. Need to cetralise to access
-    // this voxel_hcp_parameters_widget instance, or the central one only
+    // this hex_surface_hcp_parameters_widget instance, or the central one only
     bool define_ui();
     void display_ui(node_id_type current_selected_object_id = -1);
     void display_interaction_ui(id_type current_selected_object_id = -1);
@@ -77,7 +77,7 @@ public:
 
     //node_basis_class* find_node_to_modify(int input_pin_id);
     bool peform_interaction(hex_surface_object_class* hex_surface_object_A, hex_surface_object_class* hex_surface_object_B, int interaction_type);
-    void assign_voxel(int xi, int yi, hex_surface_data_type value);
+    void assign_hex_surface(int xi, int yi, hex_surface_data_type value);
 
     void export_node(std::fstream &stream) {
         // Exports must be in the following order
@@ -97,4 +97,6 @@ private:
     hex_surface_object_class *interaction_object = NULL;
 
     hex_surface_interactions_class hex_surface_interaction;
+  
+    int error_code = 0;
 };

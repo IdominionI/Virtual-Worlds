@@ -4,6 +4,7 @@
 
 #include <Universal_FW/Kernal/FWstring_tools.h>
 #include <Universal_FW/Kernal/FWfile_tools.h>
+#include <Universal_FW/Tools/dialogs.h> // Seems cannot have or use this in a .h file. Get already has a body compile errors
 
 #include <VW_FrameWork/Shader/shader_parameters.h>
 
@@ -28,7 +29,7 @@ bool hex_surface_function_import_export_class::save_hex_surface_generated_functi
 	////QMessageBox::information(NULL, "", "in save_working_generated_function", //QMessageBox::Ok);
 
 	if (file_pathname.size() == 0) {
-		//QMessageBox::information(NULL, "", "No file name defined to save data to \n Save Static Generated Function aborted", //QMessageBox::Ok);
+		vwDialogs::display_error_message("save hex surface function","ERROR :\nNo file name defined to save data to \n Save Static Generated Function aborted\n");
 		return false;
 	}
 
@@ -101,15 +102,16 @@ void hex_surface_function_import_export_class::write_hex_generation_function_par
 
 bool hex_surface_function_import_export_class::import_hex_surface_genereated_function(hex_surface_generator_parameters_struct_type& generator_parameters, std::string file_pathname) {
 	if (file_pathname.size() == 0) {
-		//QMessageBox::information(NULL, "", "No file name defined to import data from \n Import Generated Function aborted", //QMessageBox::Ok);
+		vwDialogs::display_error_message("Import hex surface generated function","ERROR :\nNo file name defined to import data from \n Import Generated Function aborted");
 		return false;
 	}
 
 	std::fstream working_model_file(file_pathname, std::ios::in);
 
 	if (!working_model_file) {
-		//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Could not find read Import voxel generation model defined in file \n" +
-		//																 file_pathname, //QMessageBox::Ok);
+		std::string error_message = "ERROR :\nCould not find read Import voxel generation model defined in file \n";
+		error_message += file_pathname + "\n";
+		vwDialogs::display_error_message("Import hex surface generated function",error_message);
 		return false;
 	}
 
@@ -117,9 +119,15 @@ bool hex_surface_function_import_export_class::import_hex_surface_genereated_fun
 
 	std::vector<std::string> lines = FW::stringtools::split(working_model_string, '\n');
 	int line_number = 0;
-	return read_expression_into_hex_surface_generator_parameters(lines, generator_parameters, line_number);
+	//return read_expression_into_hex_surface_generator_parameters(lines, generator_parameters, line_number);
+	if (!read_expression_into_hex_surface_generator_parameters(lines, generator_parameters, line_number)) {
+		std::string error_message = "ERROR :: \n Corrupted or out of sequence data at line\n";
+		error_message += std::to_string(line_number) + "\n with entry  \n" + lines[line_number] + "\n";
+        vwDialogs::display_error_message("Import hex surface generated function", error_message);
+		return false;
+	}
 
-	//return read_expression_into_hex_surface_generator_parameters(working_model_string, generator_parameters);
+	return true;
 }
 
 //bool hex_surface_function_import_export_class::read_expression_into_hex_surface_generator_parameters(std::string working_model_string, hex_surface_generator_parameters_struct_type& generator_parameters) {
@@ -148,110 +156,142 @@ bool hex_surface_function_import_export_class::read_expression_into_hex_surface_
 	line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 //std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 1111 : " << line_number << ":" << lines[line_number] << std::endl;
 	if (!FW::stringtools::contains(lines[line_number], BLOCK_START)) { // There msut allways be at least two nodes. The input and output link nodes
-		//error message
+		vwDialogs::display_error_message("Read hex generator parameters","ERROR :\nCould not find parameter data block start flag.\n");
 		return false;
 	}
-
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 1111AAA : " << line_number << ":" << lines[line_number] << std::endl;
 	line_number++;
 	line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 	generator_parameters.expression_file_pathname = line; line_number++;
-
+std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 1111BBB : " << line_number << ":" << lines[line_number] << std::endl;
 	line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
 	generator_parameters.expression_file_name = line; line_number++;
+	//generator_parameters.x_start = stof(lines[line_number]); line_number++;
+	//generator_parameters.x_end   = stof(lines[line_number]); line_number++;
+	//generator_parameters.y_start = stof(lines[line_number]); line_number++;
+	//generator_parameters.y_end   = stof(lines[line_number]); line_number++;
 
-	generator_parameters.x_start = stof(lines[line_number]); line_number++;
-	generator_parameters.x_end = stof(lines[line_number]); line_number++;
-	generator_parameters.y_start = stof(lines[line_number]); line_number++;
-	generator_parameters.y_end = stof(lines[line_number]); line_number++;
+	//generator_parameters.invocation = stoi(lines[line_number]); line_number++;
 
-	generator_parameters.invocation = stoi(lines[line_number]); line_number++;
+	//generator_parameters.resolution_step = stof(lines[line_number]); line_number++;
 
-	generator_parameters.resolution_step = stof(lines[line_number]); line_number++;
+	//generator_parameters.min_surface_value = stof(lines[line_number]); line_number++;
+	//generator_parameters.max_surface_value = stof(lines[line_number]); line_number++;
 
-	generator_parameters.min_surface_value = stof(lines[line_number]); line_number++;
-	generator_parameters.max_surface_value = stof(lines[line_number]); line_number++;
+	if(!FW::stringtools::string_to_float(lines[line_number], &generator_parameters.x_start, error_code)) return false; line_number++;
+	if(!FW::stringtools::string_to_float(lines[line_number],&generator_parameters.x_end,error_code))     return false; line_number++;
+	if(!FW::stringtools::string_to_float(lines[line_number],&generator_parameters.y_start,error_code))   return false; line_number++;
+	if(!FW::stringtools::string_to_float(lines[line_number],&generator_parameters.y_end,error_code))     return false; line_number++;
 
-	////QMessageBox::information(NULL, "Import voxel generation model", "Here 001: " + std::string::number(line_number), //QMessageBox::Ok);
+	if(!FW::stringtools::string_to_int(lines[line_number],&generator_parameters.invocation,error_code)) return false;	line_number++;
 
+	if(!FW::stringtools::string_to_float(lines[line_number],&generator_parameters.resolution_step,error_code)) return false; line_number++;
+	if(!FW::stringtools::string_to_float(lines[line_number],&generator_parameters.min_surface_value,error_code)) return false; line_number++;
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 1111CCC : " << line_number << ":" << lines[line_number] << std::endl;
+	if (!FW::stringtools::string_to_float(lines[line_number], &generator_parameters.max_surface_value, error_code)) return false; line_number++;
+
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 2222 : " << line_number << ":" << lines[line_number] << std::endl;
 	if (!FW::stringtools::contains(lines[line_number], FLOAT_BLOCK_START)) {
-		//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Could not find start of float variable data to import float variables", //QMessageBox::Ok);
+		vwDialogs::display_error_message("Read hex generator parameters","ERROR :\nCould not find parameter float variables data block start flag.\n");
 		return false;
 	}
-
+//std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters 3333 : " << line_number << ":" << lines[line_number] << std::endl;
 	line_number++;
 	while (!FW::stringtools::contains(lines[line_number], FLOAT_BLOCK_END)) {
 		if (line_number + 4 > lines.size()) {
 			//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Have function float variable data incorrectly defined.", //QMessageBox::Ok);
 			////QMessageBox::information(NULL, "Import voxel generation model", "Here 002 : " + std::string::number(line_number), //QMessageBox::Ok);
+			vwDialogs::display_error_message("Read hex generator parameters","ERROR :\nHave function float variable data incorrectly defined.\n");
 			return false;
 		}
 
 		hex_surface_generator_parameter_variable_struct_type variable;
-		variable.active_variable = stoi(lines[line_number]); line_number++;
+
+		//variable.active_variable = stoi(lines[line_number]); line_number++;
+		//line = lines[line_number];   line = FW::stringtools::truncate(line, line.size());
+		//variable.variable_name = line; line_number++;
+		//variable.value = stof(lines[line_number]); line_number++;
+		//variable.variable_step = stof(lines[line_number]); line_number++;
+		//variable.active_variable_step = stoi(lines[line_number]); line_number++;
+
+		if(!FW::stringtools::string_to_bool(lines[line_number],&variable.active_variable,error_code)) return false;	line_number++;
 		line = lines[line_number];   line = FW::stringtools::truncate(line, line.size());
 		variable.variable_name = line; line_number++;
-		variable.value = stof(lines[line_number]); line_number++;
-		variable.variable_step = stof(lines[line_number]); line_number++;
-		variable.active_variable_step = stoi(lines[line_number]); line_number++;
-		////QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
+		if(!FW::stringtools::string_to_float(lines[line_number],&variable.value,error_code)) return false;	line_number++;
+		if(!FW::stringtools::string_to_float(lines[line_number],&variable.variable_step,error_code)) return false;	line_number++;
+		if(!FW::stringtools::string_to_bool(lines[line_number],&variable.active_variable_step,error_code)) return false; line_number++;
+
 		generator_parameters.variables.push_back(variable);
-		////QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
 	}
 
 	line_number++;
 
 	if (!FW::stringtools::contains(lines[line_number], INT_BLOCK_START)) {
-		//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Could not find start of integer variable data to import integer variables", //QMessageBox::Ok);
+		vwDialogs::display_error_message("Read hex generator parameters","ERROR :\nCould not find parameter integer variables data block start flag.\n");
 		return false;
 	}
 
 	line_number++;
 	while (!FW::stringtools::contains(lines[line_number], INT_BLOCK_END)) {
 		if (line_number + 4 > lines.size()) {
-			//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Have function integer variable data incorrectly defined.", //QMessageBox::Ok);
 			////QMessageBox::information(NULL, "Import voxel generation model", "Here 002 : " + std::string::number(line_number), //QMessageBox::Ok);
+			vwDialogs::display_error_message("Read hex generator parameters","ERROR :\nHave function integer variable data incorrectly defined.\n");
 			return false;
 		}
 
 		hex_surface_generator_parameter_int_variable_struct_type int_variable;
-		int_variable.active_variable = stoi(lines[line_number]); line_number++;
-		line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
+
+		//int_variable.active_variable = stoi(lines[line_number]); line_number++;
+		//line = lines[line_number];  line = FW::stringtools::truncate(line, line.size());
+		//int_variable.variable_name = line; line_number++;
+		//int_variable.value = stoi(lines[line_number]); line_number++;
+		//int_variable.variable_step = stoi(lines[line_number]); line_number++;
+		//int_variable.active_variable_step = stoi(lines[line_number]); line_number++;
+
+		if(!FW::stringtools::string_to_bool(lines[line_number],&int_variable.active_variable,error_code)) return false;	line_number++;
+		line = lines[line_number];   line = FW::stringtools::truncate(line, line.size());
 		int_variable.variable_name = line; line_number++;
-		int_variable.value = stoi(lines[line_number]); line_number++;
-		int_variable.variable_step = stoi(lines[line_number]); line_number++;
-		int_variable.active_variable_step = stoi(lines[line_number]); line_number++;
-		////QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
+		if(!FW::stringtools::string_to_int(lines[line_number],&int_variable.value,error_code)) return false;	line_number++;
+		if(!FW::stringtools::string_to_int(lines[line_number],&int_variable.variable_step,error_code)) return false; line_number++;
+		if(!FW::stringtools::string_to_bool(lines[line_number],&int_variable.active_variable_step,error_code)) return false;line_number++;
+
 		generator_parameters.int_variables.push_back(int_variable);
-		////QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
+
 	}
 
 	line_number++;
 	if (!FW::stringtools::contains(lines[line_number], BOOL_BLOCK_START)) {
-		//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Could not find start of integer variable data to import integer variables", //QMessageBox::Ok);
+		vwDialogs::display_error_message("Read hex generator parameters","ERROR :\nCould not find parameter boolean variables data block start flag.\n");
 		return false;
 	}
 
 	line_number++;
 	while (!FW::stringtools::contains(lines[line_number], BOOL_BLOCK_END)) {
 		if (line_number + 2 > lines.size()) {
-			//QMessageBox::information(NULL, "Import voxel generation model", "Import voxel generation model ERROR : \n Have function integer variable data incorrectly defined.", //QMessageBox::Ok);
 			////QMessageBox::information(NULL, "Import voxel generation model", "Here 002 : " + std::string::number(line_number), //QMessageBox::Ok);
+			vwDialogs::display_error_message("Read hex generator parameters","ERROR :\nHave function boolean variable data incorrectly defined.\n");
 			return false;
 		}
 
 		hex_surface_generator_parameter_bool_variable_struct_type bool_variable;
-		bool_variable.active_variable = stoi(lines[line_number]); line_number++;
+
+		//bool_variable.active_variable = stoi(lines[line_number]); line_number++;
+		//line = lines[line_number];   line = FW::stringtools::truncate(line, line.size());
+		//bool_variable.variable_name = line; line_number++;
+		//bool_variable.value = stoi(lines[line_number]); line_number++;
+
+		if(!FW::stringtools::string_to_bool(lines[line_number],&bool_variable.active_variable,error_code)) return false;line_number++;
 		line = lines[line_number];   line = FW::stringtools::truncate(line, line.size());
 		bool_variable.variable_name = line; line_number++;
-		bool_variable.value = stoi(lines[line_number]); line_number++;
-		////QMessageBox::information(NULL, "Import voxel generation model", "Here 003 : " + std::string::number(line_number), //QMessageBox::Ok);
+		if(!FW::stringtools::string_to_bool(lines[line_number],&bool_variable.value,error_code)) return false;	line_number++;
+
 		generator_parameters.bool_variables.push_back(bool_variable);
-		////QMessageBox::information(NULL, "Import voxel generation model", "Here 004 : " + lines[line_number], //QMessageBox::Ok);
+
 	}
 
 //std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters AAAA : " << line_number << ":" << lines[line_number] << std::endl;
     if (!FW::stringtools::contains(lines[line_number], BOOL_BLOCK_END)) { // There msut allways be at least two nodes. The input and output link nodes
-        //error message
+       vwDialogs::display_error_message("Read hex generator parameters","ERROR :\nCould not find parameter boolean variables data block end flag.\n");
         return false;
     }
 
@@ -259,10 +299,9 @@ bool hex_surface_function_import_export_class::read_expression_into_hex_surface_
     line = lines[line_number]; line = FW::stringtools::truncate(line, line.size());
 //std::cout << "voxel_function_import_export_class: read_expression_into_voxel_generator_parameters BBBB : " << line_number << ":" << lines[line_number] << std::endl;
     if (!FW::stringtools::contains(lines[line_number], BLOCK_END)) { // There msut allways be at least two nodes. The input and output link nodes
-        //error message
+        vwDialogs::display_error_message("Read hex generator parameters","ERROR :\nCould not find parameter data block end flag.\n");
         return false;
     }
-
 
 	return true;
 }

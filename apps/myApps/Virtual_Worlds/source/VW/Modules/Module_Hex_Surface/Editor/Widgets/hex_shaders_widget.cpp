@@ -5,8 +5,10 @@
 #include <Universal_FW/Interface/IconsFontAwesome.h>
 
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
-#include <VW/Editor/Tools/dialogs.h>
+
 #include <VW/Editor/Main_Window/Panels/log_panel.h>
+
+#include <Universal_FW/Tools/dialogs.h>
 
 	void hex_surface_shaders_widget_class::display() {
 //printf("voxel_shaders_widget_class::display() 0000 :current_selected_enity_id < 0 %i\n", current_selected_enity_id);

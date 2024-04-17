@@ -6,21 +6,21 @@ bool hcp_voxel_editor_import_export_class::export_voxel_volume(std::string file_
 
 		if (file_pathname.size() == 0) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel volume :: Cannot export voxel volume : No file pathname defined\n");
-			vwDialogs::message_box("ERROR : Export voxel volume :: Cannot export voxel volume : No file pathname defined");
+			vwDialogs::display_error_message("Export voxel volume", "ERROR : Export voxel volume :: Cannot export voxel volume : No file pathname defined");
 			return false;
 		}
 
 
 		if (voxel_object_data.voxel_matrix_data.empty()) {
 			if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : Export voxel volume :: No entity data in scene to export\n");
-			vwDialogs::message_box("ERROR : Export voxel volume :: No entity data in scene to export");
+			vwDialogs::display_error_message("Export voxel volume", "ERROR : Export voxel volume :: No entity data in scene to export");
 			return false;
 		}
 
 		if (!open_file_stream(file_pathname)) {
 			vwDialogs::message_box("export_node", "export point cloud object ERROR:\n Failed to open file\n%s\nto write to", file_pathname.c_str());
 			std::string str = "export voxel volume ERROR:\n Failed to open file \n" + file_pathname + "\nto write to.";
-			vwDialogs::message_box("export_node", str.c_str());
+			vwDialogs::display_error_message("Export voxel volume", str.c_str());
 			return false;
 		}
 
@@ -32,7 +32,7 @@ bool hcp_voxel_editor_import_export_class::export_voxel_volume(std::string file_
 		close_file_stream();
 
 		std::string str = "Finished exporting voxel central point cloud data to file" + file_pathname;
-		vwDialogs::message_box("export_node", str.c_str());
+		vwDialogs::display_error_message("Export voxel volume", str.c_str());
 
 		return true;
 	}
@@ -69,7 +69,10 @@ bool hcp_voxel_editor_import_export_class::export_voxel_volume(std::string file_
 				cart_coord.z >= voxel_object_data.voxel_generator_parameters.z_start && cart_coord.z <= voxel_object_data.voxel_generator_parameters.z_end) 
 			{
 //std::cout << "hcp_voxel_editor_import_export_class : read_voxel_volume_data : " << i << " : " << index << " : " << number_lines<< " : " <<lines.size() << " : " << mindex << " : " << voxel_object_data.voxel_matrix_data.size() << std::endl;
-				if(mindex < matrix_size) voxel_object_data.voxel_matrix_data[mindex] = stoi(lines[i]);
+				//if(mindex < matrix_size) voxel_object_data.voxel_matrix_data[mindex] = stoi(lines[i]);
+				if (mindex < matrix_size) {
+					if (!FW::stringtools::string_to_int(lines[i], &voxel_object_data.voxel_matrix_data[mindex], error_code)) return false;
+				}
 				mindex++;
 			}
 //else{
@@ -81,3 +84,15 @@ bool hcp_voxel_editor_import_export_class::export_voxel_volume(std::string file_
 
 		return true;
 	}
+
+	//void hcp_voxel_editor_import_export_class::vwDialogs::display_error_message(std::string dialog_header, std::string error_message, int error_code) {
+	//	switch (error_code) {
+	//		case FW_INVALID_ARGUMENT: error_message += "Invalid argument\n"; break;
+	//		case FW_OUT_OF_RANGE: error_message += "Out of range\n"; break;
+	//		case FW_EXCEPTION: error_message += "Exceltion\n"; break;
+	//	}
+
+	//	std::cout << dialog_header << std::endl;
+	//	std::cout << error_message;
+	//	vwDialogs::message_box(dialog_header.c_str(), error_message.c_str());// THis compiles fine in a cpp file but causes compile errors in a .h file : Absurb
+	//}
