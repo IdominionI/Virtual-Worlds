@@ -7,6 +7,13 @@
 #include "Shader_basis_code/vs_reserved_uniforms.glsl"
 
 // -------------- User Defined Uniforms ----------------------
+uniform float min_density;
+uniform float max_density;
+
+in  float voxel_values;
+out int value;
+
+uniform int display_as_points;
 
 // -------------Application dynamicly defined uniorms---------
 // Do not delete next line with DDU as applicatioin defined uniforms are placed here
@@ -75,12 +82,28 @@ vec4 density_color(float density){
 }
 
 void main(){
+	//int display_as_points = 1;
 	
-	gl_Position = vec4(vertex.x,vertex.y,vertex.z,1.0f); // required as a min
+	//gl_Position = vec4(vertex.x,vertex.y,vertex.z,1.0f); // required as a min
+	// following required as a min
+	if(display_as_points == 0){ // do not display as points
+		gl_Position = vec4(position.x,position.y,position.z,1.0f); // required as a min
+		//gl_Position = vec4(position.x,position.y,position.z,1.0); // required as a min
+		//vs_out.varyingColor = vec4(1.0,0.0,0.0,1.0);
+	}else{// diaplay as points
+		gl_Position = modelViewProjectionMatrix*vec4(position.x,position.y,position.z,1.0f); // required as a min
+		//vs_out.varyingColor = vec4(0.0,1.0,0.0,1.0);
+	}
+	
+	//gl_Position = vec4(position.x,position.y,position.z,1.0f);        // required as a min
 
-	value = int(vertex.w);              // required as a min
+	//value = int(vertex.w);              // required as a min
+	//value = int(position.w);              // required as a min
+	value = int(voxel_values);              // required as a min
 
-	vs_out.varyingColor = density_color(vertex.w);
+	vs_out.varyingColor = density_color(value);
+	//vs_out.varyingColor = density_color(position.w);
+	//vs_out.varyingColor = density_color(vertex.w);
 	//vs_out.varyingColor = vec4(1.0,1.0,1.0,1.0);
 
 }

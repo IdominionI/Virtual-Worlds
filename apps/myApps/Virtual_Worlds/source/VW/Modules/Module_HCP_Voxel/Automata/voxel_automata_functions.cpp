@@ -84,12 +84,12 @@ bool voxel_automata_hcp_functions_class::perform_voxel_automata_step_generation(
 //QMessageBox::information(0, "perform_voxel_automata_step_generation", "here00", QMessageBox::Ok);
 
 	// Define the volume that the cellula automata rules are to be conducted in
-	voxel_automata_generator_parameters.x_start = cloud->voxel_object_data.voxel_generator_parameters.x_start;
-	voxel_automata_generator_parameters.x_end = cloud->voxel_object_data.voxel_generator_parameters.x_end;
-	voxel_automata_generator_parameters.y_start = cloud->voxel_object_data.voxel_generator_parameters.y_start;
-	voxel_automata_generator_parameters.y_end = cloud->voxel_object_data.voxel_generator_parameters.y_end;
-	voxel_automata_generator_parameters.z_start = cloud->voxel_object_data.voxel_generator_parameters.z_start;
-	voxel_automata_generator_parameters.z_end = cloud->voxel_object_data.voxel_generator_parameters.z_end;
+	voxel_automata_generator_parameters.x_start         = cloud->voxel_object_data.voxel_generator_parameters.x_start;
+	voxel_automata_generator_parameters.x_end           = cloud->voxel_object_data.voxel_generator_parameters.x_end;
+	voxel_automata_generator_parameters.y_start         = cloud->voxel_object_data.voxel_generator_parameters.y_start;
+	voxel_automata_generator_parameters.y_end           = cloud->voxel_object_data.voxel_generator_parameters.y_end;
+	voxel_automata_generator_parameters.z_start         = cloud->voxel_object_data.voxel_generator_parameters.z_start;
+	voxel_automata_generator_parameters.z_end           = cloud->voxel_object_data.voxel_generator_parameters.z_end;
 	voxel_automata_generator_parameters.resolution_step = cloud->voxel_object_data.voxel_generator_parameters.resolution_step;
 
 //if (log_widget != NULL) {
@@ -332,7 +332,7 @@ glm::ivec3 voxel_automata_hcp_functions_class::get_voxel_neighbour_index_coordin
 		if (y_index % 2 == 0) { // Even Y 
 			switch (neighbour) {
 			case 0: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-			case 1: neighbor_index_coordinate.x = x_index; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index + 1; break;
+			case 1: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index + 1; break;
 			case 2: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
 
 
@@ -344,7 +344,7 @@ glm::ivec3 voxel_automata_hcp_functions_class::get_voxel_neighbour_index_coordin
 			case 8: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
 
 			case 9:  neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
-			case 10: neighbor_index_coordinate.x = x_index; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index - 1; break;
+			case 10: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index - 1; break;
 			case 11: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
 			}
 		}
@@ -352,18 +352,18 @@ glm::ivec3 voxel_automata_hcp_functions_class::get_voxel_neighbour_index_coordin
 			switch (neighbour) {
 			case 0: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
 			case 1: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index + 1; break;
-			case 2: neighbor_index_coordinate.x = x_index;    neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
+			case 2: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
 
 			case 3: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
 			case 4: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
 			case 5: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
 			case 6: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
 			case 7: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
-			case 8: neighbor_index_coordinate.x = x_index;    neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
+			case 8: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
 
 			case 9:  neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
-			case 10: neighbor_index_coordinate.x = x_index;    neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index - 1; break;
-			case 11: neighbor_index_coordinate.x = x_index;   neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
+			case 10: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index - 1; break;
+			case 11: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
 			}
 		}
 	}
@@ -377,7 +377,7 @@ glm::ivec3 voxel_automata_hcp_functions_class::get_voxel_neighbour_index_coordin
 			case 3: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
 			case 4: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
 			case 5: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
-			case 6: neighbor_index_coordinate.x = x_index;    neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
+			case 6: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
 			case 7: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
 			case 8: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
 
@@ -389,19 +389,19 @@ glm::ivec3 voxel_automata_hcp_functions_class::get_voxel_neighbour_index_coordin
 		else {// Odd Y
 			switch (neighbour) {
 			case 0: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
-			case 1: neighbor_index_coordinate.x = x_index;   neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index + 1; break;
-			case 2: neighbor_index_coordinate.x = x_index;   neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
+			case 1: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index + 1; break;
+			case 2: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index + 1; break;
 
-			case 3: neighbor_index_coordinate.x = x_index;    neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
+			case 3: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
 			case 4: neighbor_index_coordinate.x = x_index + 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
-			case 5: neighbor_index_coordinate.x = x_index; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
+			case 5: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
 			case 6: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index - 1; neighbor_index_coordinate.z = z_index;    break;
 			case 7: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index;    break;
 			case 8: neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index;    break;
 
 			case 9:  neighbor_index_coordinate.x = x_index - 1; neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
-			case 10: neighbor_index_coordinate.x = x_index;  neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index - 1; break;
-			case 11: neighbor_index_coordinate.x = x_index;  neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
+			case 10: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index + 1; neighbor_index_coordinate.z = z_index - 1; break;
+			case 11: neighbor_index_coordinate.x = x_index;     neighbor_index_coordinate.y = y_index;     neighbor_index_coordinate.z = z_index - 1; break;
 			}
 		}
 	}

@@ -86,6 +86,8 @@
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_editing_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_generator_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_surface_editor_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Shaders\hcp_voxel_editor_render.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Shaders\hex_editor_render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -292,5 +294,7 @@
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_brush.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_surface_editor_import_export_.h" />
     <ClInclude Include="source\FrameWork\Universal_FW\Tools\dialogs.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Shaders\hcp_voxel_editor_render.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Shaders\hex_editor_render.h" />
   </ItemGroup>
 </Project>

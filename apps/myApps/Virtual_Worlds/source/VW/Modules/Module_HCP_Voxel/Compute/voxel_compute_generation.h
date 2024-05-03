@@ -21,7 +21,7 @@
 	to write custom code targeted to be used in the glsl programs main function.
 
 	This class imports all the source code text files of each of these sections and them combines them
-	into a single Qt QString class storage variable ready for adding to a OpenGL shader program for
+	into a single string class storage variable ready for adding to a OpenGL shader program for
 	compilation
 */
 

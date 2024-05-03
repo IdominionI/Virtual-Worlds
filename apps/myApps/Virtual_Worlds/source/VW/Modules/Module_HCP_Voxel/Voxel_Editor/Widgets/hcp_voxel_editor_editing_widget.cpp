@@ -155,7 +155,7 @@ void hcp_voxel_editor_editing_widget_class::hcp_voxel_analysis() {
 	// -----------------------------------------------------------------------------
 	y_pos += 55;
 
-	text("Voxel Voxel Matrix Display Range", x_pos + 30, y_pos);
+	text("Voxel Matrix Display Range", x_pos + 30, y_pos);
 	y_pos += 30;
 	text("Min             Max", x_pos + 75, y_pos);
 
@@ -169,7 +169,7 @@ void hcp_voxel_editor_editing_widget_class::hcp_voxel_analysis() {
 	
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(100);
-	if (ImGui::DragInt("X###vemanx", &hcp_analysis_shader->max_matrix_x, 1, 1, voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension.x, "%d", ImGuiSliderFlags_AlwaysClamp)) {
+	if (ImGui::DragInt("X (i)###vemanx", &hcp_analysis_shader->max_matrix_x, 1, 1, voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension.x, "%d", ImGuiSliderFlags_AlwaysClamp)) {
 		if (hcp_analysis_shader->max_matrix_x <= hcp_analysis_shader->min_matrix_x) hcp_analysis_shader->max_matrix_x = hcp_analysis_shader->min_matrix_x + 1;
 		hcp_analysis_shader->update_editor_shader_matrix_range();
 	}
@@ -184,7 +184,7 @@ void hcp_voxel_editor_editing_widget_class::hcp_voxel_analysis() {
 	
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(100);
-	if (ImGui::DragInt("Y###vemany", &hcp_analysis_shader->max_matrix_y, 1, 1, voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension.y, "%d", ImGuiSliderFlags_AlwaysClamp)) {
+	if (ImGui::DragInt("Y (j)###vemany", &hcp_analysis_shader->max_matrix_y, 1, 1, voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension.y, "%d", ImGuiSliderFlags_AlwaysClamp)) {
 		if (hcp_analysis_shader->max_matrix_y <= hcp_analysis_shader->min_matrix_y) hcp_analysis_shader->max_matrix_y = hcp_analysis_shader->min_matrix_y + 1;
 		hcp_analysis_shader->update_editor_shader_matrix_range();
 	}
@@ -199,7 +199,7 @@ void hcp_voxel_editor_editing_widget_class::hcp_voxel_analysis() {
 	
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(100);
-	if (ImGui::DragInt("Z###vemanz", &hcp_analysis_shader->max_matrix_z, 1, 1, voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension.z, "%d", ImGuiSliderFlags_AlwaysClamp)) {
+	if (ImGui::DragInt("Z (k)###vemanz", &hcp_analysis_shader->max_matrix_z, 1, 1, voxel_hcp_object_to_execute->voxel_object_data.matrix_dimension.z, "%d", ImGuiSliderFlags_AlwaysClamp)) {
 		if (hcp_analysis_shader->max_matrix_z <= hcp_analysis_shader->min_matrix_z) hcp_analysis_shader->max_matrix_z = hcp_analysis_shader->min_matrix_z + 1;
 		hcp_analysis_shader->update_editor_shader_matrix_range();
 	}

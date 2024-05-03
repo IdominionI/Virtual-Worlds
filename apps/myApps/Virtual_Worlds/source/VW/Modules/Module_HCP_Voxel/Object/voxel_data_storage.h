@@ -7,12 +7,10 @@
 #include "parameters.h"
 #include "Datatypes/dt_voxel_generator.h"
 #include "DataTypes/dt_voxel_automata.h"
-//
+
 #include <VW_framework/Shader/shader_parameters.h>
 #include <VW_framework/Shader/shader_components.h>
-//
-//
-//#include "DataTypes/dt_voxel_automata.h"
+
 
 // Because OpenGL GLSL does not have a prefered 8 bit unsigned char datatype,
 // and the min datatype that can be expressed as a bitmap 
@@ -44,16 +42,20 @@ typedef index_struct_type index_vector;
 	voxel_object_data_class
 
 	C++ Class that defines and manages the hcp voxel data matrix that represents the point cloud
-	data of the hcp voxel data object.
+	data of the hcp voxel data object. For more information and explaination on the coding algorithims
+	refere to the documentation vw_HCP_voxel_draft_01
 */
 
 class voxel_object_data_class {
 public:
 
+	// Paramater Data required to define, store and retrieve a model of a 3D HCP voxel matrix
+	// and to translate to and from this 3D HCP voxel matrix coordinates to Cartesian coordinates,
+
 	float	     voxel_size           = 1.0f;
 	glm::vec3    matrix_origin        = { 0.0,0.0,0.0 };
 	glm::vec3    matrix_coordinate_scale_factors = { 1.0,1.0,1.0 }; // axis scale that each index node multiplied by to give real world x,y,z corrdinate value
-	glm::ivec3 matrix_dimension     = { 0,0,0 };
+	glm::ivec3   matrix_dimension     = { 0,0,0 };
 	bool	     display_points       = true;
 	bool	     perfom_rounding_up   = true;
 	bool	     voxel_surface_volume = false;
@@ -63,14 +65,18 @@ public:
 	std::vector<voxel_hcp_automata_byte_rule_struct_type> voxel_hcp_automata_byte_rules;
 
 	glm::ivec3			           voxel_matrix_coord_index_vector;
-	std::vector <voxel_data_type>  voxel_matrix_data;
+	std::vector <voxel_data_type>  voxel_matrix_data;  // 1D vector Storage container that represents the 3D HCP voxel matrix data values
 
 	~voxel_object_data_class() {
 		voxel_matrix_data.clear();
 		voxel_matrix_data.shrink_to_fit();
 	}
 
+	// ##############################################################################################
+	// Functions to calculate the voxel matrix index of the storage vector that is a container or storage of a voxel cell of grid matrix coordinate (i,j,k)
+	// See documentation vw_HCP_voxel_draft_01 for more details and explaination how these alogorithims were derived
 
+	// Calculate the index of the  C++ vector modelling the voxel matrix value of layer iZ of a voxel that has coordinate (iX,iY,iZ)
 	index_data_type get_z_layer_index_value(index_data_type iX, index_data_type iY, index_data_type iZ) {
 //QMessageBox::information(NULL, "", "get_z_layer_index_value00 x: "+ QString::number(iX) + " y :"+ QString::number(iY)+" z :"+ QString::number(iZ), QMessageBox::Ok);
 
@@ -80,12 +86,14 @@ public:
 			return (index_data_type(iY / 2) + iY % 2) * (matrix_dimension.x - 1) + index_data_type(iY / 2) * matrix_dimension.x + iX;
 	}
 
+	// calculate the index value of the C++ vector modelling the voxel matrix of a voxel of coordinate (iX,jY,kZ)
 	index_data_type get_index_value(index_data_type iX, index_data_type iY, index_data_type iZ) {
 //QMessageBox::information(NULL, "", "get_index_value00 x: "+ QString::number(iX) + " y :"+ QString::number(iY)+" z :"+ QString::number(iZ), QMessageBox::Ok);
 
 		return (index_data_type(iZ / 2) + iZ % 2) * get_z_layer_total(0) + index_data_type(iZ / 2) * get_z_layer_total(1) + get_z_layer_index_value(iX, iY, iZ);
 	}
 
+	// calculate the total number of voxels cells that exist within a voxel layer iZ of a voxel matrix that has x dimension xdim, y dimension ydim
 	index_data_type get_z_layer_total(index_data_type iZ, index_data_type xdim, index_data_type ydim) {
 		if (iZ % 2 == 0) // Even z level
 			return (index_data_type(ydim / 2) + ydim % 2) * xdim + index_data_type(ydim / 2) * (xdim - 1);
@@ -93,90 +101,23 @@ public:
 			return (index_data_type((ydim - 1) / 2) + (ydim - 1) % 2) * (xdim - 1) + index_data_type((ydim - 1) / 2) * xdim;
 	}
 
+	// calculate the total number of voxels cells that exist within a voxel layer iZ of a voxel storage matrix
 	index_data_type get_z_layer_total(index_data_type iZ) {
 		return get_z_layer_total(iZ, matrix_dimension.x, matrix_dimension.y);
 	}
 
+	// calculate the total number of voxels cells that exist within a voxel matrix
 	index_data_type calculate_voxel_matrix_data_size(index_data_type xdim, index_data_type ydim, index_data_type zdim) {
 		return  (index_data_type(zdim / 2) + zdim % 2) * get_z_layer_total(0, xdim, ydim) + index_data_type(zdim / 2) * get_z_layer_total(1, xdim, ydim);
 	}
 
+	// calculate the total number of voxels cells that exist within a voxel storage matrix
 	index_data_type calculate_voxel_matrix_data_size() {
 		return calculate_voxel_matrix_data_size(matrix_dimension.x, matrix_dimension.y, matrix_dimension.z);
 	}
 
-	// END voxel matrix index 
+	// ###################################### END voxel matrix index   ########################################################
 
-	// ***************** VOXEL DATA ELEMENT FUNCTIONS TO COMPRESS INTO AND FROM DEFINED voxel_data_type storage data type of a unsigned integer *************************
-
-	voxel_element_data_type extract_voxel_data_element_value(data_storage_type_enum voxel_data_element_value_type, index_data_type voxel_matrix_data_index) {
-		if (voxel_matrix_data_index < 0 || voxel_matrix_data_index >= voxel_matrix_data.size())
-			return INVALID_VOXEL_VALUE;
-
-		switch (voxel_data_element_value_type) {
-		case data_storage_type_enum::alpha:
-		case data_storage_type_enum::value: return (voxel_matrix_data[voxel_matrix_data_index] & 0x000000ff);       break; // First 8 bits of 32 bit unsigned integer
-
-		case data_storage_type_enum::red: return  voxel_matrix_data[voxel_matrix_data_index] >> 24;               break; // Last 8 bits of 32 bit unsigned integer
-		case data_storage_type_enum::green: return (voxel_matrix_data[voxel_matrix_data_index] & 0x00ff0000) >> 16; break; // Thrid 8 bits of 32 bit unsigned integer
-		case data_storage_type_enum::blue: return (voxel_matrix_data[voxel_matrix_data_index] & 0x0000ff00) >> 8;  break; // second 8 bits of 32 bit unsigned integer
-
-		default: return INVALID_VOXEL_VALUE;
-		}
-	}
-
-	std::vector<voxel_element_data_type> extract_voxel_data_element_values(index_data_type voxel_matrix_data_index) {
-		std::vector<voxel_element_data_type> voxel_data_element_values = { INVALID_VOXEL_VALUE,INVALID_VOXEL_VALUE,INVALID_VOXEL_VALUE,INVALID_VOXEL_VALUE };
-
-		if (voxel_matrix_data_index >= 0 && voxel_matrix_data_index < voxel_matrix_data.size()) {
-			voxel_data_element_values[0] = (voxel_matrix_data[voxel_matrix_data_index] & 0x000000ff);       // alpha - voxel value;
-			voxel_data_element_values[1] = (voxel_matrix_data[voxel_matrix_data_index] & 0x0000ff00) >> 8;  // blue
-			voxel_data_element_values[2] = (voxel_matrix_data[voxel_matrix_data_index] & 0x00ff0000) >> 16; // green
-			voxel_data_element_values[3] = voxel_matrix_data[voxel_matrix_data_index] >> 24;                // red
-		}
-
-		return voxel_data_element_values;
-	}
-
-	voxel_data_type insert_voxel_data_element_value(data_storage_type_enum voxel_data_element_value_type, index_data_type voxel_matrix_data_index, voxel_element_data_type value) {
-		std::vector<voxel_element_data_type> voxel_data_element_values = extract_voxel_data_element_values(voxel_matrix_data_index);
-
-		switch (voxel_data_element_value_type) {
-		case data_storage_type_enum::alpha:
-		case data_storage_type_enum::value: voxel_data_element_values[0] = value; break; // First 8 bits of 32 bit unsigned integer
-		case data_storage_type_enum::blue: voxel_data_element_values[1] = value; break;  // second 8 bits of 32 bit unsigned integer
-		case data_storage_type_enum::green: voxel_data_element_values[2] = value; break; // Thrid 8 bits of 32 bit unsigned integer
-		case data_storage_type_enum::red: voxel_data_element_values[3] = value; break; // Last 8 bits of 32 bit unsigned integer
-		}
-
-		voxel_matrix_data[voxel_matrix_data_index] = voxel_data_element_values[3] << 24 | // red
-			voxel_data_element_values[2] << 16 | // green
-			voxel_data_element_values[1] << 8 |  // blue
-			voxel_data_element_values[0];        // alpha - voxel value
-
-		return voxel_matrix_data[voxel_matrix_data_index];
-	}
-
-	// ********************************************************************************************
-	// ***************** VOXEL DATA ELEMENT FUNCTIONS TO COMPRESS INTO AND FROM DEFINED voxel_data_type storage data type of float *************************
-	// *********** Obtained method from question and answer posted on stackoverflow but only is valid for first three RGB color values *************
-/*	const std::vector4D bitEnc = std::vector4D(1.0f, 255.0f, 65025.0f, 16581375.0f);
-	const std::vector4D bitDec = { 1.0f / bitEnc.x(),1.0f / bitEnc.y(),1.0f / bitEnc.z(),1.0f / bitEnc.w() };
-
-	std::vector4D Encode_Float_to_RGBA(float v) {
-		std::vector4D enc = bitEnc * v;
-		//enc = fract(enc);
-		enc = { enc.x() - floor(enc.x()),enc.y() - floor(enc.y()),enc.z() - floor(enc.z()),enc.w() - floor(enc.w())};
-		//enc -= enc.yzww * vec2(1. / 255., 0.).xxxy;
-		enc -= {enc.y()/255.0f, enc.z() / 255.0f, enc.w() / 255.0f, 0.0f};
-		return enc;
-	}
-
-	float Encode_RGBA_to_float(std::vector4D v) {
-		return std::vector4D::dotProduct(v, bitDec);
-	}
-*/
-// ********************************************************************************************
 
 	glm::ivec3 digitise_point_coordinate(glm::vec3 point_location) {
 		glm::ivec3 digitised_point_coordinate = { 0,0,0 };
@@ -236,7 +177,7 @@ public:
 
 		bool even_z_level;
 
-		if (matrix_index < t0) {
+		if (matrix_index < t0) { // Voxel is in the even z=0 layer
 			matrix_coord.z = 0;
 			even_z_level = true;
 		}
@@ -300,12 +241,14 @@ public:
 		return matrix_coord;
 	}
 
+	// Calculate and return the 3D cartesian coordinate for a given i,j,k voxel matrix coordinate 
+	// in local coordinates relative to the voxel matrix origin
 	glm::vec3 get_voxel_cartesian_coordinate(glm::ivec3 voxel_coord, float voxel_size) {
 		index_data_type i = voxel_coord.x, j = voxel_coord.y, k = voxel_coord.z;
 
 		float sqrt3 = sqrt(3.0f), third = 1.0f / 3.0f, z_mult = 2.0f * sqrt(6.0f) / 3.0f, sqrt3_2 = sqrt(1.5f);
 		glm::vec3 voxel_cartesian_coordinate;
-
+/*
 		if (j % 2 == 0) {
 //QMessageBox::information(NULL, "voxelBS03", "here00 :"+QString::number(j * VOXEL_BIT_NUMBER + j_bit), QMessageBox::Ok);
 			// !!!!!!!!!!!!!!!!! MAJOR ERROR THAT NEEDS TO BE FIXED : NEED TO HAVE MATRIX ORIGIN VALUES ADDED TO AVOID CONFUSION AND CORRECT WHERE IN APP THIS FUNCTION IS USED !!!!!!!!!!!
@@ -323,9 +266,13 @@ public:
 			//voxel_cartesian_coordinate.x = matrix_origin.x + ((-1.0f + float(i) * 2.0f + float(k % 2) + 2.0f * float((k + 1) % 2)) * voxel_size);
 			//voxel_cartesian_coordinate.y = matrix_origin.y +((sqrt3 + sqrt3 * (float(j) - 1) + sqrt3 * third * float(k % 2)) * voxel_size);
 		}
-
+*/
 		// !!!!!!!!!!!!!!!!! MAJOR ERROR THAT NEEDS TO BE FIXED : NEED TO HAVE MATRIX ORIGIN VALUES ADDED TO AVOID CONFUSION AND CORRECT WHERE IN APP THIS FUNCTION IS USED !!!!!!!!!!!
-	     voxel_cartesian_coordinate.z = (z_mult * float(k) *voxel_size);
+	    
+		voxel_cartesian_coordinate.x = (2 * float(i) + float((j + k) % 2)) * voxel_size; // ++++
+		voxel_cartesian_coordinate.y = (sqrt3*(float(j) + third*float(k % 2))) * voxel_size; // ++++
+		
+		voxel_cartesian_coordinate.z = (z_mult * float(k) *voxel_size);
 	     //voxel_cartesian_coordinate.z = matrix_origin.x +(z_mult * float(k) *voxel_size);
 
 		return voxel_cartesian_coordinate;
@@ -335,12 +282,14 @@ public:
 		return get_voxel_cartesian_coordinate(voxel_coord, voxel_size);
 	}
 
+	// Calculate and return the 3D cartesian coordinate for a given i,j,k voxel matrix coordinate in world  coordinates
 	glm::vec3 get_voxel_world_cartesian_coordinate(glm::ivec3 voxel_matrix_coord) {
 		glm::vec3  voxel_cart_coord   = get_voxel_cartesian_coordinate(voxel_matrix_coord) + matrix_origin;
 
 		return voxel_cart_coord;
 	}
 
+	// Calculate and return the 3D cartesian coordinate for a given voxel matrix vector index entry in world  coordinates
 	glm::vec3 get_voxel_world_cartesian_coordinate(int index) {
 		glm::ivec3 voxel_matrix_coord = get_matrix_coordinate(index);
 		glm::vec3  voxel_cart_coord   = get_voxel_cartesian_coordinate(voxel_matrix_coord) + matrix_origin;
@@ -348,63 +297,17 @@ public:
 		return voxel_cart_coord;
 	}
 
-	index_data_type get_voxel_matrix_data_index(glm::ivec3 matrix_coord) {// y in matrix_coord must be the corrected_y as defined in get_voxel_matrix_bit_location
+
+	// Calculate and return the index of the vector storage element for a given voxel matrix coordinate.
+	index_data_type get_voxel_matrix_data_index(glm::ivec3 matrix_coord) {
 		return get_index_value(matrix_coord.x, matrix_coord.y, matrix_coord.z);
 	}
 
-	voxel_element_data_type activate_voxel_matrix_coordinate(glm::ivec3 matrix_coord, voxel_element_data_type voxel_status_value = DEFAULT_ACTIVE_VALUE) {// testing only comment out or delete when not in use
-
-//QMessageBox::information(NULL, "", "avmc00 :"+ QString::number(matrix_coord.matrix_index.x) + " x :"+ QString::number(matrix_coord.matrix_index.y)+"y :"+ QString::number(matrix_coord.matrix_index.z)+"z :"+ QString::number(matrix_coord.j_bit_index), QMessageBox::Ok);
-//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc00AAAA :"+ QString::number(matrix_dimension.x) + " :" + QString::number(matrix_dimension.y)+" :" + QString::number(matrix_dimension.z), QMessageBox::Ok);
-//QMessageBox::information(NULL, "", "activate_voxel_matrix_coordinate00 x: "+ QString::number(matrix_coord.x) + " y :"+ QString::number(matrix_coord.y)+" z :"+ QString::number(matrix_coord.z), QMessageBox::Ok);
-
-		int voxel_matrix_data_index = get_voxel_matrix_data_index(matrix_coord);
-		//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "activate_voxel_matrix_coordinate01 :"+ QString::number(voxel_matrix_data_index) + " :" + QString::number(voxel_matrix_data[voxel_matrix_data_index]), QMessageBox::Ok);
-
-		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
-//QMessageBox::information(NULL, "", "avmc00BBBBBB :"+ QString::number(iX) + " x :"+ QString::number(iY)+"y :"+ QString::number(iZ)+"z :", QMessageBox::Ok);
-//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc01 :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
-			//return -127;
-			return DEFAULT_INACTIVE_VALUE;
-		}
-
-		insert_voxel_data_element_value(data_storage_type_enum::value, voxel_matrix_data_index, voxel_status_value);
-
-		return extract_voxel_data_element_value(data_storage_type_enum::value, voxel_matrix_data_index);// testing only comment out or delete when not in use
-//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc03 :"+ QString::number(voxel_matrix_data[voxel_matrix_data_index] ), QMessageBox::Ok);
-	}
-
-	void deactivate_voxel_matrix_coordinate(glm::ivec3 matrix_coord) {
-		int voxel_matrix_data_index = get_voxel_matrix_data_index(matrix_coord);
-
-		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
-//QMessageBox::information(NULL, "", "avmc00BBBBBB :"+ QString::number(iX) + " x :"+ QString::number(iY)+"y :"+ QString::number(iZ)+"z :", QMessageBox::Ok);
-//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc01 :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
-			return;
-		}
-
-		insert_voxel_data_element_value(data_storage_type_enum::value, voxel_matrix_data_index, DEFAULT_INACTIVE_VALUE);
-	}
-
-	voxel_element_data_type voxel_matrix_coordinate_activation_status(index_data_type voxel_matrix_data_index) {
-		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
-//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "voxel_matrix_data_index >= voxel_matrix_data.size() :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
-			return INVALID_VOXEL_VALUE;
-		}
-
-		voxel_element_data_type voxel_value = extract_voxel_data_element_value(data_storage_type_enum::value, voxel_matrix_data_index);
-		return voxel_value;
-	}
-
-	voxel_element_data_type voxel_matrix_coordinate_activation_status(glm::ivec3 matrix_coord) {
-		index_data_type voxel_matrix_data_index = get_voxel_matrix_data_index(matrix_coord);
-
-		if (voxel_matrix_data_index >= voxel_matrix_data.size()) return INVALID_VOXEL_VALUE;
-
-		return voxel_matrix_coordinate_activation_status(voxel_matrix_data_index);
-	}
-
 //+++++++++++++++++++++++
+
+	// For a given set of limits of a Cartesian rectangular volume, calculate the dimensions of a voxel
+	// matrix that fits within the limits of this rectangular volume.
+
 	glm::ivec3 calc_voxel_volume_dimensions() {
 		if (voxel_generator_parameters.resolution_step == 0.0f)
 			return { 0,0,0 };
@@ -438,6 +341,9 @@ public:
 		return { data_set_x_size,data_set_y_size,data_set_z_size };
 	}
 
+
+	// Create a voxel matrix of the current defined cartesian limits and have
+	// a value designated for each matrix cell to be of a passed value
 	bool create_voxel_matrix(voxel_data_type volume_data_storage) {
 		voxel_matrix_data.clear();
 		voxel_matrix_data.shrink_to_fit();
@@ -459,6 +365,9 @@ public:
 // 
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// Need to eventually refactor this as bool create_voxel_matrix(voxel_data_type volume_data_storage = 0) above
+
+	// Create a voxel matrix of the current defined cartesian limits and have
+	// an inactive value designated for each matrix cell
 	bool create_voxel_matrix() {
 		voxel_matrix_data.clear();
 		voxel_matrix_data.shrink_to_fit();
@@ -565,6 +474,8 @@ public:
 		return cartesian_coord_within_matrix_bounds(voxel_coord);
 	}
 
+	// Determine if a point P of cartesian coordinte (x,y,z) is within the limits of
+	// the dimensions of the voxel matrix that is stored in the computer memory
 	bool cartesian_coord_within_matrix_bounds(glm::ivec3 voxel_coord) {
 		if (voxel_coord.x < 0 || voxel_coord.y < 0 || voxel_coord.z < 0) return false;
 
@@ -617,6 +528,8 @@ public:
 		}
 	}
 
+	// Calculate and return the voxel matrix coordinate of a voxel cell for a given 
+	// Cartesian coordinate (grid_x, grid_y, grid_z) within an even voxel grid matrix level
 	glm::ivec3 get_hcp_voxel_cell_coord_even_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
 		float grid_radius = voxel_size;
 		float grid_height = grid_radius * (sqrt(3.0f));
@@ -740,6 +653,8 @@ public:
 		return voxel_coord; // Possible bug created by this ?????
 	}
 
+	// Calculate and return the voxel matrix coordinate of a voxel cell for a given 
+	// Cartesian coordinate (grid_x, grid_y, grid_z) within an odd voxel grid matrix level
 	glm::ivec3 get_hcp_voxel_cell_coord_odd_level(float grid_x, float grid_y, float grid_z, float voxel_height, int level) {
 		float grid_radius = voxel_size;
 		float grid_height = grid_radius * (sqrt(3.0f));
@@ -861,6 +776,8 @@ public:
 		return voxel_coord; // Possible bug created by this ?????
 	}
 
+	// Calculate the distance to a plane in 3D space from a point P with directional vector pq_vector to a point
+	// Q on a plane that has a normal vector on the plane normal_vector
 	float distance_to_plane(glm::vec3 normal_vector, glm::vec3 pq_vector) {
 		float normal_vector_length = sqrt(normal_vector.x* normal_vector.x+normal_vector.y* normal_vector.y+ normal_vector.z* normal_vector.z);
 		float normal_dot_pq        = dot(pq_vector, normal_vector);
@@ -871,9 +788,132 @@ public:
 
 	// +++++++++++++++++++++++++++++++++++++++++
 
+	// ***************** VOXEL DATA ELEMENT FUNCTIONS TO COMPRESS INTO AND FROM DEFINED voxel_data_type storage data type of a unsigned integer *************************
 
+	voxel_element_data_type extract_voxel_data_element_value(data_storage_type_enum voxel_data_element_value_type, index_data_type voxel_matrix_data_index) {
+		if (voxel_matrix_data_index < 0 || voxel_matrix_data_index >= voxel_matrix_data.size())
+			return INVALID_VOXEL_VALUE;
+
+		switch (voxel_data_element_value_type) {
+		case data_storage_type_enum::alpha:
+		case data_storage_type_enum::value: return (voxel_matrix_data[voxel_matrix_data_index] & 0x000000ff);       break; // First 8 bits of 32 bit unsigned integer
+
+		case data_storage_type_enum::red: return  voxel_matrix_data[voxel_matrix_data_index] >> 24;               break; // Last 8 bits of 32 bit unsigned integer
+		case data_storage_type_enum::green: return (voxel_matrix_data[voxel_matrix_data_index] & 0x00ff0000) >> 16; break; // Thrid 8 bits of 32 bit unsigned integer
+		case data_storage_type_enum::blue: return (voxel_matrix_data[voxel_matrix_data_index] & 0x0000ff00) >> 8;  break; // second 8 bits of 32 bit unsigned integer
+
+		default: return INVALID_VOXEL_VALUE;
+		}
+	}
+
+	std::vector<voxel_element_data_type> extract_voxel_data_element_values(index_data_type voxel_matrix_data_index) {
+		std::vector<voxel_element_data_type> voxel_data_element_values = { INVALID_VOXEL_VALUE,INVALID_VOXEL_VALUE,INVALID_VOXEL_VALUE,INVALID_VOXEL_VALUE };
+
+		if (voxel_matrix_data_index >= 0 && voxel_matrix_data_index < voxel_matrix_data.size()) {
+			voxel_data_element_values[0] = (voxel_matrix_data[voxel_matrix_data_index] & 0x000000ff);       // alpha - voxel value;
+			voxel_data_element_values[1] = (voxel_matrix_data[voxel_matrix_data_index] & 0x0000ff00) >> 8;  // blue
+			voxel_data_element_values[2] = (voxel_matrix_data[voxel_matrix_data_index] & 0x00ff0000) >> 16; // green
+			voxel_data_element_values[3] = voxel_matrix_data[voxel_matrix_data_index] >> 24;                // red
+		}
+
+		return voxel_data_element_values;
+	}
+
+	voxel_data_type insert_voxel_data_element_value(data_storage_type_enum voxel_data_element_value_type, index_data_type voxel_matrix_data_index, voxel_element_data_type value) {
+		std::vector<voxel_element_data_type> voxel_data_element_values = extract_voxel_data_element_values(voxel_matrix_data_index);
+
+		switch (voxel_data_element_value_type) {
+		case data_storage_type_enum::alpha:
+		case data_storage_type_enum::value: voxel_data_element_values[0] = value; break; // First 8 bits of 32 bit unsigned integer
+		case data_storage_type_enum::blue: voxel_data_element_values[1] = value; break;  // second 8 bits of 32 bit unsigned integer
+		case data_storage_type_enum::green: voxel_data_element_values[2] = value; break; // Thrid 8 bits of 32 bit unsigned integer
+		case data_storage_type_enum::red: voxel_data_element_values[3] = value; break; // Last 8 bits of 32 bit unsigned integer
+		}
+
+		voxel_matrix_data[voxel_matrix_data_index] = voxel_data_element_values[3] << 24 | // red
+			voxel_data_element_values[2] << 16 | // green
+			voxel_data_element_values[1] << 8 |  // blue
+			voxel_data_element_values[0];        // alpha - voxel value
+
+		return voxel_matrix_data[voxel_matrix_data_index];
+	}
+
+	// ********************************************************************************************
+	// ***************** VOXEL DATA ELEMENT FUNCTIONS TO COMPRESS INTO AND FROM DEFINED voxel_data_type storage data type of float *************************
+	// *********** Obtained method from question and answer posted on stackoverflow but only is valid for first three RGB color values *************
+/*	const std::vector4D bitEnc = std::vector4D(1.0f, 255.0f, 65025.0f, 16581375.0f);
+	const std::vector4D bitDec = { 1.0f / bitEnc.x(),1.0f / bitEnc.y(),1.0f / bitEnc.z(),1.0f / bitEnc.w() };
+
+	std::vector4D Encode_Float_to_RGBA(float v) {
+		std::vector4D enc = bitEnc * v;
+		//enc = fract(enc);
+		enc = { enc.x() - floor(enc.x()),enc.y() - floor(enc.y()),enc.z() - floor(enc.z()),enc.w() - floor(enc.w())};
+		//enc -= enc.yzww * vec2(1. / 255., 0.).xxxy;
+		enc -= {enc.y()/255.0f, enc.z() / 255.0f, enc.w() / 255.0f, 0.0f};
+		return enc;
+	}
+
+	float Encode_RGBA_to_float(std::vector4D v) {
+		return std::vector4D::dotProduct(v, bitDec);
+	}
+*/
+	voxel_element_data_type activate_voxel_matrix_coordinate(glm::ivec3 matrix_coord, voxel_element_data_type voxel_status_value = DEFAULT_ACTIVE_VALUE) {// testing only comment out or delete when not in use
+
+//QMessageBox::information(NULL, "", "avmc00 :"+ QString::number(matrix_coord.matrix_index.x) + " x :"+ QString::number(matrix_coord.matrix_index.y)+"y :"+ QString::number(matrix_coord.matrix_index.z)+"z :"+ QString::number(matrix_coord.j_bit_index), QMessageBox::Ok);
+//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc00AAAA :"+ QString::number(matrix_dimension.x) + " :" + QString::number(matrix_dimension.y)+" :" + QString::number(matrix_dimension.z), QMessageBox::Ok);
+//QMessageBox::information(NULL, "", "activate_voxel_matrix_coordinate00 x: "+ QString::number(matrix_coord.x) + " y :"+ QString::number(matrix_coord.y)+" z :"+ QString::number(matrix_coord.z), QMessageBox::Ok);
+
+		int voxel_matrix_data_index = get_voxel_matrix_data_index(matrix_coord);
+		//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "activate_voxel_matrix_coordinate01 :"+ QString::number(voxel_matrix_data_index) + " :" + QString::number(voxel_matrix_data[voxel_matrix_data_index]), QMessageBox::Ok);
+
+		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
+//QMessageBox::information(NULL, "", "avmc00BBBBBB :"+ QString::number(iX) + " x :"+ QString::number(iY)+"y :"+ QString::number(iZ)+"z :", QMessageBox::Ok);
+//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc01 :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
+			//return -127;
+			return DEFAULT_INACTIVE_VALUE;
+		}
+
+		insert_voxel_data_element_value(data_storage_type_enum::value, voxel_matrix_data_index, voxel_status_value);
+
+		return extract_voxel_data_element_value(data_storage_type_enum::value, voxel_matrix_data_index);// testing only comment out or delete when not in use
+//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc03 :"+ QString::number(voxel_matrix_data[voxel_matrix_data_index] ), QMessageBox::Ok);
+	}
+
+	void deactivate_voxel_matrix_coordinate(glm::ivec3 matrix_coord) {
+		int voxel_matrix_data_index = get_voxel_matrix_data_index(matrix_coord);
+
+		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
+//QMessageBox::information(NULL, "", "avmc00BBBBBB :"+ QString::number(iX) + " x :"+ QString::number(iY)+"y :"+ QString::number(iZ)+"z :", QMessageBox::Ok);
+//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "avmc01 :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
+			return;
+		}
+
+		insert_voxel_data_element_value(data_storage_type_enum::value, voxel_matrix_data_index, DEFAULT_INACTIVE_VALUE);
+	}
+
+	voxel_element_data_type voxel_matrix_coordinate_activation_status(index_data_type voxel_matrix_data_index) {
+		if (voxel_matrix_data_index >= voxel_matrix_data.size()) {
+//QMessageBox::information(NULL, "activate_voxel_matrix_coordinate", "voxel_matrix_data_index >= voxel_matrix_data.size() :"+ QString::number(voxel_matrix_data_index), QMessageBox::Ok);
+			return INVALID_VOXEL_VALUE;
+		}
+
+		voxel_element_data_type voxel_value = extract_voxel_data_element_value(data_storage_type_enum::value, voxel_matrix_data_index);
+		return voxel_value;
+	}
+
+	voxel_element_data_type voxel_matrix_coordinate_activation_status(glm::ivec3 matrix_coord) {
+		index_data_type voxel_matrix_data_index = get_voxel_matrix_data_index(matrix_coord);
+
+		if (voxel_matrix_data_index >= voxel_matrix_data.size()) return INVALID_VOXEL_VALUE;
+
+		return voxel_matrix_coordinate_activation_status(voxel_matrix_data_index);
+	}
+
+// ********************************************************************************************
 
 private:
+
+	// Create a voxel matrix of dimensions (xdim,ydim,zdim) stored as a vector array wit a value of volume_data_storage
 	void create_volume_cubic(voxel_data_type volume_data_storage, size_t xdim, size_t ydim, size_t zdim) {
 		if (!xdim || !ydim || !zdim) return;
 

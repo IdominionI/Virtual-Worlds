@@ -53,6 +53,7 @@
 
 				shader_class shader;
 				shader.set_b1(voxel_hcp_object_to_execute->geometry->shader->getProgram(), display_as_points, "display_as_points");
+				voxel_hcp_generation_widget.hcp_analysis_shader->update_editor_shader_uniforms();
 
 				update_voxel_size();
 			}

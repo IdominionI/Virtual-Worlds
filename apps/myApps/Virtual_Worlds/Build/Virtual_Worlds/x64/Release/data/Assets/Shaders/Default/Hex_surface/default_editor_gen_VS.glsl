@@ -39,6 +39,8 @@ uniform vec3  max_matrix_coord;
 
 uniform vec2 brush_radius;
 
+uniform float hex_height_scale;// ++++
+
 // -------------Application dynamicly defined uniorms---------
 // Do not delete next line with DDU as application defined uniforms are placed here
 // Must exist in every glsl code unless user wishes to manually enter uniforms that
@@ -139,7 +141,9 @@ void main(){
 	
 	// Need a flag to zero z coord
 	//position.z = 0.0f; // Testing only
-	vec4 pos = {position.x,position.y,0.0,position.w};
+	//vec4 pos = {position.x,position.y,0.0,position.w};
+	vec4 pos = {position.x,position.y,position.z*hex_height_scale,position.w};
+	//vec4 pos = position;
 	
 	// following required as a min
 	if(display_as_points == 0){ // do not display as points
@@ -183,7 +187,8 @@ void main(){
 	//if(hex_value == 0) raw_color = vec4(1.0,0.0,0.0,1.0);
 	//if(hex_value == 128) raw_color = vec4(0.0,1.0,0.0,1.0);// testing only
 	//if(hex_values == 0) raw_color = vec4(0.0,1.0,0.0,1.0);
+	//raw_color = vec4(0.0,1.0,0.0,1.0);
 	
 	vs_out.varyingColor = raw_color;
-
+//a=2.0f;
 }

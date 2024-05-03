@@ -1,9 +1,11 @@
 layout(points) in;
 //layout(triangle_strip, max_vertices = 48) out; // The output needs to be defined by the user in the function definitions
 
-flat in int gEnabledFaces[];// Must have as flat array otherwise will not work
+//flat in int gEnabledFaces[];// Must have as flat array otherwise will not work
+uniform int gEnabledFaces[];// Must have as flat array otherwise will not work
 
-flat in float hexSize[];
+//flat in float hexSize[];
+uniform float hexSize;
 
 #include "universal_reserved_uniforms.glsl"
 

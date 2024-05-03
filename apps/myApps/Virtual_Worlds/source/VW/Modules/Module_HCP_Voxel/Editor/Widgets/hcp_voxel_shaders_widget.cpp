@@ -214,6 +214,8 @@ void voxel_shaders_widget_class::update_voxel_shaders(bool notification) {
 	shader_material->geometry_shader_file_pathname = voxel_shader_parameters->geometry_shader_file_pathname;
 	shader_material->fragment_shader_file_pathname = voxel_shader_parameters->fragment_shader_file_pathname;
 
+//std::cout << "voxel_shaders_widget_class::update_voxel_shaders 111 " << voxel_hcp_object_to_execute->voxel_object_data.shader_parameters.geometry_shader_file_pathname << "\n";
+
 	shader_material->animate_shaders = voxel_shader_parameters->animate_shaders;
 
 	shader_material->use_default_vertex_shader   = false;

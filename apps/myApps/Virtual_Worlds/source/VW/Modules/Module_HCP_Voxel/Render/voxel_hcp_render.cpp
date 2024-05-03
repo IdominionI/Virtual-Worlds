@@ -19,6 +19,7 @@
 
 		shader_material->glsl_fragment_shader_file_pathname = shader_material->fragment_shader_file_pathname;
 
+//std::cout << "voxel_hcp_render_class::define_shader_program 111 " <<shader_material->geometry_shader_file_pathname << "\n";
 		// Compile the OpenGL shader and store the id reference to it to be used
 		if (shader_material->use_point_shader)
 			shaders_loaded = shader->load(shader_material->glsl_vertex_shader_file_pathname, shader_material->glsl_fragment_shader_file_pathname);

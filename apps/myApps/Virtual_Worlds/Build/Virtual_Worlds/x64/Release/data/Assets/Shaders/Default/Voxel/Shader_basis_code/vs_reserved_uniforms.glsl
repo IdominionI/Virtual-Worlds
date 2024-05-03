@@ -29,4 +29,3 @@ out VertexData
 {
  vec4 varyingColor;
 } vs_out;
-

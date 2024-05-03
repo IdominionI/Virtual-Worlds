@@ -24,7 +24,7 @@
 	a formatted text file 
 
 	Method of file format to read/write this data is to flag each cellula automata rule with
-	a RULE_BLOCK_START on a line to indicate the fllowing lines up to a RULE_BLOCK_END flag is
+	a RULE_BLOCK_START on a line to indicate the following lines up to a RULE_BLOCK_END flag is
 	a cellula automata rule. The cellula automata rule is also in a particular order that
 	dictates which line betweeen these flags corresponds to a particular cellula automata rule
 	prarmeter.
@@ -43,7 +43,7 @@ public:
 
 	std::vector <voxel_hcp_automata_byte_rule_struct_type>  byte_automata_rules;
 
-	int open_file_stream(std::string filename, int write_mode);
+	int  open_file_stream(std::string filename, int write_mode);
 	void close_file_stream();
 	bool export_hcp_automata_byte_rules(std::string file_pathname);
 	void write_hcp_automata_byte_rules(std::fstream &stream);

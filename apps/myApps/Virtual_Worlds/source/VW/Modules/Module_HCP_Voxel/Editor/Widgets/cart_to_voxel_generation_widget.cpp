@@ -48,6 +48,9 @@ void cart_to_voxel_generation_widget_class::change_voxels_display() {
 		voxel_hcp_object_to_execute->log_panel = log_panel;
 		voxel_hcp_object_to_execute->update_shader();
 
+		shader_class shader;
+		shader.set_b1(voxel_hcp_object_to_execute->geometry->shader->getProgram(), display_as_points, "display_as_points");
+
 		update_voxel_size();
 	}
 }

@@ -16,8 +16,20 @@
 		}
 
 		float x_pos = 10.0f, y_pos = 180.0f;
+// +++++
+		text("Height Scale", x_pos + 130, y_pos);
 
-		text("Expression : ", x_pos, y_pos);
+		y_pos += 20;
+		if (float_min_max_slider("hh", x_pos, y_pos, 200.0f,min_height_scale_value, max_height_scale_value, hex_analysis_shader->height_scale_value, 50.0f)) {
+		//if (ImGui::SliderFloat("###hhs", &height_scale_value, 0.0, 1.0, "%.3f", ImGuiSliderFlags_None)) {
+			if (hex_analysis_shader->height_scale_value < 0.0f) hex_analysis_shader->height_scale_value = 0.0f;
+			if (min_height_scale_value < 0.0f) min_height_scale_value = 0.0f;
+			hex_analysis_shader->update_editor_shader_hex_height();
+		}
+
+		x_pos = 10.0f; y_pos += 30.0f;
+// +++++
+		text("Hex Surface : ", x_pos, y_pos);
 		if (ex_button(hex_surface_object_to_execute->hex_surface_object_data.hex_surface_generator_parameters.expression_file_name.c_str(), x_pos + 120, y_pos, 150, 20))
 			get_hex_grid_file();
 
@@ -72,7 +84,7 @@
 			create_new_hex_surface();
 
 		y_pos += 30;
-		if (ex_button("Save Expression###hgsvv", x_pos + 85, y_pos, 140, 20))
+		if (ex_button("Save Hex Surface###hgsvv", x_pos + 85, y_pos, 140, 20))
 			save_hex_surface();
 
 		y_pos += 30;
@@ -321,3 +333,12 @@ void hex_surface_editor_generation_widget_class::change_hex_surface_display() {
 	}
 
 	// +++++++++++++++++++++++++++++++++++++++++++++++
+//void hex_surface_editor_generation_widget_class::update_hex_height() {
+//			if (hex_surface_object_to_execute != NULL) {
+//
+////printf("hcp_voxel_generation_widget_class :: change_voxels_display 000 : %i : %i\n", display_as_points, hex_surface_object_to_execute->hex_surface_object_data.shader_parameters.use_point_shader);
+//
+//				shader_class shader;
+//				shader.set_f1(hex_surface_object_to_execute->geometry->shader->getProgram(), hex_analysis_shader->height_scale_value, "hex_height_scale");
+//			}
+//	}

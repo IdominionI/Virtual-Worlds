@@ -111,6 +111,28 @@ std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel :  object_category_i
 
  std::cout << "cart_to_hcp_voxel_node_class:create_hcp_voxel :  vw_scene.scene_entities_manager.add_object : " << hcp_voxel->id << " : " << hcp_voxel->object_category_id << std::endl;
 
+        hcp_voxel->voxel_hcp_render.shader_basis_code_directory_pathname = "Assets/Shaders/Default/C_to_V/Shader_basis_code/";
+        hcp_voxel->voxel_hcp_render.default_shader_file_directory        = "Assets/Shaders/Default/C_to_V/";
+	    hcp_voxel->voxel_hcp_render.shader_file_directory                = "Assets/Shaders/Default/C_to_V/";
+	    hcp_voxel->voxel_hcp_render.voxel_hcp_default_vertex_file        = "default_CtoV_VS.glsl";
+	    hcp_voxel->voxel_hcp_render.voxel_hcp_default_geometry_file      = "default_CtoV_GS.glsl";
+	    hcp_voxel->voxel_hcp_render.voxel_hcp_default_fragment_file      = "default_CtoV_FS.glsl";
+	    hcp_voxel->voxel_hcp_render.voxel_hcp_vertex_file                = "default_CtoV_VS.glsl";
+	    hcp_voxel->voxel_hcp_render.voxel_hcp_geometry_file              = "default_CtoV_GS.glsl";
+	    hcp_voxel->voxel_hcp_render.voxel_hcp_fragment_file              = "default_CtoV_FS.glsl";
+
+        // NOTE : These below need to be changed to the above when testing completed and above files are to be the end defaults to use
+        //hcp_voxel->voxel_hcp_render.shader_basis_code_directory_pathname = "Assets/Shaders/Default/C_to_V/Shader_basis_code/";
+        //hcp_voxel->voxel_hcp_render.default_shader_file_directory        = "Assets/Shaders/Default/C_to_V/";
+	    //hcp_voxel->voxel_hcp_render.shader_file_directory                = "Assets/Shaders/Default/C_to_V/";
+	    //hcp_voxel->voxel_hcp_render.voxel_hcp_default_vertex_file        = "default_CtoV_VS.glsl";
+	    //hcp_voxel->voxel_hcp_render.voxel_hcp_default_geometry_file      = "default_CtoV_GS.glsl";
+	    //hcp_voxel->voxel_hcp_render.voxel_hcp_default_fragment_file      = "default_CtoV_FS.glsl";
+	    //hcp_voxel->voxel_hcp_render.voxel_hcp_vertex_file                = "default_CtoV_VS.glsl";
+	    //hcp_voxel->voxel_hcp_render.voxel_hcp_geometry_file              = "default_CtoV_GS.glsl";
+	    //hcp_voxel->voxel_hcp_render.voxel_hcp_fragment_file              = "default_CtoV_FS.glsl";
+
+
         hcp_voxel->define_initial_shader_program();
 
         //hcp_voxel->geometry->create_shader();

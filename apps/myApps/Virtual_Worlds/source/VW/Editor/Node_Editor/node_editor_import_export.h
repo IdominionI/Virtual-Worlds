@@ -1222,11 +1222,6 @@ std::cout << "node_editor_import_export_class: import_node CCCCCCC !!!!! :" << s
 			
 			std::string str = "Critical Failure to import node:\n Incorrect or corrupted entry \n" + lines[line_number];
 			str = str + "\nat line\n" + std::to_string(line_number) + "\n";
-			//std::cout << str;
-			//if(log_panel){log_panel->application_log.AddLog(str);}
-
-			//vwDialogs::message_box("Import Node", str.c_str());
-
 			vwDialogs::display_error_message("Import Node", str);
 
 			node_group_editor->graph.delete_node(new_node->node_id);

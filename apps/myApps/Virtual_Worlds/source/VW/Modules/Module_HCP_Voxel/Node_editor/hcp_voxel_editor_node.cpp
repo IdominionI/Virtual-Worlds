@@ -106,8 +106,7 @@ std::cout << "hcp_voxel_editor_node_class:create_hcp_voxel :  object_category_id
     hcp_voxel->object_type_id = ENTITY_TYPE_OBJECT;
 
 //std::cout << "hcp_voxel_editor_node_class:create_hcp_voxel :  vw_scene.scene_entities_manager.add_object : " << hcp_voxel->id << " : " << hcp_voxel->object_category_id << std::endl;
-
-        hcp_voxel->define_initial_shader_program(); //**** Needs to be changed to define initial node editor shader program
+        hcp_voxel->define_editor_shader_program() ;
 
         //hcp_voxel->geometry->create_shader();
         //hcp_voxel->geometry->init();

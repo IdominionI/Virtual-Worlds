@@ -1,8 +1,25 @@
-begin_function
+#version 450 core
 
-end_function
+// -------------- Shader Reserved Uniforms -------------------
 
-begin_expression
+//#include "shader_basis_code/Universal_reserved_uniforms.glsl"
+
+#include "Shader_basis_code/pgs_reserved_uniforms.glsl"
+
+// -------------- User Defined Uniforms ----------------------
+
+// -------------Application dynamicly defined uniorms---------
+// Do not delete next line with DDU as applicatioin defined uniforms are placed here
+// Must exist in every glsl code unless user whishes to manually enter uniforms that
+// the application generates.
+// #DD#
+
+// -------------- Shader Reserved funtions ----------------
+
+// -------------- User Defined Functions -------------------
+
+
+void main(){
 	vec4 center = gl_in[0].gl_Position; 
 	
 	
@@ -15,4 +32,4 @@ begin_expression
     EmitVertex();
     EndPrimitive();
 
-end_expression
+}

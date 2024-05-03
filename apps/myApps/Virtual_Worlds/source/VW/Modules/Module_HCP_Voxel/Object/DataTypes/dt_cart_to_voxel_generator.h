@@ -1,15 +1,10 @@
 #pragma once
 #include <string>
 
-//#include "dt_voxel_generator.h"
+// Voxel generator parameters to convert cloud point data in
+// cartesian coordinates to hcp voxel data
 
 struct cart_to_hcp_voxel_generator_parameters_struct_type {
-	//voxel_generator_display_struct_type generator_display_data;
-
-	//bool  display_as_points = false;
-	//float voxel_scale = 1000.0;
-	//float min_scale_value = 1.0, max_scale_value = 1000.0;
-
 	std::string ply_file_pathname = "";
 	std::string ply_file_name = "...";
 

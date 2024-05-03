@@ -33,6 +33,10 @@ public:
 	void create_new_hex_surface(bool notification = true);
 	void load_generation_parameters();// testing only delete comment out when done
 private:
+	//float height_scale_value = 0.0;// ++++
+	float min_height_scale_value = 0.0;// ++++
+	float max_height_scale_value = 1.0;// ++++
+
 	hex_surface_function_import_export_class hex_surface_function_import_export;
 	hex_surface_editor_import_export_class   hex_surface_editor_import_export;
 
@@ -56,4 +60,5 @@ private:
 
 	void update_hex_surface_shaders();
 	void change_hex_surface_display();
+	//void update_hex_height();// +++
 };

@@ -28,6 +28,9 @@
 	
 	Suspect that the CPU Multithreading needs a complex algorithm to perform the task correctly, 
 	or is simply unsuitable to be used.
+
+	For information and detailed description of the methods and algorithims used to perform the cellular
+	automata tasks, refere to the documentation in the file vw_HCP_voxel_draft_01
 */
 
 class voxel_automata_hcp_functions_class {

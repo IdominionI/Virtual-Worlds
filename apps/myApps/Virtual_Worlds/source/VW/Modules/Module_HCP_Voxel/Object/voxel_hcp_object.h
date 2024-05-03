@@ -8,8 +8,14 @@
 #include "voxel_data_storage.h"
 
 #include "../Render/voxel_hcp_render.h"
+#include "../Voxel_Editor/Shaders/hcp_voxel_editor_render.h"
 
 #define SCENE_CATEGORY_HCP_VOXEL "HCP_Voxel"
+
+// --------------------------------------------------------------------
+// HCP Voxel class to store and perform tasks related to data storage,
+// and graphical display on a computer screen
+// --------------------------------------------------------------------
 
 class voxel_hcp_object_class : public vw_object_base_class {
 public:
@@ -33,12 +39,13 @@ public:
 	point_cloud3D_class    *point_cloud = nullptr;
 	voxel_object_data_class voxel_object_data;
 	voxel_hcp_render_class  voxel_hcp_render; // Need to change code to edit or not to use this
+	voxel_hcp_editor_render_class  voxel_hcp_editor_render; // Need to change code to edit or not to use this
 	//material_struct_type    shader_material;
 	//bounding_volume_class bounding_volume;
 
 	//bool  active_object = false;
 	bool  display_voxel_object_as_points = false;
-	bool  animate_automata = false;
+	bool  animate_automata               = false;
 
 	bool update_buffer  = false;
 	bool object_changed = false;
@@ -55,6 +62,10 @@ public:
 		geometry         = nullptr;
 	}
 
+	// ------------------------------------------
+	// Functions to display hcp voxel data in an OpenGL viewport
+	// ------------------------------------------
+
 	void clear_shader_variables() {
 		voxel_object_data.shader_parameters.variables.clear();
 		voxel_object_data.shader_parameters.variables.shrink_to_fit();
@@ -67,6 +78,10 @@ public:
 
 	void define_initial_shader_program() {
 		voxel_hcp_render.define_initial_shader_program(this, log_panel);
+	}
+
+	void define_editor_shader_program() {
+		voxel_hcp_editor_render.define_editor_shader_program(this, log_panel);
 	}
 
 	void update_shader() {
@@ -94,6 +109,11 @@ public:
 		min_voxel_value = _min_voxel_value;
 		max_voxel_value = _max_voxel_value;
 	}
+
+	// Define the 3D point cloud geometry data to display in a viewport
+	// Calculate the 3D cartesian coordinate of each voxel to be displayed
+	// assign it and the voxel data value to a 3D cloud object which is used
+	// to display in OpenGL viewport.
 
 	bool define_geometry_data() {
 		index_data_type i, j, k;
@@ -127,6 +147,8 @@ public:
 
 		if (lower_range == INVALID_VOXEL_VALUE || lower_range < MIN_VOXEL_VALUE) lower_range = MIN_VOXEL_VALUE;
 		if (upper_range == INVALID_VOXEL_VALUE || upper_range > MAX_VOXEL_VALUE) upper_range = MAX_VOXEL_VALUE;
+
+		// Iterate through each voxel matrix by  layer (k) row (j)  and column (i)
 
 		for (k = 0; k < voxel_data.matrix_dimension.z && n < MAX_VOXEL_VERTICES; k++) {
 			if (k % 2 == 0)

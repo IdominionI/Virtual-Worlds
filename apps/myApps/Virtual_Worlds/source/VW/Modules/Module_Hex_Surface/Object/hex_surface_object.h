@@ -11,6 +11,7 @@
 #include "hex_surface_data_storage.h"
 
 #include "../Render/hex_surface_render.h"
+#include "../Hex_Editor/Shaders/hex_editor_render.h"
 //#include <Source/Graphics_Engine/Scene/Scene_objects/bounding_area_object.h>
 
 enum class hex_surface_vertex_order_enum { none, face, points, line };
@@ -49,6 +50,7 @@ public:
 	std::vector<int>                  vertex_indicies;
 	hex_surface_object_data_class     hex_surface_object_data;
 	hex_surface_render_class          hex_surface_render; // Need to change code to edit or not to use this
+	hex_editor_render_class           hex_editor_render; // Need to change code to edit or not to use this
 	//camera_object_class              *camera = NULL;
 
 	int number_faces = 0;
@@ -83,6 +85,10 @@ public:
 
 	void update_shader() {
 		hex_surface_render.define_shader_program(this, log_panel);
+	}
+
+	void define_editor_shader_program() {
+		hex_editor_render.define_editor_shader_program(this, log_panel);
 	}
 
 	void update_shader_variables() {

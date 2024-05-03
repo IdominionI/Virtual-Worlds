@@ -40,7 +40,7 @@ public:
 
 		if (ImGui::BeginTabBar("##cart_to_hcp_voxel_tabs", ImGuiTabBarFlags_None))
 		{
-			if (ImGui::BeginTabItem("Cart_to_vaxel_Generation##hcp_cart_to_voxel_tab")) {
+			if (ImGui::BeginTabItem("Cart_to_voxel_Generation##hcp_cart_to_voxel_tab")) {
 				display_cart_to_voxel_widget(voxel_hcp_object_to_execute, current_selected_object_id);
 				ImGui::EndTabItem();
 			}

@@ -25,6 +25,7 @@ public:
 
 	glm::vec3 min_matrix_coord = {-1.0f,-1.0f,-1.0f}, max_matrix_coord = {1.0f,1.0f,1.0f};
 
+	float height_scale_value = 0.0f;// ++++
 
 	imgui_int_range_widget_class   imgui_int_range_widget;
 
@@ -47,6 +48,7 @@ public:
 		update_editor_shader_range();	
 		update_editor_shader_value();
 		update_editor_shader_matrix_range();
+		update_editor_shader_hex_height();
 	}
 
 	// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -112,6 +114,16 @@ public:
 
 		shader.set_vec3(oshader->getProgram(),min_matrix_coord, "min_matrix_coord");
 		shader.set_vec3(oshader->getProgram(),max_matrix_coord, "max_matrix_coord");
+	}
+
+	void update_editor_shader_hex_height() {
+		if (hex_surface_object_to_execute != NULL) {
+
+//printf("hcp_voxel_generation_widget_class :: change_voxels_display 000 : %i : %i\n", display_as_points, hex_surface_object_to_execute->hex_surface_object_data.shader_parameters.use_point_shader);
+
+			shader_class shader;
+			shader.set_f1(hex_surface_object_to_execute->geometry->shader->getProgram(), height_scale_value, "hex_height_scale");
+		}
 	}
 
 };

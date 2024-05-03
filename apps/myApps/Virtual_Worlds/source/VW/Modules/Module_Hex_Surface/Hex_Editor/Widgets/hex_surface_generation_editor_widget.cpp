@@ -53,6 +53,7 @@
 
 				shader_class shader;
 				shader.set_b1(hex_surface_object_to_execute->geometry->shader->getProgram(), display_as_points, "display_as_points");
+				hex_surface_generation_widget.hex_analysis_shader->update_editor_shader_uniforms();
 
 				update_hex_size();
 			}

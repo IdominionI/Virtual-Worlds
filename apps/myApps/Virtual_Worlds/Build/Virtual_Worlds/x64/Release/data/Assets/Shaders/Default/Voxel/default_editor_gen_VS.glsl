@@ -172,6 +172,7 @@ void main(){
 		raw_color = vec4(0.0,0.0,0.0,0.0);
 	
 	if(voxel_value == 0) raw_color = vec4(1.0,0.0,0.0,1.0);
+	//raw_color = vec4(1.0,1.0,0.0,1.0);
 	//if(voxel_values == 0) raw_color = vec4(0.0,1.0,0.0,1.0);
 	
 	vs_out.varyingColor = raw_color;

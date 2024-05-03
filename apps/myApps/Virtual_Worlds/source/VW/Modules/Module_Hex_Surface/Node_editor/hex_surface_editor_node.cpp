@@ -107,7 +107,8 @@ std::cout << "hex_surface_editor_node_class:create_hex_surface :  object_categor
 
 //std::cout << "hex_surface_editor_node_class:create_hex_surface :  vw_scene.scene_entities_manager.add_object : " << hex_surface->id << " : " << hex_surface->object_category_id << std::endl;
 
-        hex_surface->define_initial_shader_program(); //**** Needs to be changed to define initial node editor shader program
+        hex_surface->define_editor_shader_program();
+        //hex_surface->define_editor_shader_program(); //**** Needs to be changed to define initial node editor shader program
 
         //hex_surface->geometry->create_shader();
         //hex_surface->geometry->init();

@@ -2,25 +2,15 @@
 #include <random>
 
 #include <FrameWork/Kernels/imgui-docking/imgui.h>
-//#include <FrameWork/Universal_FW/assimp/Importer.hpp>
-//#include <FrameWork/Universal_FW/assimp/postprocess.h>
-//#include <FrameWork/Universal_FW/assimp/scene.h>
+
+#include <FrameWork/Universal_FW/assimp/Importer.hpp>
+#include <FrameWork/Universal_FW/assimp/postprocess.h>
+#include <FrameWork/Universal_FW/assimp/scene.h>
 
 #include <FrameWork/Kernels/ImGuiEx/imgui_widgets.h>
 
 #include <Universal_FW/Interface/IconsFontAwesome.h>
 #include <Universal_FW/Tools/dialogs.h>
-
-//#include <Universal/ImGui/imgui.h>
-//#include <Universal/3rdparty/include/assimp/Importer.hpp>
-//#include <Universal/3rdparty/include/assimp/postprocess.h>
-//#include <Universal/3rdparty/include/assimp/scene.h>
-
-//#include <Source/Editor/Common/definitions.h>
-//#include <Source/Editor/Main_Window/Widgets/imgui_widgets.h>
-//#include <Source/Editor/Tools/dialogs.h>
-//#include <Source/Editor/Main_Window/Panels/log_panel.h>
-//#include <Source/Editor/Scene/scene_manager.h>
 
 #include "../../Object/DataTypes/dt_hex_surface_generator.h"
 #include "../../Kernal/hex_surface_function_import_export.h"
@@ -240,7 +230,7 @@
 
 
 	void cart_to_hex_widget_class::cartesian_to_voxel(bool notification) {
-		printf("cart_to_voxel_widget_class :: in cartesian_to_voxel\n");
+printf("cart_to_voxel_widget_class :: in cartesian_to_voxel\n");
 
 		if (current_selected_entity_id == -1) {
 			//printf("cart_to_voxel_widget_class :: current_selected_entity_id   == -1 #####\n");
@@ -347,7 +337,7 @@
 	// #########################################################
 
 	bool cart_to_hex_widget_class::import_file(const std::string& filepath) {
-/*		const uint32_t cMeshImportFlags =
+		const uint32_t cMeshImportFlags =
 			aiProcess_CalcTangentSpace |
 			aiProcess_Triangulate |
 			aiProcess_SortByPType |
@@ -379,6 +369,6 @@
 			}
 			return true;
 		}
-*/
+
 		return false;
 	}

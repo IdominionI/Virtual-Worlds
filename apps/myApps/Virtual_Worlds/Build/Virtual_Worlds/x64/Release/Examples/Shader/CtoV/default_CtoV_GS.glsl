@@ -4,9 +4,19 @@
 
 //#include "shader_basis_code/Universal_reserved_uniforms.glsl"
 
+layout(points) in;
+layout(triangle_strip, max_vertices = 48) out;
+
 #include "Shader_basis_code/gs_reserved_uniforms.glsl"
 
 // -------------- User Defined Uniforms ----------------------
+
+uniform float min_density;
+uniform float max_density;
+
+uniform int scale_density;
+
+in int value[]; // Critical to have this as an array
 
 // -------------Application dynamicly defined uniorms---------
 // Do not delete next line with DDU as applicatioin defined uniforms are placed here
@@ -33,7 +43,7 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
      NdotL   = max(dot(normalize(vertex_normal), normalize(-lighting_direction)), 0.0);
      diffuse = NdotL * light_color;
 
-     viewDir    = normalize(camera_loc - vec3(vertex.xyz));
+     viewDir    = normalize(uCameraPos - vec3(vertex.xyz));
      reflectDir = reflect(normalize(-lighting_direction), vertex_normal);
 
      float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
@@ -44,20 +54,20 @@ void use_lighting(vec4 vertex, vec3 vertex_normal, vec4 raw_color){
 	 camera_light_intensity = vec4(0.0,0.0,0.0,1.0);
 	 if(use_camera_lighting!=0){
 		 if(camera_lighting_type == 0){
-			 vec3 light_camera_relative_x = camera_right_vector *lighting_camera_offset.x;
-			 vec3 light_camera_relative_y = camera_up_vector    *lighting_camera_offset.y;
-			 vec3 light_camera_relative_z = camera_front_vector *lighting_camera_offset.z;
+			 vec3 light_camera_relative_x = uCamera_right   *lighting_camera_offset.x;
+			 vec3 light_camera_relative_y = uCamera_up      *lighting_camera_offset.y;
+			 vec3 light_camera_relative_z = uCamera_forward *lighting_camera_offset.z;
 			 
-			 vec3 light_loc =  camera_loc  + light_camera_relative_x + light_camera_relative_y + light_camera_relative_z;
+			 vec3 light_loc =  uCameraPos  + light_camera_relative_x + light_camera_relative_y + light_camera_relative_z;
 			 
 			 light_direction_vector = -(light_loc - vertex.xyz);// spot light from camera pointing dir of camera
 		 } else
-			 light_direction_vector = (camera_front_vector);//  global light pointing in direction of camera : not good
+			 light_direction_vector = (uCamera_forward);//  global light pointing in direction of camera : not good
 		 
 		 NdotL   = max(dot(normalize(vertex_normal), normalize(-light_direction_vector)), 0.0);
 		 diffuse = NdotL * light_color;
 
-		 viewDir    = normalize(camera_loc - vec3(vertex.xyz));
+		 viewDir    = normalize(uCameraPos - vec3(vertex.xyz));
 		 reflectDir = reflect(normalize(-light_direction_vector), normalize(vertex_normal));
 
 		 float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
@@ -593,8 +603,8 @@ void add_side(vec4 center,int side){
 
 
 void main(){
+	mvpMatrix = modelViewProjectionMatrix;
 	
-    //vec4 center = gl_in[0].gl_Position;
     vec4 center = gl_in[0].gl_Position*sf;
 	float f_value = float(value[0]);
 		
@@ -627,5 +637,5 @@ void main(){
 	for(int side = 0; side<6;side++){
 		add_side(center,side); // side surface elelment
 	}
-
+//a=2;
 }

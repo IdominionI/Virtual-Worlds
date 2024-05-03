@@ -7,6 +7,11 @@
 
 #include "vw_object_material.h"
 
+// ----------------------------------------------------------
+//	Base class that defines any and all Virtual Worlds object
+//  with univeral common functions to manage and display data
+// ----------------------------------------------------------
+
 class vw_object_base_class : public ofNode{
 public:
 	//vw_object_base_class() {}
@@ -28,6 +33,7 @@ public:
 	parameter_widget_base_class *parameter_widget = nullptr;// parameter_widget needs to be a pointer to work
 	// node_editor_base_class          node_widget;
 
+	// Function to define object geometry data to display in a viewport
 	virtual bool define_geometry_data() { return false; }
 	virtual bool update_object() { return false; }
 	virtual void delete_object() {}// ++++

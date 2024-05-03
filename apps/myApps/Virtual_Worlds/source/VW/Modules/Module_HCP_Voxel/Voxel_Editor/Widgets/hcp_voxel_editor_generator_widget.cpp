@@ -17,7 +17,7 @@
 
 		float x_pos = 10.0f, y_pos = 180.0f;
 
-		text("Expression : ", x_pos, y_pos);
+		text("Voxel volume : ", x_pos, y_pos);
 		if (ex_button(voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.expression_file_name.c_str(), x_pos + 120, y_pos, 150, 20))
 			get_voxel_volume_file();
 
@@ -50,15 +50,15 @@
 
 
 		y_pos += 30;
-		text("Min\nSurface\nValue", x_pos, y_pos);
+		text("Min\nVoxel\nValue", x_pos, y_pos);
 		integer_input("###veminsv", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.min_surface_value, x_pos + 80, y_pos + 15, 50.0f);
 
-		text("Max\nSurface\nValue", x_pos + 150, y_pos);
+		text("Max\nVoxel\nValue", x_pos + 150, y_pos);
 		integer_input("###vemaxsv", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.max_surface_value, x_pos + 220, y_pos + 15, 50.0f);
 
 		//invocation is the default surface value used to simplify save/load of paramter file using existing save/load code
 		y_pos += 45;
-		text("Default\nSurface\nValue", x_pos+80, y_pos);
+		text("Default\nVoxel\nValue", x_pos+80, y_pos);
 		integer_input("###vedefsv", voxel_hcp_object_to_execute->voxel_object_data.voxel_generator_parameters.invocation, x_pos + 160, y_pos + 15, 50.0f);
 
 		y_pos += 50;
@@ -70,7 +70,7 @@
 			create_new_voxel_volume();
 
 		y_pos += 30;
-		if (ex_button("Save Expression###vesvv", x_pos + 85, y_pos, 140, 20))
+		if (ex_button("Save Volume###vesvv", x_pos + 85, y_pos, 140, 20))
 			save_voxel_volume();
 
 		y_pos += 30;

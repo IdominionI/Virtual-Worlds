@@ -65,7 +65,7 @@ struct voxel_generator_parameters_struct_type {
 	int   invocation = 256;// this value may need to be changed to a maximum value
 
 	//voxel_data_type 
-	int	max_surface_value = 255, min_surface_value = 1; // *****
+	int	max_surface_value = 255, min_surface_value = 1;
 
 	std::vector<voxel_generator_parameter_variable_struct_type>      variables;
 	std::vector<voxel_generator_parameter_int_variable_struct_type>  int_variables;

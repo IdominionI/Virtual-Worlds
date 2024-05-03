@@ -161,6 +161,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Render\voxel_hcp_render.cpp" />
     <ClCompile Include="source\FrameWork\Universal_FW\Timeline\timeline.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_editor_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Shaders\hcp_voxel_editor_render.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_editing_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_parameters_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_generation_editor_widget.cpp" />
@@ -179,6 +180,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_shaders_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Editor\Widgets\hex_shader_variables_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_surface_editor_import_export.cpp" />
+    <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Shaders\hex_editor_render.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_generator_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_editing_widget.cpp" />
     <ClCompile Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_generation_editor_widget.cpp" />
@@ -354,6 +356,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\FrameWork\Universal_FW\Timeline\timeline.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_brush.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\hcp_voxel_editor_import_export_.h" />
+    <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Shaders\hcp_voxel_editor_render.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_analysis_shader.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_editing_widget.h" />
     <ClInclude Include="source\VW\Modules\Module_HCP_Voxel\Voxel_Editor\Widgets\hcp_voxel_editor_parameters_widget.h" />
@@ -379,6 +382,7 @@ if errorlevel 1 exit 0 else exit %errorlevel%</Command>
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Functions\hex_surface_interactions.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_surface_editor_import_export_.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\hex_brush.h" />
+    <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Shaders\hex_editor_render.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_analysis_shader.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_generator_widget.h" />
     <ClInclude Include="source\VW\Modules\Module_Hex_Surface\Hex_Editor\Widgets\hex_surface_editor_editing_widget.h" />

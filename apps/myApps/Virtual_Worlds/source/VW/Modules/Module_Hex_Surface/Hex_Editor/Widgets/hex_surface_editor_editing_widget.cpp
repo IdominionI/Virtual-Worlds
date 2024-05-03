@@ -162,7 +162,7 @@ void hex_surface_editor_editing_widget_class::hcp_voxel_analysis() {
 	
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(100);
-	if (ImGui::DragInt("X###hgmanx", &hex_analysis_shader->max_matrix_x, 1, 1, hex_surface_object_to_execute->hex_surface_object_data.grid_dimension.x, "%d", ImGuiSliderFlags_AlwaysClamp)) {
+	if (ImGui::DragInt("X (i)###hgmanx", &hex_analysis_shader->max_matrix_x, 1, 1, hex_surface_object_to_execute->hex_surface_object_data.grid_dimension.x, "%d", ImGuiSliderFlags_AlwaysClamp)) {
 		if (hex_analysis_shader->max_matrix_x <= hex_analysis_shader->min_matrix_x) hex_analysis_shader->max_matrix_x = hex_analysis_shader->min_matrix_x + 1;
 		hex_analysis_shader->update_editor_shader_matrix_range();
 	}
@@ -177,7 +177,7 @@ void hex_surface_editor_editing_widget_class::hcp_voxel_analysis() {
 	
 	ImGui::SameLine();
 	ImGui::SetNextItemWidth(100);
-	if (ImGui::DragInt("Y###hgmany", &hex_analysis_shader->max_matrix_y, 1, 1, hex_surface_object_to_execute->hex_surface_object_data.grid_dimension.y, "%d", ImGuiSliderFlags_AlwaysClamp)) {
+	if (ImGui::DragInt("Y (j)###hgmany", &hex_analysis_shader->max_matrix_y, 1, 1, hex_surface_object_to_execute->hex_surface_object_data.grid_dimension.y, "%d", ImGuiSliderFlags_AlwaysClamp)) {
 		if (hex_analysis_shader->max_matrix_y <= hex_analysis_shader->min_matrix_y) hex_analysis_shader->max_matrix_y = hex_analysis_shader->min_matrix_y + 1;
 		hex_analysis_shader->update_editor_shader_matrix_range();
 	}

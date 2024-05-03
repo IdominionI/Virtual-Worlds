@@ -22,5 +22,4 @@
 void main(){
 	FragColor = fs_in.varyingColor;
    //gl_FragColor = fs_in.varyingColor;
-
 }
