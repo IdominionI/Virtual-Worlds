@@ -70,7 +70,7 @@ public:
 		else
 			shader.set_i1(oshader->getProgram(),1,"gradient_interpolation");
 
-		int i = 0; // Have to do this because kave list not vector used to store gradient mark element
+		int i = 0; // Have to do this because have list not vector used to store gradient mark element
 		for (ImGG::Mark gradient_mark : gradient_marks) {
 			float  pos = gradient_mark.position.get();
 			ImVec4 col = gradient_mark.color;

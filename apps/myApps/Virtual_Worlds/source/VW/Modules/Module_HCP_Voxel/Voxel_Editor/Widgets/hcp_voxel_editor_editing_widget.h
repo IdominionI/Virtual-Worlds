@@ -64,4 +64,7 @@ private:
 
 	void hcp_voxel_analysis();
 	int  hcp_voxel_selection();
+
+	void save_gradient();
+	void load_gradient();
 };

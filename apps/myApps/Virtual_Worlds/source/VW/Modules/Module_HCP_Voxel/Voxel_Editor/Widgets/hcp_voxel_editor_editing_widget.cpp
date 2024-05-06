@@ -14,6 +14,8 @@
 #include "../../Object/DataTypes/dt_voxel_generator.h"
 #include "../../Kernal/voxel_function_import_export.h"
 
+#include "../hcp_voxel_editor_import_export_.h"
+
 void hcp_voxel_editor_editing_widget_class::display() {
 	if (!voxel_hcp_object_to_execute) {
 		return;
@@ -113,6 +115,12 @@ void hcp_voxel_editor_editing_widget_class::hcp_voxel_analysis() {
 	if (hcp_analysis_shader->gradient_widget.widget("My Gradient", hcp_analysis_shader->gradient_settings)) {
 		hcp_analysis_shader->update_editor_shader_gradient();
 	}
+
+	if (ex_button("Save###vesg", x_pos + 200, y_pos+48, 70, 16))
+		save_gradient();
+
+	if (ex_button("Load###velg", x_pos + 200, y_pos+68, 70, 16))
+		load_gradient();
 
 	// ************************************************************************************
 
@@ -262,4 +270,105 @@ std::cout << "hcp_voxel_editor_editing_widget_class:display !cam \n" << std::end
 	}
 
 	return selected_index;
+}
+
+void hcp_voxel_editor_editing_widget_class::save_gradient() {
+//	std::cout << "Pressed Save gradient button\n";
+
+	hcp_voxel_editor_import_export_class hcp_voxel_editor_import_export;
+
+	char const* patterns[] = { "*.grd" };
+	char const* file_pathname = vwDialogs::save_file(nullptr, patterns, 1);
+
+	if (file_pathname == nullptr) {
+		if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No gradient file defined to save gradient data to\n");
+		return;
+	} 
+//else
+//printf("save_generation_parameters != NULL %s \n", file_pathname);
+//printf("save_generation_parameters != NULL  \n");
+
+//ImGG::Gradient grad_list = hcp_analysis_shader->gradient_widget.gradient();
+	ImGG::Gradient grad_list = hcp_analysis_shader->gradient_widget.gradient();
+	std::list<ImGG::Mark> gradient_marks = grad_list.get_marks();
+
+//std::cout << "hcp_voxel_editor_editing_widget_class:: update_editor_shader_gradient " << gradient_marks.size() << std::endl;
+
+	// ---------------- Gradient uniforms ------------------------------
+	ImGG::Interpolation interpolation_mode = grad_list.interpolation_mode();
+
+	std::string interpolation_mode_s = "Linear";
+
+	if (interpolation_mode != ImGG::Interpolation::Linear)
+		interpolation_mode_s = "Step";
+		
+	std::vector<std::pair<float,glm::vec4>> gradient_data;
+
+	for (ImGG::Mark gradient_mark : gradient_marks) {
+		float  pos = gradient_mark.position.get();
+		ImVec4 col = gradient_mark.color;
+
+		std::pair<float,glm::vec4> gradient_entry;
+
+		gradient_entry.first  = pos;
+		gradient_entry.second = { col.x,col.y,col.z,col.w };
+
+		gradient_data.push_back(gradient_entry);
+//std::cout << "hcp_voxel_editor_editing_widget_class:: update_editor_shader_gradient " << pos << ":" << i << std::endl;
+
+	}
+
+	if (hcp_voxel_editor_import_export.export_gradient(file_pathname,interpolation_mode_s,gradient_data)) {
+		if (log_panel != NULL) log_panel->application_log.AddLog("INFO :Voxel volume generation parameter data saved to file\n %s\n", file_pathname);
+	}
+
+}
+
+void hcp_voxel_editor_editing_widget_class::load_gradient() {
+	std::cout << "Pressed Load gradient button\n";
+
+	hcp_voxel_editor_import_export_class hcp_voxel_editor_import_export;
+
+	char const* patterns[] = { "*.grd" };
+	char const* file_pathname = vwDialogs::open_file(nullptr, patterns, 1);
+
+	if (file_pathname == nullptr) {
+		if (log_panel != NULL) log_panel->application_log.AddLog("ERROR : No gradient file defined to import gradient data from\n");
+		return;
+	}
+
+
+	std::string interpolation_mode_s = "";
+	std::vector<std::pair<float,glm::vec4>> gradient_data;
+
+
+	if (!hcp_voxel_editor_import_export.import_gradient(file_pathname,interpolation_mode_s,gradient_data)) {
+		if (log_panel != NULL) log_panel->application_log.AddLog("Error : Gradient data could not be imported from file\n %s\n", file_pathname);
+		return;
+	}
+
+	//ImGG::Gradient grad_list = hcp_analysis_shader->gradient_widget.gradient();
+	//grad_list.clear();
+
+	hcp_analysis_shader->gradient_widget.gradient().clear();
+	
+	if (interpolation_mode_s == "Linear")
+		hcp_analysis_shader->gradient_widget.gradient().interpolation_mode() = ImGG::Interpolation::Linear;
+	else
+		hcp_analysis_shader->gradient_widget.gradient().interpolation_mode() = ImGG::Interpolation::Constant;
+
+	for (std::pair<float,glm::vec4> gradient_mark : gradient_data) {
+		ImGG::RelativePosition rel_pos(gradient_mark.first);
+		ImGG::ColorRGBA        color = { gradient_mark.second.x,gradient_mark.second.y,gradient_mark.second.z,gradient_mark.second.w };
+		ImGG::Mark mark;
+
+		mark.position = rel_pos;
+		mark.color    = color;
+
+		hcp_analysis_shader->gradient_widget.gradient().add_mark(mark);
+	}
+
+
+	if (log_panel != NULL) log_panel->application_log.AddLog("INFO :Compute expresion voxel generation parameter data imported from file\n %s\n", file_pathname);
+
 }

@@ -1,0 +1,348 @@
+ Vertex Shader defaultTex2DColor
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 textureMatrix;
+uniform mat4 modelViewProjectionMatrix;
+
+IN vec4 position;
+IN vec2 texcoord;
+IN vec4 color;
+IN vec3 normal;
+
+OUT vec4 colorVarying;
+OUT vec2 texCoordVarying;
+OUT vec4 normalVarying;
+
+void main() { 
+	colorVarying = color;
+	texCoordVarying = (textureMatrix*vec4(texcoord.x,texcoord.y,0,1)).xy;
+	gl_Position = modelViewProjectionMatrix * position;
+}
+
+Fragment SHADER  : defaultTex2DColor
+-----------------------
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+#define FRAG_COLOR fragColor
+
+out vec4 fragColor;
+
+uniform sampler2D src_tex_unit0;
+uniform float usingTexture;
+uniform float usingColors;
+uniform vec4 globalColor;
+
+IN float depth;
+IN vec4 colorVarying;
+IN vec2 texCoordVarying;
+
+void main(){ 
+	FRAG_COLOR = TEXTURE(src_tex_unit0, texCoordVarying) * colorVarying;
+}
+
+Vertex Shader defaultNoTexColor
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 textureMatrix;
+uniform mat4 modelViewProjectionMatrix;
+
+IN vec4 position;
+IN vec2 texcoord;
+IN vec4 color;
+IN vec3 normal;
+
+OUT vec4 colorVarying;
+OUT vec2 texCoordVarying;
+OUT vec4 normalVarying;
+
+void main() { 
+	colorVarying = color;
+	texCoordVarying = (textureMatrix*vec4(texcoord.x,texcoord.y,0,1)).xy;
+	gl_Position = modelViewProjectionMatrix * position;
+}
+
+Fragment SHADER  : defaultNoTexColor
+-----------------------
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+#define FRAG_COLOR fragColor
+
+out vec4 fragColor;
+uniform float usingTexture;
+uniform float usingColors;
+uniform vec4 globalColor;
+
+IN float depth;
+IN vec4 colorVarying;
+IN vec2 texCoordVarying;
+
+void main(){ 
+	FRAG_COLOR = colorVarying;
+}
+
+Vertex Shader defaultTex2DNoColor
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 textureMatrix;
+uniform mat4 modelViewProjectionMatrix;
+
+IN vec4 position;
+IN vec2 texcoord;
+IN vec4 color;
+IN vec3 normal;
+
+OUT vec4 colorVarying;
+OUT vec2 texCoordVarying;
+OUT vec4 normalVarying;
+
+void main() { 
+	colorVarying = color;
+	texCoordVarying = (textureMatrix*vec4(texcoord.x,texcoord.y,0,1)).xy;
+	gl_Position = modelViewProjectionMatrix * position;
+}
+
+Fragment SHADER  : defaultTex2DNoColor
+-----------------------
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+#define FRAG_COLOR fragColor
+
+out vec4 fragColor;
+
+uniform sampler2D src_tex_unit0;
+uniform float usingTexture;
+uniform float usingColors;
+uniform vec4 globalColor;
+
+IN float depth;
+IN vec4 colorVarying;
+IN vec2 texCoordVarying;
+
+void main(){ 
+	FRAG_COLOR = TEXTURE(src_tex_unit0, texCoordVarying) * globalColor;
+}
+
+Vertex Shader defaultNoTexNoColor
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 textureMatrix;
+uniform mat4 modelViewProjectionMatrix;
+
+IN vec4 position;
+IN vec2 texcoord;
+IN vec4 color;
+IN vec3 normal;
+
+OUT vec4 colorVarying;
+OUT vec2 texCoordVarying;
+OUT vec4 normalVarying;
+
+void main() { 
+	colorVarying = color;
+	texCoordVarying = (textureMatrix*vec4(texcoord.x,texcoord.y,0,1)).xy;
+	gl_Position = modelViewProjectionMatrix * position;
+}
+
+Fragment SHADER  : defaultNoTexNoColor
+-----------------------
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+#define FRAG_COLOR fragColor
+
+out vec4 fragColor;
+
+uniform float usingTexture;
+uniform float usingColors;
+uniform vec4 globalColor;
+
+IN float depth;
+IN vec4 colorVarying;
+IN vec2 texCoordVarying;
+
+void main(){ 
+	FRAG_COLOR = globalColor;
+}
+
+Vertex Shader alphaMask2DShader
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 textureMatrix;
+uniform mat4 modelViewProjectionMatrix;
+
+IN vec4 position;
+IN vec2 texcoord;
+IN vec4 color;
+IN vec3 normal;
+
+OUT vec4 colorVarying;
+OUT vec2 texCoordVarying;
+OUT vec4 normalVarying;
+
+void main() { 
+	colorVarying = color;
+	texCoordVarying = (textureMatrix*vec4(texcoord.x,texcoord.y,0,1)).xy;
+	gl_Position = modelViewProjectionMatrix * position;
+}
+
+Fragment SHADER  : alphaMask2DShader
+-----------------------
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+#define FRAG_COLOR fragColor
+
+out vec4 fragColor;
+
+uniform sampler2D src_tex_unit0;
+uniform sampler2D src_tex_unit1;
+uniform float usingTexture;
+uniform float usingColors;
+uniform vec4 globalColor;
+
+IN float depth;
+IN vec4 colorVarying;
+IN vec2 texCoordVarying;
+
+void main(){ 
+	FRAG_COLOR = vec4(TEXTURE(src_tex_unit0, texCoordVarying).rgb, TEXTURE(src_tex_unit1, texCoordVarying).r)* globalColor;
+}
+
+Vertex Shader defaultNoTexNoColor
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 textureMatrix;
+uniform mat4 modelViewProjectionMatrix;
+
+IN vec4 position;
+IN vec2 texcoord;
+IN vec4 color;
+IN vec3 normal;
+
+OUT vec4 colorVarying;
+OUT vec2 texCoordVarying;
+OUT vec4 normalVarying;
+
+void main() { 
+	colorVarying = color;
+	texCoordVarying = (textureMatrix*vec4(texcoord.x,texcoord.y,0,1)).xy;
+	gl_Position = modelViewProjectionMatrix * position;
+}
+
+Fragment SHADER  : defaultNoTexNoColor
+-----------------------
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+#define FRAG_COLOR fragColor
+
+out vec4 fragColor;
+
+uniform float usingTexture;
+uniform float usingColors;
+uniform vec4 globalColor;
+
+IN float depth;
+IN vec4 colorVarying;
+IN vec2 texCoordVarying;
+
+void main(){ 
+	FRAG_COLOR = globalColor;
+}
+
+Vertex Shader bitmapStringShader
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat4 textureMatrix;
+uniform mat4 modelViewProjectionMatrix;
+
+IN vec4 position;
+IN vec4 color;
+IN vec2 texcoord;
+
+OUT vec2 texCoordVarying;
+
+void main() { 
+	texCoordVarying = texcoord;
+	gl_Position = modelViewProjectionMatrix * position;
+}
+
+Fragment SHADER  : bitmapStringShader
+-----------------------
+#version 450
+
+#define IN in
+#define OUT out
+#define TEXTURE texture
+#define FRAG_COLOR fragColor
+
+out vec4 fragColor;
+
+uniform sampler2D src_tex_unit0;
+uniform vec4 globalColor;
+
+IN vec2 texCoordVarying;
+
+void main() { 
+	vec4 tex = TEXTURE(src_tex_unit0, texCoordVarying);
+	if (tex.a < 0.5) discard;
+	FRAG_COLOR = globalColor * tex;
+}
+
